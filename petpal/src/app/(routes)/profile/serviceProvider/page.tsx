@@ -4,6 +4,7 @@ import RatingComponent from '../_components/RatingComponent'
 import ServiceListComponent from '../_components/ServiceListComponent'
 import ServiceProviderInterface from '../_interface/ServiceProviderInterface'
 import ServiceInterface from '../_interface/ServiceInterface'
+import NavBar from '@/app/component/narbar'
 
 var mockingServiceType1:ServiceInterface = {
   Name:"serviceName1",
@@ -33,22 +34,106 @@ var mockingProvider:ServiceProviderInterface = {
 }
 
 export default function Profile() {
+
+  let items = [
+    {name : "Listing" , link : "/listing"},
+    {name : "Booking" , link : "/booking"},
+    {name : "Profile" , link : "/profile"}
+  ]
+  let banks = [
+    {id:0 , name : "None"},
+    {id: 1 , name: "Kasikorn"},
+    {id: 2 , name: "Krungthai"},
+    {id: 3 , name: "SCB"}
+  ]
   return (
     <div className='items-center'>
-      Navbar
+      <NavBar
+        brandName="Petpal"
+        navItems = {items}
+      />
       <div className='flex m-[50px] flow-root items-center'>
         <div className='max-w-[300px] m-[40px] space-y-[10px] float-left'>
           <ProfilePictureComponent/>
           <h1 className='text-[32px]' >{mockingProvider.Name}</h1>
           <RatingComponent Rating = {mockingProvider.Rating}/>
           <p className='text-[18px]'>{mockingProvider.Description}</p>
+          
         </div>
         <div className='max-w-[600px] m-[40px] float-right'>
-          <p>Address: {mockingProvider.Address}</p>
-          <p>Phone : {mockingProvider.PhoneNumber}</p>
-          <h1 className='text-[32px] '>Service Listing</h1>
-          <div className='flex space-x-[10px]'>
-            {mockingProvider.ServiceList.map((Service:ServiceInterface) => <ServiceListComponent Service={Service}></ServiceListComponent>)}
+          <div className = "my-2">
+            <p>Service Provider Name</p>
+            <form className="md:flex pl-9 md:pl-0 ">
+              <input
+              className="border-2"
+              type="text"
+              placeholder="Name"
+              />
+            </form>
+          </div>
+          <div className = "my-2">
+            <p>Description</p>
+            <form className="md:flex pl-9 md:pl-0 ">
+              <input
+              className="border-2"
+              type="text"
+              placeholder="description"
+              />
+            </form>
+          </div>
+          <div className = "my-2">
+            <p>Additinal Image</p>
+            <form className="md:flex pl-9 md:pl-0 ">
+              <button className="border-2" type='button'>upload Image</button>
+            </form>
+          </div>
+          <div className = "my-2">
+            <p>Address</p>
+            <form className="md:flex pl-9 md:pl-0 ">
+              <input
+              className="border-2"
+              type="text"
+              placeholder="address"
+              />
+            </form>
+          </div>
+          <div className = "my-2">
+            <p>Phone Number</p>
+            <form className="md:flex pl-9 md:pl-0 ">
+              <input
+              className="border-2"
+              type="text"
+              placeholder="099-xxx-xxxx"
+              />
+            </form>
+          </div>
+          <div className = "my-2">
+            <p>Bank Account</p>
+            <div className='BankAccountInformation'>
+              <div className='accountNumber'>
+                <p>Account Number</p>
+                <form className="md:flex pl-9 md:pl-0 ">
+                <input
+                className="border-2"
+                type="text"
+                placeholder="422-xxxxxxxx"
+                />
+                </form>
+              </div>
+              <div className='bankName'>
+                <p>Bank Name</p>
+                <select>
+                    {
+                      banks.map((bank) => 
+                          <option value={bank.id} > 
+                              {bank.name}
+                          </option>
+                      )
+                    }
+                </select>
+              </div>
+              <button type='button'>confirm</button>
+            </div>
           </div>
         </div>
       </div>
