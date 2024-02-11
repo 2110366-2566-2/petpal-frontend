@@ -1,5 +1,6 @@
 {
     "conventionalCommits.scopes": [
-        "register.tsx"
+        "register.tsx",
+        "login/page.tsx"
     ]
 }
