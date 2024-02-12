@@ -1,58 +1,48 @@
 import React from 'react'
+
+import NavBar from '@/app/_component/navbar'
 import ProfilePictureComponent from '../_components/ProfilePictureComponent'
 import RatingComponent from '../_components/RatingComponent'
 import ServiceListComponent from '../_components/ServiceListComponent'
-import ServiceProviderInterface from '../_interface/ServiceProviderInterface'
+import AdditionalImageComponent from '../_components/AdditionalImageComponent'
+
 import ServiceInterface from '../_interface/ServiceInterface'
 
-var mockingServiceType1:ServiceInterface = {
-  Name:"serviceName1",
-  Type:"type1",
-  StartDate:new Date(),
-  EndDate:new Date(),
-  Price:500,
-}
+import { exampleProvider } from '../_interface/ServiceProviderInterface'
 
-var mockingServiceType2:ServiceInterface = {
-  Name:"serviceName2",
-  Type:"type2",
-  StartDate:new Date(),
-  EndDate:new Date(),
-  Price:5000,
-}
 
-var mockingProvider:ServiceProviderInterface = {
-  Name:"Provider Name",
-  Rating:2.5,
-  Description:"For business description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ac quam lacus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Duis egestas odio non neque scelerisque, ut dignissim nisi vehicula. Aenean porta nunc enim, cursus maximus tellus hendrerit id.",
-  Address:"61 Wireless Road , Lumpini, Pathumwan The Athenee Hotel, Bangkok 10330 Thailand",
-  PhoneNumber:"0987654321",
-  ServiceList:[
-    mockingServiceType1,mockingServiceType2
-  ]
-}
+let items = [
+  {name : "Listing" , link : "/listing"},
+  {name : "Booking" , link : "/booking"},
+  {name : "Profile" , link : "/profile"}
+]
 
 export default function Profile() {
+  var provider = exampleProvider
   return (
     <div className='items-center'>
-      Navbar
-      <div className='flex m-[50px] flow-root items-center'>
-        <div className='max-w-[300px] m-[40px] space-y-[10px] float-left'>
+      <NavBar brandName="Petpal" navItems = {items}></NavBar>
+      <div className='flex mx-auto my-[50px] grid-cols-2 items-center font-[Inter] max-w-[1000px] text-[18px]'>
+        <div className='max-w-[300px] m-[40px] space-y-[10px] float-left m-auto mt-[0px] items-top'>
           <ProfilePictureComponent/>
-          <h1 className='text-[32px]' >{mockingProvider.Name}</h1>
-          <RatingComponent Rating = {mockingProvider.Rating}/>
-          <p className='text-[18px]'>{mockingProvider.Description}</p>
+          <h1 className='text-[32px]' ><b>{provider.Name}</b></h1>
+          <RatingComponent Rating = {provider.Rating}/>
+          <p className='text-[18px]'>{provider.Description}</p>
         </div>
-        <div className='max-w-[600px] m-[40px] float-right'>
-          <p>Address: {mockingProvider.Address}</p>
-          <p>Phone : {mockingProvider.PhoneNumber}</p>
-          <h1 className='text-[32px] '>Service Listing</h1>
-          <div className='flex space-x-[10px]'>
-            {mockingProvider.ServiceList.map((Service:ServiceInterface) => <ServiceListComponent Service={Service}></ServiceListComponent>)}
+        <div className='max-w-[600px] w-[600px] m-[40px] float-right m-auto space-y-[30px] mt-[0px]'>
+          <AdditionalImageComponent></AdditionalImageComponent>
+          <div className = "space-y-[10px]">
+            <p><b>Address:</b> {provider.Address}</p>
+            <p><b>Phone:</b> {provider.PhoneNumber}</p>
+          </div>
+          <div className='space-y-[15px]'>
+            <h1 className='text-[32px] '><b>Service Listing</b></h1>
+            <div className='flex space-x-[15px]'>
+              {provider.ServiceList.map((Service:ServiceInterface) => <ServiceListComponent Service={Service}></ServiceListComponent>)}
+            </div>
           </div>
         </div>
       </div>
-
     </div>
   )
 }
