@@ -1,11 +1,30 @@
 export default interface ButtonPropsInterface{
     Name:string,
+    Width:number,
     BgColor:string,
-    link:string,
+    FontColor:string,
+    Link:string,
 }
 
-export var exampleButton = {
+export var exampleButtonProps = {
     Name:"EDIT PROFILE",
     BgColor:"#FF872F",
-    link:""
+    FontColor:"#000000",
+    Link:""
 }
+
+export var editProfileButtonProps:ButtonPropsInterface = {
+    Name:"EDIT PROFILE",
+    Width:152,
+    BgColor:"#FF872F",
+    FontColor:"#FFFFFF",
+    Link:"/",
+}
+
+export var chagnePasswordButtonProps:ButtonPropsInterface = {
+    Name:"CHANGE PASSWORD",
+    Width:212,
+    BgColor:"#FF872F",
+    FontColor:"#000000",
+    Link:"",
+  }
