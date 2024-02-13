@@ -1,6 +1,7 @@
 'use client'
 import React from 'react'
 import { usePathname } from 'next/navigation';
+import {getServerSession} from "next-auth";
 
 import NavBar from '@/app/_component/navbar'
 import ProfilePictureComponent from '../../_components/ProfilePictureComponent'
@@ -44,10 +45,17 @@ export default function EmailServiceProviderProfile({params}:{params:{email:stri
           <h1 className='text-[32px]' ><b>{serviceProvider.Name}</b></h1>
           <RatingComponent Rating = {serviceProvider.Rating}/>
           <p className='text-[18px]'>{serviceProvider.Description}</p>
-          <div className='space-y-[20px] block'>
+          {(email == "me") ?(
+              <div className='space-y-[20px] block'>
+                <SmallButtonComponent ButtonProps={thisEditProfileButton}></SmallButtonComponent>
+                <SmallButtonComponent ButtonProps={chagnePasswordButtonProps}></SmallButtonComponent>
+              </div>
+          ):(<></>)
+          }
+          {/* <div className='space-y-[20px] block'>
             <SmallButtonComponent ButtonProps={thisEditProfileButton}></SmallButtonComponent>
             <SmallButtonComponent ButtonProps={chagnePasswordButtonProps}></SmallButtonComponent>
-          </div>
+          </div> */}
         </div>
         <div className='max-w-[600px] w-[600px] m-[40px] float-right m-auto space-y-[30px] mt-[0px]'>
           <AdditionalImageComponent></AdditionalImageComponent>

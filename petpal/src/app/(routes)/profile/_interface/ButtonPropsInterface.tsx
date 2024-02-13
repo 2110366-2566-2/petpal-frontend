@@ -24,7 +24,7 @@ export var editProfileButtonProps:ButtonPropsInterface = {
 export var chagnePasswordButtonProps:ButtonPropsInterface = {
     Name:"CHANGE PASSWORD",
     Width:212,
-    BgColor:"#FF872F",
+    BgColor:"#EDEDED",
     FontColor:"#000000",
     Link:"",
   }

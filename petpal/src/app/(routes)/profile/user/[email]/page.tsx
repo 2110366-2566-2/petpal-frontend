@@ -19,8 +19,9 @@ let items = [
   {name : "Profile" , link : "/profile"}
 ]
 
-export default function EmailUserProfile() {
+export default function EmailUserProfile({params}:{params:{email:string}}) {
   var User:UserInterface = exampleUser
+  var email:string = params.email
   return (
     <div className='items-center'>
     <NavBar brandName="Petpal" navItems = {items}></NavBar>
@@ -28,10 +29,13 @@ export default function EmailUserProfile() {
       <div className='max-w-[300px] m-[40px] space-y-[10px] float-left m-auto mt-[0px] items-top'>
         <ProfilePictureComponent/>
         <h1 className='text-[32px]' ><b>{User.Name}</b></h1>
-        <div className='space-y-[20px] block'>
-          <SmallButtonComponent ButtonProps={editProfileButtonProps}></SmallButtonComponent>
-          <SmallButtonComponent ButtonProps={chagnePasswordButtonProps}></SmallButtonComponent>
-        </div>
+        {(email == "me") ?(
+            <div className='space-y-[20px] block'>
+              <SmallButtonComponent ButtonProps={editProfileButtonProps}></SmallButtonComponent>
+              <SmallButtonComponent ButtonProps={chagnePasswordButtonProps}></SmallButtonComponent>
+            </div>
+          ):(<></>)
+          }
       </div>
       <div className='max-w-[600px] w-[600px] m-[40px] float-right m-auto space-y-[30px] mt-[0px]'>
         <h1 className='font-bold text-[32px]'>Pets</h1>
