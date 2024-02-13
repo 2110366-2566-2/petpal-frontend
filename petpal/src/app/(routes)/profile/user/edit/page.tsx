@@ -5,6 +5,7 @@ import ServiceListComponent from '../../_components/ServiceListComponent'
 import ServiceProviderInterface from '../../_interface/ServiceProviderInterface'
 import ServiceInterface from '../../_interface/ServiceInterface'
 import NavBar from '@/app/component/narbar'
+import PetInformation from '../../_components/PetInformation'
 import BankInformation from '../../_components/BankInformation'
 
 var mockingServiceType1:ServiceInterface = {
@@ -35,13 +36,13 @@ var mockingProvider:ServiceProviderInterface = {
 }
 
 export default function Profile() {
-  
+    
   let items = [
     {name : "Listing" , link : "/listing"},
     {name : "Booking" , link : "/booking"},
     {name : "Profile" , link : "/profile"}
   ]
-
+  let isOpen = false;
   return (
     <div className='items-center'>
       <NavBar
@@ -64,30 +65,10 @@ export default function Profile() {
             placeholder='username' />
           </div>
           <div className = "my-2 w-[75%]">
-            <span className='text-gray-700'>Description</span>
-            <textarea  className='mt-1 block w-full rounded-md border-gray-300 shadow-sm
-            focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 h-[200px] p-2'
-            />
-          </div>
-          <div className = "my-2">
-            <p>Additinal Image</p>
-            <form className="md:flex pl-9 md:pl-0 ">
-              <button className="border-2" type='button'>upload Image</button>
-            </form>
-          </div>
-          <div className = "my-2 w-[75%]">
-            <span className='text-gray-700'>Address</span>
-            <input type='address' className='mt-1 block w-full rounded-md border-gray-300 shadow-sm
-            focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50'
-            placeholder='address'/>
-          </div>
-          <div className = "my-2 w-[75%]">
-            <span className='text-gray-700'>Phone Number</span>
-            <input type='phoneNumber' className='mt-1 block w-full rounded-md border-gray-300 shadow-sm
-            focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50'
-            placeholder='099-xxx-xxxx'/>
+            <PetInformation/>
           </div>
           <BankInformation/>
+          
         </div>
       </div>
 

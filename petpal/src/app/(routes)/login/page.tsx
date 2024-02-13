@@ -1,11 +1,11 @@
-"use client"
+'use client'
 import React, { ChangeEvent, useState } from 'react'
 import Button from '../register/_components/Button'
 
 export default function Login() {
   const [registrationType, setRegistrationType] = useState('User');
   const handleRegistrationTypeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setRegistrationType(e.target.value);
+      setRegistrationType(e.target.value);
   };
   return (
     <main className='flex flex-col items-center '>
@@ -34,7 +34,7 @@ export default function Login() {
                 <option>User</option>
                 <option>Service Provider</option>
         </select>
-      </div>
+    </div>
       <Button name='LOGIN'/>
       <span className='mt-4 text-gray-700 text-[15px]'>Need an account? <a href='./register' className='underline'>SIGN UP</a></span>
     </div>
