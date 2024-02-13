@@ -13,6 +13,14 @@ export default function License() {
       console.error('No file selected');
       return;
     }
+    if (file.type != 'application/pdf') {
+      // File is a PDF
+      document.getElementById('attach_label')?.style.setProperty('color', 'red');
+      console.log('Only pdf!');
+      return;
+    }
+    document.getElementById('attach_label')?.style.setProperty('color', 'black');
+
     console.log('file', file);
     try {
       const formData = new FormData();
@@ -43,19 +51,21 @@ export default function License() {
   return <div className="max-w-6xl mx-auto ">
   <div className="flex justify-center min-h-fit">
         
-    <div className="w-[600px] mx-auto p-4 bg-gray-100 rounded-lg " >
+    <div className="w-[600px] mx-auto p-4 bg-gray-10 rounded-lg shadow-md " >
         <br/>
         <div className='bg-[#FF872F]'>
 
         <p className="text-2xl  text-center text-white p-3">อัพโหลดใบอนุญาตดำเนินการสถานพยาบาลสัตว์</p>
-
+       
         </div>
         
-        <p className="text-xl font-extralight p-4 text-gray-500">&#x2022;อัพโหลดใบอนุญาตดำเนินการสถานพยาบาลสัตว์เพื่อยืนยันการเป็น
-สถานพยาบาลสัตว์</p>
+        <p className="text-sm font-extralight p-4 text-gray-900">&#x2022;อัพโหลดใบอนุญาตดำเนินการสถานพยาบาลสัตว์เพื่อยืนยันการเป็นสถานพยาบาลสัตว์</p>
           <form className=" mx-auto p-4 rounded-lg " >
-      <label className="block text-lg mb-2">
+      <label className="block text-base mb-2" >
+
+       <span  id='attach_label'>  
        Attach Document (only .pdf):
+        </span>
         <input
           type="file"
          
@@ -69,13 +79,15 @@ export default function License() {
       <button
         onClick={handleSubmit}
         type="button"
-        className="bg-[#FF872F] text-white py-2 px-4 rounded-full text-xl
+        className="bg-[#FF872F] text-white py-2 px-4 rounded-full text-base
         hover:bg-[#fb6a00] transition duration-300 ease-in-out "
       >
         Upload
       </button>
     </form>
-    <div className='border-t-4 border-b-4  border-solid border-[#FF872F] mx-5 py-5 text-base'>
+
+
+    <div className='border-t-4 border-b-4  border-solid border-[#FF872F] mx-5 py-3 text-base'>
         <span>
             สถานะใบอนุญาต :&#160;&#160;&#160;
         </span>
