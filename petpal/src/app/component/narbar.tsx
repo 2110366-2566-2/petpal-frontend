@@ -8,7 +8,7 @@ function NavBar({ brandName, navItems }: NavBarProps) {
     return (
         <nav >
         <div className="w-full">
-            <div className="md:px-10 py-4 justify-start items-center bg-[#D9D9D9] md:flex">
+            <div className="md:px-10 py-4 justify-start items-center bg-pgray md:flex">
                 <div className="md:flex text-2x1 cursor-pointer items-center gap-2 pl-9">
                     <a className = "font-bold" href="#">{brandName}</a>
                 </div>
