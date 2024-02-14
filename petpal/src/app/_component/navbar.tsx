@@ -39,7 +39,7 @@ function NavBar({ brandName, navItems }: NavBarProps) {
                      <SearchIcon/>
                     </button>
                 </form>
-                <Link href={"./login"} className="hidden md:flex"><Button name={"LOGIN"}/></Link>
+                <Link href={"/login"} className="hidden md:flex"><Button name={"LOGIN"}/></Link>
             </div>
         
         </nav>
