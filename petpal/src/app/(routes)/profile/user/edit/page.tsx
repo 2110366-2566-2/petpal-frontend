@@ -4,9 +4,11 @@ import RatingComponent from '../../_components/RatingComponent'
 import ServiceListComponent from '../../_components/ServiceListComponent'
 import ServiceProviderInterface from '../../_interface/ServiceProviderInterface'
 import ServiceInterface from '../../_interface/ServiceInterface'
-import NavBar from '@/app/component/narbar'
+// import NavBar from '@/app/component/narbar'
 import PetInformation from '../../_components/PetInformation'
 import BankInformation from '../../_components/BankInformation'
+import SmallButtonComponent from '../../_components/SmallButtonComponent'
+import { saveEditButtonProps } from '../../_interface/ButtonPropsInterface'
 
 var mockingServiceType1:ServiceInterface = {
   Name:"serviceName1",
@@ -44,10 +46,10 @@ export default function Profile() {
       <div className='flex m-[50px] items-center'>
         <div className='max-w-[300px] space-y-[10px] float-left m-auto mt-[0px] items-top'>
           <ProfilePictureComponent/>
-          <h1 className='text-[32px]' >{mockingProvider.Name}</h1>
+          {/* <h1 className='text-[32px]' >{mockingProvider.Name}</h1>
           <RatingComponent Rating = {mockingProvider.Rating}/>
-          <p className='text-[18px]'>{mockingProvider.Description}</p>
-          
+          <p className='text-[18px]'>{mockingProvider.Description}</p> */}
+          <SmallButtonComponent ButtonProps={saveEditButtonProps}></SmallButtonComponent>
         </div>
         <div className='max-w-[600px] w-[600px] float-right m-auto space-y-[30px] mt-[0px]'>
           <div className = "my-2 w-[75%]">
