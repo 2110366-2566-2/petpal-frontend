@@ -36,18 +36,9 @@ var mockingProvider:ServiceProviderInterface = {
 
 export default function Profile() {
   
-  let items = [
-    {name : "Listing" , link : "/listing"},
-    {name : "Booking" , link : "/booking"},
-    {name : "Profile" , link : "/profile"}
-  ]
 
   return (
     <div className='items-center'>
-      <NavBar
-        brandName="Petpal"
-        navItems = {items}
-      />
       <div className='flex m-[50px] items-center'>
         <div className='max-w-[300px] m-[40px] space-y-[10px] float-left m-auto mt-[0px] items-top'>
           <ProfilePictureComponent/>
