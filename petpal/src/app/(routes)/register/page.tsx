@@ -42,7 +42,7 @@ export default function Register() {
                     <span className="text-gray-700">Username</span>
                     <input
                         type="text"
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm
+                        className="p-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm
            focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                         placeholder="username"
                         value={username}
@@ -53,7 +53,7 @@ export default function Register() {
                     <span className="text-gray-700">Full name</span>
                     <input
                         type="text"
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm
+                        className="p-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm
            focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                         placeholder="Firstname Lastname"
                     />
@@ -62,7 +62,7 @@ export default function Register() {
                     <span className="text-gray-700">Email address</span>
                     <input
                         type="email"
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm
+                        className="p-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm
            focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                         placeholder="skibidi@example.com"
                         value={email}
@@ -73,7 +73,7 @@ export default function Register() {
                     <span className="text-gray-700">Phone number</span>
                     <input
                         type="tel"
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm
+                        className="p-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm
            focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                         placeholder="xxxxxxxxxx"
                     />
@@ -82,7 +82,7 @@ export default function Register() {
                     <span className="text-gray-700">Password</span>
                     <input
                         type="password"
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm
+                        className="p-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm
            focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                         placeholder="password"
                     />
@@ -91,7 +91,7 @@ export default function Register() {
                     <span className="text-gray-700">Confirm password</span>
                     <input
                         type="password"
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm
+                        className="p-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm
            focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                         placeholder="password"
                     />
@@ -99,7 +99,7 @@ export default function Register() {
                 <div className="w-[75%] m-3">
                     <span className="text-gray-700">Register as</span>
                     <select
-                        className="block w-full mt-1 rounded-md border-gray-300 shadow-sm
+                        className="p-1 block w-full mt-1 rounded-md border-gray-300 shadow-sm
            focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                         value={registrationType}
                         onChange={handleRegistrationTypeChange}
@@ -112,7 +112,7 @@ export default function Register() {
                     <div className="w-[75%] m-3">
                         <span className="text-gray-700">Service type</span>
                         <select
-                            className="block w-full mt-1 rounded-md border-gray-300 shadow-sm
+                            className="p-1 block w-full mt-1 rounded-md border-gray-300 shadow-sm
                 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                         >
                             <option>Healthcare</option>
