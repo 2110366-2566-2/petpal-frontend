@@ -4,7 +4,7 @@ import RatingComponent from '../../_components/RatingComponent'
 import ServiceListComponent from '../../_components/ServiceListComponent'
 import ServiceProviderInterface from '../../_interface/ServiceProviderInterface'
 import ServiceInterface from '../../_interface/ServiceInterface'
-import NavBar from '@/app/component/narbar'
+import NavBar from '@/app/_component/navbar'
 import BankInformation from '../../_components/BankInformation'
 
 var mockingServiceType1:ServiceInterface = {
