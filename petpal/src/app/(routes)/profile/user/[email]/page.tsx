@@ -24,9 +24,8 @@ export default function EmailUserProfile({params}:{params:{email:string}}) {
   var email:string = params.email
   return (
     <div className='items-center'>
-    <NavBar brandName="Petpal" navItems = {items}></NavBar>
-    <div className='flex mx-auto my-[50px] grid-cols-2 items-center font-[Inter] max-w-[1000px] text-[18px]'>
-      <div className='max-w-[300px] m-[40px] space-y-[10px] float-left m-auto mt-[0px] items-top'>
+    <div className='flex mx-auto my-[50px] grid-cols-2 items-center max-w-[1000px] text-[18px]'>
+      <div className='max-w-[300px] m-[40px] space-y-[10px] float-left  mt-[0px] items-top'>
         <ProfilePictureComponent/>
         <h1 className='text-[32px]' ><b>{User.Name}</b></h1>
         {(email == "me") ?(
@@ -37,7 +36,7 @@ export default function EmailUserProfile({params}:{params:{email:string}}) {
           ):(<></>)
           }
       </div>
-      <div className='max-w-[600px] w-[600px] m-[40px] float-right m-auto space-y-[30px] mt-[0px]'>
+      <div className='max-w-[600px] w-[600px] m-[40px] float-right space-y-[30px] mt-[0px]'>
         <h1 className='font-bold text-[32px]'>Pets</h1>
         <div>
           {User.PetList.map((Pet:PetInterface) => <SmalllPetListComponent Pet={Pet} key = {Pet.Name}></SmalllPetListComponent>)}

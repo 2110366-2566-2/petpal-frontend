@@ -17,11 +17,6 @@ import ButtonPropsInterface from '../../_interface/ButtonPropsInterface'
 import { exampleProvider } from '../../_interface/ServiceProviderInterface'
 import { editProfileButtonProps,chagnePasswordButtonProps } from '../../_interface/ButtonPropsInterface'
 
-let items = [
-  {name : "Listing" , link : "/listing"},
-  {name : "Booking" , link : "/booking"},
-  {name : "Profile" , link : "/profile"}
-]
 
 export default function EmailServiceProviderProfile({params}:{params:{email:string}}) {
   var email:string = params.email
@@ -38,9 +33,8 @@ export default function EmailServiceProviderProfile({params}:{params:{email:stri
 
   return (
     <div className='items-center'>
-      <NavBar brandName="Petpal" navItems = {items}></NavBar>
-      <div className='flex mx-auto my-[50px] grid-cols-2 items-center font-[Inter] max-w-[1000px] text-[18px]'>
-        <div className='max-w-[300px] m-[40px] space-y-[10px] float-left m-auto mt-[0px] items-top'>
+      <div className='flex mx-auto my-[50px] grid-cols-2 items-center max-w-[1000px] text-[18px]'>
+        <div className='max-w-[300px] m-[40px] space-y-[10px] float-left mt-[0px] items-top'>
           <ProfilePictureComponent/>
           <h1 className='text-[32px]' ><b>{serviceProvider.Name}</b></h1>
           <RatingComponent Rating = {serviceProvider.Rating}/>
@@ -57,7 +51,7 @@ export default function EmailServiceProviderProfile({params}:{params:{email:stri
             <SmallButtonComponent ButtonProps={chagnePasswordButtonProps}></SmallButtonComponent>
           </div> */}
         </div>
-        <div className='max-w-[600px] w-[600px] m-[40px] float-right m-auto space-y-[30px] mt-[0px]'>
+        <div className='max-w-[600px] w-[600px] m-[40px] float-right space-y-[30px] mt-[0px]'>
           <AdditionalImageComponent></AdditionalImageComponent>
           <div className = "space-y-[10px]">
             <p><b>Address:</b> {serviceProvider.Address}</p>

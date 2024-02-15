@@ -4,9 +4,11 @@ import RatingComponent from '../../_components/RatingComponent'
 import ServiceListComponent from '../../_components/ServiceListComponent'
 import ServiceProviderInterface from '../../_interface/ServiceProviderInterface'
 import ServiceInterface from '../../_interface/ServiceInterface'
-import NavBar from '@/app/_component/navbar'
+// import NavBar from '@/app/component/narbar'
 import PetInformation from '../../_components/PetInformation'
 import BankInformation from '../../_components/BankInformation'
+import SmallButtonComponent from '../../_components/SmallButtonComponent'
+import { saveEditButtonProps } from '../../_interface/ButtonPropsInterface'
 
 var mockingServiceType1:ServiceInterface = {
   Name:"serviceName1",
@@ -25,7 +27,7 @@ var mockingServiceType2:ServiceInterface = {
 }
 
 var mockingProvider:ServiceProviderInterface = {
-  Name:"Provider Name",
+  Name:"User Name",
   Rating:2.5,
   Description:"For business description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ac quam lacus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Duis egestas odio non neque scelerisque, ut dignissim nisi vehicula. Aenean porta nunc enim, cursus maximus tellus hendrerit id.",
   Address:"61 Wireless Road , Lumpini, Pathumwan The Athenee Hotel, Bangkok 10330 Thailand",
@@ -37,27 +39,19 @@ var mockingProvider:ServiceProviderInterface = {
 
 export default function Profile() {
     
-  let items = [
-    {name : "Listing" , link : "/listing"},
-    {name : "Booking" , link : "/booking"},
-    {name : "Profile" , link : "/profile"}
-  ]
+
   let isOpen = false;
   return (
     <div className='items-center'>
-      <NavBar
-        brandName="Petpal"
-        navItems = {items}
-      />
       <div className='flex m-[50px] items-center'>
-        <div className='max-w-[300px] m-[40px] space-y-[10px] float-left m-auto mt-[0px] items-top'>
+        <div className='max-w-[300px] space-y-[10px] float-left m-auto mt-[0px] items-top'>
           <ProfilePictureComponent/>
-          <h1 className='text-[32px]' >{mockingProvider.Name}</h1>
+          {/* <h1 className='text-[32px]' >{mockingProvider.Name}</h1>
           <RatingComponent Rating = {mockingProvider.Rating}/>
-          <p className='text-[18px]'>{mockingProvider.Description}</p>
-          
+          <p className='text-[18px]'>{mockingProvider.Description}</p> */}
+          <SmallButtonComponent ButtonProps={saveEditButtonProps}></SmallButtonComponent>
         </div>
-        <div className='max-w-[600px] w-[600px] m-[40px] float-right m-auto space-y-[30px] mt-[0px]'>
+        <div className='max-w-[600px] w-[600px] float-right m-auto space-y-[30px] mt-[0px]'>
           <div className = "my-2 w-[75%]">
             <span className='text-gray-700'>Username</span>
             <input type='username' className='mt-1 block w-full rounded-md border-gray-600 shadow-sm
