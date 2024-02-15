@@ -104,8 +104,8 @@ export default function ReponsiveNavbar({ brandName, navItems }: NavBarProps) {
                 <ul className="flex flex-col">
                     {
                         navItems.map((link) => 
-                            <li key="{link}" className="p-3 flex flex-row justify-center items-center border-b border-gray-300"> 
-                                <a href = {link.link} className=''>{link.name}</a>
+                            <li key="{link}" className=""> 
+                                <a href = {link.link} className='p-3 flex flex-row justify-center items-center border-b border-gray-300'>{link.name}</a>
                             </li>
                         )
                     }
