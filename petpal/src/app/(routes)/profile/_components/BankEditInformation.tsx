@@ -21,7 +21,7 @@ export default function BankEditInformation(){
             {!isOpen && 
             <div className="Not Added bank account">
                 <div className='accountNumber'>
-                    <p>Account Number</p>
+                <span className='text-black font-bold text-[24px]'>Account</span>
                     <form className="md:flex pl-9 md:pl-0 ">
                     <input
                     className="border-2"
