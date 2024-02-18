@@ -35,7 +35,7 @@ export var saveEditButtonProps:ButtonPropsInterface = {
     Width:"w-[68px]",
     BgColor:"bg-blue",
     FontColor:"text-[#FFFF]",
-    Link:"",
+    Link:"./",
 }
 export var addPetButtonProps:ButtonPropsInterface = {
     Name:"ADD",
