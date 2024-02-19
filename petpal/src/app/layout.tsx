@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Prompt } from "next/font/google";
 import "./globals.css";
 import NavBar from "./_component/navbar";
+import ReponsiveNavbar from "./_component/ReponsiveNavbar";
 
 
 const prompt = Prompt({
@@ -34,7 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={prompt.className}>
-        <NavBar brandName={"PETPAL"} navItems={navitems}/>
+        <ReponsiveNavbar brandName={"PETPAL"} navItems={navitems}/>
         {children}
       </body>
     </html>

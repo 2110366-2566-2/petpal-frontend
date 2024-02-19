@@ -27,7 +27,7 @@ export default function BankInformation(){
 
     return (
         <div className = "my-2">
-            <p>Bank Account</p>
+              <span className='text-black font-bold text-[32px]'>Bank Account</span>
             {/* <BankDefault bankJson = {bankdefault}/>  */}
             {isOpen && 
                 <div className='Added bank account'>
@@ -46,18 +46,14 @@ export default function BankInformation(){
             {!isOpen && 
             <div className="Not Added bank account">
                 <div className='accountNumber'>
-                    <p>Account Number</p>
-                    <form className="md:flex pl-9 md:pl-0 ">
-                    <input
-                    className="border-2"
-                    type="text"
-                    placeholder="422-xxxxxxxx"
-                    />
-                    </form>
+                <span className='text-black font-bold text-[24px]'>Accout Number</span>
+                    <input type="text" className='mt-1 block w-full rounded-md shadow-sm
+                    focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 peer-focus:text-primary border-[#D9D9D9] border-[3px]'
+                    placeholder='x-xxx-x-xxxx'/>
                 </div>
-                <div className='bankName'>
-                    <p>Bank Name</p>
-                    <select>
+                <div className='flex flex-col'>
+                <span className='text-black font-bold text-[24px]'>Bank Name</span>
+                    <select >
                         {
                         banks.map((bank) => 
                             <option value={bank.id} > 
@@ -67,7 +63,7 @@ export default function BankInformation(){
                         }
                     </select>
                 </div>
-                <button className = 'border-2'type='button' onClick={() => {setIsOpenValue(true)}}>confirm</button>
+                <button className='bg-[#D9D9D9] w-[102px] rounded-[10px] text-[18px] text-center p-[5px] mt-4' onClick={() => {setIsOpenValue(true)}}>confirm</button>
             </div>}
         </div>
         </div>
