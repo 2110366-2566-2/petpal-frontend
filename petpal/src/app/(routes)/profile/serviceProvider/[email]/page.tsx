@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 import { usePathname } from 'next/navigation';
-import {getServerSession} from "next-auth";
+// import {getServerSession} from "next-auth";
 
 import NavBar from '@/app/_component/navbar'
 import ProfilePictureComponent from '../../_components/ProfilePictureComponent'

@@ -4,7 +4,7 @@ import RatingComponent from '../_components/RatingComponent'
 import ServiceListComponent from '../_components/ServiceListComponent'
 import ServiceProviderInterface from '../_interface/ServiceProviderInterface'
 import ServiceInterface from '../_interface/ServiceInterface'
-import NavBar from '@/app/component/narbar'
+// import NavBar from '@/app/_component/narbar'
 import BankInformation from '../_components/BankInformation'
 
 var mockingServiceType1:ServiceInterface = {
@@ -44,10 +44,10 @@ export default function changePassword() {
 
   return (
     <div className='items-center'>
-      <NavBar
+      {/* <NavBar
         brandName="Petpal"
         navItems = {items}
-      />
+      /> */}
       <div className='flex m-[50px] items-center'>
         <div className='max-w-[300px] m-[40px] space-y-[10px] float-left m-auto mt-[0px] items-top'>
           <ProfilePictureComponent/>
