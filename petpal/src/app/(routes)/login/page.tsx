@@ -22,8 +22,8 @@ export default function Login() {
     };
     return (
         <main className="flex flex-col items-center ">
-            <div className="flex flex-col items-center w-[742px] h-full p-10 border-2">
-                <div className="text-[#FF872F] text-[48px] font-bold ">
+            <div className="flex flex-col items-center w-[90%] md:w-[742px] h-full p-10 border-2">
+                <div className="text-[#FF872F] text-[36px] md:text-[48px] font-bold ">
                     LOGIN
                 </div>
 
@@ -37,7 +37,7 @@ export default function Login() {
                     </div>
                 )}
 
-                <div className="w-[75%] m-3">
+                <div className="w-full sm:w-[75%] m-3">
                     <span className="text-gray-700">Email address</span>
                     <input
                         type="email"
@@ -48,7 +48,7 @@ export default function Login() {
                         onChange={(e) => setEmail(e.target.value)}
                     />
                 </div>
-                <div className="w-[75%] m-3">
+                <div className="w-full sm:w-[75%] m-3">
                     <span className="text-gray-700">Password</span>
                     <input
                         type="password"
@@ -59,7 +59,7 @@ export default function Login() {
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </div>
-                <div className="w-[75%] m-3">
+                <div className="w-full sm:w-[75%] m-3">
                     <span className="text-gray-700">Login as</span>
                     <select
                         className="p-1 block w-full mt-1 rounded-md border-gray-300 shadow-sm
