@@ -24,7 +24,7 @@ export var ExampleChatHistoryUser2: ChatHistoryUserInterface = {
     Name: "lungDang",
     MessageHistory: [ExampleMessage0And2_1, ExampleMessage0And2_2, ExampleMessage0And2_3, ExampleMessage0And2_4, ExampleMessage0And2_5],
     Picture: MockImage.src,
-    LastSee: CreateDateFromNow({}),
+    LastSee: CreateDateFromNow({ Years: -1 }),
 };
 
 export var ExampleChatHistoryUser3: ChatHistoryUserInterface = {

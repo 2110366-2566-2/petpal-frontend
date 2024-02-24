@@ -5,13 +5,13 @@ import MessageInteraface from "../_interface/MessageInterface";
 var getLastSendTimeText = (MessageHistory: MessageInteraface[]) => {
     var ArrayLength: number = MessageHistory.length
     if (ArrayLength == 0) {
-        return <p className="text-buttom text-[8px] text-white">00/00</p>
+        return <p className="text-buttom text-[8px] text-white font-extralight select-none">00/00</p>
     } else {
         var LastMessageSent = MessageHistory[MessageHistory.length - 1].TimeSend
         var Day = LastMessageSent.getDate()
         var Month = LastMessageSent.getMonth()
         return (
-            <p className="text-buttom text-[8px]">{Day}/{Month}</p>
+            <p className="text-buttom text-[8px] font-extralight select-none">{Day}/{Month}</p>
         )
     }
 }
@@ -19,11 +19,11 @@ var getLastSendTimeText = (MessageHistory: MessageInteraface[]) => {
 var getLastSendText = (MessageHistory: MessageInteraface[]) => {
     var ArrayLength: number = MessageHistory.length
     if (ArrayLength == 0) {
-        return <p className="text-left mr-auto truncate text-white" >No Text</p>
+        return <p className="text-left mr-auto truncate text-white font-extralight text-[14px] select-none" >No Text</p>
     } else {
         var LastMessageContent = MessageHistory[MessageHistory.length - 1].Content
         return (
-            <p className="text-left mr-auto truncate" > {LastMessageContent}</p>
+            <p className="text-left mr-auto truncate font-extralight text-[14px] select-none" > {LastMessageContent}</p>
         )
     }
 }
@@ -35,13 +35,21 @@ var getNumReadNotification = (MessageHistory: MessageInteraface[], LastSee: Date
             count += 1
         }
     }
+    var countText: string
     if (count != 0) {
+        if (count > 99) {
+            countText = "99+"
+        } else {
+            countText = count.toString()
+        }
         return (
-            <p className="text-right text-[8px]">{count}</p>
+            <div className="flex h-[15px] w-[15px] rounded-[20px] bg-[#FF8A00] select-none">
+                <p className="text-center items-center text-[8px] font-light m-auto">{countText}</p>
+            </div>
         )
     } else {
         return (
-            <p className="text-right text-[8px] text-white">0</p>
+            <p></p>
         )
     }
 }
@@ -54,8 +62,8 @@ export default function ChatPreview({ ChatHistoryUser }: { ChatHistoryUser: Chat
     var LastSee: Date = ChatHistoryUser.LastSee
 
     return (
-        <div className="bg-white flex felx-row p-[20px] space-x-[20px] stroke-black">
-            <img src={Picture} alt="" className="w-[40px] h-[40px] rounded-full" />
+        <div className="bg-white flex felx-row px-[20px] py-[12px] space-x-[20px] hover:bg-[#D9D9D9A1] focus:bg-[#000000]">
+            <img src={Picture} alt="" className="w-[60px] h-[60px] rounded-full select-none" />
             <div className="m-auto block grow">
                 <div className="m-auto flex felx-row space-x-[10px]">
                     <p className="text-left mr-auto">{Name}</p>
