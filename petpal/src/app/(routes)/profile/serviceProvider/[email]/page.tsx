@@ -3,12 +3,11 @@ import React from 'react'
 import { usePathname } from 'next/navigation';
 // import {getServerSession} from "next-auth";
 
-import NavBar from '@/app/_component/navbar'
 import ProfilePictureComponent from '../../_components/ProfilePictureComponent'
 import RatingComponent from '../../_components/RatingComponent'
 import ServiceListComponent from '../../_components/ServiceListComponent'
 import AdditionalImageComponent from '../../_components/AdditionalImageComponent'
-import SmallButtonComponent from '../../_components/SmallButtonComponent'
+import createButtonList from '../../_utils/createButtonList';
 
 import ServiceInterface from '../../_interface/ServiceInterface'
 import ServiceProviderInterface from '../../_interface/ServiceProviderInterface'
@@ -31,37 +30,41 @@ export default function EmailServiceProviderProfile({params}:{params:{email:stri
   var thisEditProfileButton = editProfileButtonProps
   thisEditProfileButton.Link = usePathname()+"edit"
 
+  var buttonPropsList:ButtonPropsInterface[] = [editProfileButtonProps,chagnePasswordButtonProps]
+
+  const MY_EMAIL:string = "me"
+  var showButton:boolean = email==MY_EMAIL
+
   return (
     <div className='items-center'>
-      <div className='flex mx-auto my-[50px] grid-cols-2 items-center max-w-[1000px] text-[18px]'>
-        <div className='max-w-[300px] m-[40px] space-y-[10px] float-left mt-[0px] items-top'>
+      <div className='md:flex items-top p-[20px] m-auto md:max-w-[1100px]'>
+        <div className='max-w-[300px] m-auto space-y-[10px] md:float-left mt-[0px] md:mr-[10px]'>
           <ProfilePictureComponent/>
           <h1 className='text-[32px]' ><b>{serviceProvider.Name}</b></h1>
           <RatingComponent Rating = {serviceProvider.Rating}/>
           <p className='text-[18px]'>{serviceProvider.Description}</p>
-          {(email == "me") ?(
-              <div className='space-y-[20px] block'>
-                <SmallButtonComponent ButtonProps={thisEditProfileButton}></SmallButtonComponent>
-                <SmallButtonComponent ButtonProps={chagnePasswordButtonProps}></SmallButtonComponent>
-              </div>
-          ):(<></>)
-          }
+          <div className='hidden md:block'>
+            {createButtonList(showButton,buttonPropsList=buttonPropsList)}
+          </div>
           {/* <div className='space-y-[20px] block'>
             <SmallButtonComponent ButtonProps={thisEditProfileButton}></SmallButtonComponent>
             <SmallButtonComponent ButtonProps={chagnePasswordButtonProps}></SmallButtonComponent>
           </div> */}
         </div>
-        <div className='max-w-[600px] w-[600px] m-[40px] float-right space-y-[30px] mt-[0px]'>
+        <div className='max-w-[300px] md:max-w-[600px] m-[auto] md:mt-[0px] pt-[20px] md:float-right space-y-[30px] md:ml-[10px]'>
           <AdditionalImageComponent></AdditionalImageComponent>
-          <div className = "space-y-[10px]">
+          <div className = "space-y-[10px] m-auto">
             <p><b>Address:</b> {serviceProvider.Address}</p>
             <p><b>Phone:</b> {serviceProvider.PhoneNumber}</p>
           </div>
           <div className='space-y-[15px]'>
             <h1 className='text-[32px] '><b>Service Listing</b></h1>
-            <div className='flex space-x-[15px]'>
+            <ul className='md:flex overflow-auto md:flex-auto'>
               {serviceProvider.ServiceList.map((Service:ServiceInterface) => <ServiceListComponent Service={Service} key = {Service.Name}></ServiceListComponent>)}
-            </div>
+            </ul>
+          </div>
+          <div className='md:hidden block'>
+            {createButtonList(showButton,buttonPropsList=buttonPropsList)}
           </div>
         </div>
       </div>

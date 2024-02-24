@@ -4,6 +4,6 @@ import defaultImage from './gold.jpg'
 
 export default function AdditionalImageComponent(){
     return(
-        <Image className = 'w-[600px] h-[300px] object-crop' src = {defaultImage} alt='default'/>
+        <Image className = 'md:max-w-[600px] max-w-[300px] max-h-[300px] object-crop m-auto' src = {defaultImage} alt='default'/>
     )
 }

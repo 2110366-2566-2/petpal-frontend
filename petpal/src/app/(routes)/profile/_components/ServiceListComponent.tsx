@@ -6,7 +6,7 @@ import ServiceInterface from "../_interface/ServiceInterface";
 export default function ServiceListComponent({Service}:{Service:ServiceInterface}){
     var monthName:string[] = ["Jan","Feb","Mar","Apr","May","June","July","Aug","Sept","Oct","Nov","Dec"] 
     return(
-        <div className="w-[250px] h-[250px] shadow-lg bg-[#F9F9F9] shadow-[#00000040] rounded-[20px]">
+        <li className="w-[250px] h-[250px] m-[10px] shadow-lg bg-[#F9F9F9] shadow-[#00000040] rounded-[20px]">
             <div className="p-[20px] space-y-[20px] m-[10px]">
                 <div className="">
                     <h2 className="text-[18px] font-bold">{Service.Name}</h2>
@@ -20,6 +20,6 @@ export default function ServiceListComponent({Service}:{Service:ServiceInterface
                     <h2 className="text-[32px] fond-bold">{Service.Price}฿</h2>
                 </div>
             </div>
-        </div>
+        </li>
     )
 }
