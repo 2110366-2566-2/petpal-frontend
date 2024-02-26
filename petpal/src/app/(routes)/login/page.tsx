@@ -3,7 +3,7 @@ import React, { ChangeEvent, useState } from "react";
 import Button from "../register/_components/Button";
 
 export default function Login() {
-    const [registrationType, setRegistrationType] = useState("User");
+    const [registrationType, setRegistrationType] = useState("user");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
@@ -21,6 +21,9 @@ export default function Login() {
         }
 
         try {
+            // console.log(email);
+            // console.log(registrationType);
+            // console.log(password);
             const response = await fetch("http://localhost:8080/login", {
                 method: "POST",
                 headers: {
