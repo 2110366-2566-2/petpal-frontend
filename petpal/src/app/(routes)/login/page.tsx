@@ -3,7 +3,7 @@ import React, { ChangeEvent, useState } from "react";
 import Button from "../register/_components/Button";
 
 export default function Login() {
-    const [registrationType, setRegistrationType] = useState("User");
+    const [registrationType, setRegistrationType] = useState("user");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
@@ -13,11 +13,38 @@ export default function Login() {
     ) => {
         setRegistrationType(e.target.value);
     };
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         // Validate form fields
         if (!email.trim() || !password.trim()) {
             setErrorMessage("Email and password are required.");
             return;
+        }
+
+        try {
+            // console.log(email);
+            // console.log(registrationType);
+            // console.log(password);
+            const response = await fetch("http://localhost:8080/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: email,
+                    logintype: registrationType,
+                    password: password,
+                }),
+            });
+
+            if (response.ok) {
+                // Login successful
+                console.log("Login successful");
+            } else {
+                // Login failed
+                console.error("Login failed");
+            }
+        } catch (error) {
+            console.error("Error during login:", error);
         }
     };
     return (
@@ -67,8 +94,8 @@ export default function Login() {
                         value={registrationType}
                         onChange={handleRegistrationTypeChange}
                     >
-                        <option>User</option>
-                        <option>Service Provider</option>
+                        <option value="user">User</option>
+                        <option value="svcp">Service Provider</option>
                     </select>
                 </div>
                 <Button name="LOGIN" onClick={handleSubmit} />
