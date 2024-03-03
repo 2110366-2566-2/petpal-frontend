@@ -32,9 +32,10 @@ export default async function FetchBankInformation(){
     const LogData = await LoginApi()
     setCookie("token",LogData?.data.AccessToken);
     console.log("logdata from login",LogData)
-    const entity = await getCurrentEntity()
+    const entity =await getCurrentEntity()
     // // const entity = {defaultAccountNumber:"1",defaultBank:"2"}
     console.log("in", entity)
+
     // const bankMap = new Map(Object.entries(entity))
     // const haveBank =  bankMap.get('defaultAccountNumber') != '' && bankMap.get('defaultBank') != ''
     // const defAccount = bankMap.get('defaultAccountNumber')
@@ -83,13 +84,13 @@ export default async function FetchBankInformation(){
                 <div className='accountNumber'> 
                     <span className='text-black font-bold text-[16px]'>Accout Number</span>
                     <div>
-                    <span>{defAccount}</span>
+                    <span>{String(defAccount)}</span>
                     </div>
                 </div>
                 <div className='flex flex-col'>
                     <span className='text-black font-bold text-[16px]'>Bank Name</span>
                     <div>
-                    <span>{defBank}</span>
+                    <span>{String(defBank)}</span>
                     </div>
                 </div>
                 {/* <BankButton Req={deletefunction}/> */}

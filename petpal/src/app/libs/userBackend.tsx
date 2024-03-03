@@ -49,9 +49,9 @@ export async function getCurrentEntity(){
             // },
         });
 
-        if (!response.ok) {
-            throw new Error('Failed to get current-entity');
-        }
+        // if (!response.ok) {
+        //     throw new Error('Failed to get current-entity');
+        // }
 
         return await response.json();
 
