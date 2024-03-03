@@ -4,7 +4,6 @@ export async function LoginApi(){
         console.log("In loginAPI")
         const response = await fetch('http://localhost:8080/login', {
             method: 'POST',
-            credentials:'include',
             headers: {
                 'Cache-Control' :'no-cache',
                 'Content-Type': 'application/json',
@@ -29,10 +28,13 @@ export async function LoginApi(){
     } 
 }
 
-export async function getCurrentEntity(cookie:any){
+export async function getCurrentEntity(){
     try {
         // const { cookie } = await LoginApi();
-        // console.log(cookie)
+        const LogData = await new Promise(()=>{return LoginApi()})
+        console.log(LogData)
+        const cookie = await Object(LogData).cookie
+        console.log(cookie)
         const response = await fetch('http://localhost:8080/current-entity', {
             method: 'GET',
             credentials:'include',
@@ -55,6 +57,7 @@ export async function getCurrentEntity(cookie:any){
 }
 
 export async function deleteBank(fromLogin:any){
+
 
     console.log("get in deleteBank function")
     try{

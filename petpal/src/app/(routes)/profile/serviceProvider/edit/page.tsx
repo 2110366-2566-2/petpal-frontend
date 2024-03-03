@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import ProfilePictureComponent from '../../_components/ProfilePictureComponent'
 import RatingComponent from '../../_components/RatingComponent'

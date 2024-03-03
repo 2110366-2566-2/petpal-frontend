@@ -1,36 +1,29 @@
-// 'use client'
+'use client'
+
 import {deleteBank, getCurrentEntity, setdefaultBank} from '@/app/libs/userBackend';
-// import React , {useState ,useEffect} from 'react'
+import React , {useState ,useEffect} from 'react'
 import BankEditInformation from './BankEditInformation';
 import BankButton from './BankButton';
 import { LoginApi } from '@/app/libs/userBackend';
-import { useEffect,useState } from 'react';
 
 
-export default async function FetchBankInformation(){
+export default function FetchBankInformation(){
     
-    // const [deleteReq , setdeleteReq] = useState("")
+    const [deleteReq , setdeleteReq] = useState("")
+    const [userInfo , setUserInfo] = useState(null)
+    const [haveBank , setHaveBank] = useState(false)
+    const [defAccount , setDefAccount] = useState("")
+    const [defBank , setDefBank] = useState("")
 
-    // const [userInfo , setUserInfo] = useState("")
+    useEffect(() => {
 
-    // useEffect(() => {
-
-    //     const fetchCurrentEntity = async () => {
-    //       try {
-    //         // const log = await LoginApi();
-    //         // console.log('in useEffect',log, typeof(log))
-    //         const response = await getCurrentEntity();
-    //         console.log("response in useEffect= ",response)
-    //         setUserInfo(response);
-
-    //       } catch (error) {
-    //         console.error('Error fetching data:', error);
-    //       }
-
-    //     };
-    //     fetchCurrentEntity();
-    //     return () => {}
-    // } , [])
+        const fetchCurrentEntity = async () => {
+          const entity = await getCurrentEntity()
+          setUserInfo(entity)
+        };
+        fetchCurrentEntity();
+    } , [])
+    
 
     // const login = async () =>{
     //     return await LoginApi()
@@ -39,21 +32,33 @@ export default async function FetchBankInformation(){
     //     return await getCurrentEntity(login())
     // }
     // const entity = getentity()
-    const LogData = await LoginApi()
-    const entity = await getCurrentEntity(LogData?.cookie)
-    // const entity = {defaultAccountNumber:"1",defaultBank:"2"}
-    console.log("in", entity)
-    const bankMap = new Map(Object.entries(entity))
-    const haveBank =  bankMap.get('defaultAccountNumber') != '' && bankMap.get('defaultBank') != ''
-    const defAccount = bankMap.get('defaultAccountNumber')
-    const defBank = bankMap.get('defaultBank') 
+    // const LogData = await LoginApi()
+    // const entity = await getCurrentEntity()
+    // // const entity = {defaultAccountNumber:"1",defaultBank:"2"}
+    // console.log("in", entity)
+    // const bankMap = new Map(Object.entries(userInfo))
+    // const haveBank =  bankMap.get('defaultAccountNumber') != '' && bankMap.get('defaultBank') != ''
+    // const defAccount = bankMap.get('defaultAccountNumber')
+    // const defBank = bankMap.get('defaultBank') 
+    if(!userInfo){
+        return(<p>loading bank....</p>)
+    }else{
+        const bankMap = new Map(Object.entries(userInfo))
+        setHaveBank(bankMap.get('defaultAccountNumber') != '' && bankMap.get('defaultBank') != '')
+        setDefAccount(String(bankMap.get('defaultAccountNumber')))
+        setDefBank(String(bankMap.get('defaultBank')))
+    }
+
     let banks = [
         {id:0 , name : "None"},
         {id: 1 , name: "Kasikorn"},
         {id: 2 , name: "Krungthai"},
         {id: 3 , name: "SCB"}
     ]
-    console.log(haveBank)
+    // const haveBank = true;
+    // console.log(haveBank)
+    // const defAccount = ""
+    // const defBank = ""
 
     const handleDeleteButton = async() =>{
         // const response = await deleteBank(userInfo)
@@ -78,13 +83,13 @@ export default async function FetchBankInformation(){
                 <div className='accountNumber'> 
                     <span className='text-black font-bold text-[16px]'>Accout Number</span>
                     <div>
-                    <span>{String(defAccount)}</span>
+                    <span>{defAccount}</span>
                     </div>
                 </div>
                 <div className='flex flex-col'>
                     <span className='text-black font-bold text-[16px]'>Bank Name</span>
                     <div>
-                    <span>{String(defBank)}</span>
+                    <span>{defBank}</span>
                     </div>
                 </div>
                 {/* <BankButton Req={deletefunction}/> */}
