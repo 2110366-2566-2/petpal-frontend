@@ -11,7 +11,7 @@ import SmallButtonComponent from '../../_components/SmallButtonComponent'
 
 
 export default function Profile() {
-  
+   
 
   return (
     <div className='items-center'>
