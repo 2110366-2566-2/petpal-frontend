@@ -12,7 +12,7 @@ export default function Register() {
         e: ChangeEvent<HTMLSelectElement>
     ) => {
         setRegistrationType(e.target.value);
-    };
+    }; 
     const handleSubmit = () => {
         // Validate form fields
         if (!username.trim() || !email.trim()) {

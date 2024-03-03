@@ -19,7 +19,7 @@ export var editProfileButtonProps:ButtonPropsInterface = {
     Width:"w-[152px]",
     BgColor: "bg-orange",
     FontColor:"text-[#FFFF]",
-    Link:"/",
+    Link:"./edit",
 }
 
 export var chagnePasswordButtonProps:ButtonPropsInterface = {
@@ -27,7 +27,7 @@ export var chagnePasswordButtonProps:ButtonPropsInterface = {
     Width:"w-[212px]",
     BgColor: "bg-orange",
     FontColor:"text-[#FFFF]",
-    Link:"",
+    Link:"./../changePassword",
 }
 
 export var saveEditButtonProps:ButtonPropsInterface = {

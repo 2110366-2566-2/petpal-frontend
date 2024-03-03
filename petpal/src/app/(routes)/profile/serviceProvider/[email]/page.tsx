@@ -28,8 +28,8 @@ export default function EmailServiceProviderProfile({params}:{params:{email:stri
     serviceProvider.Name = email
   }
 
-  var thisEditProfileButton = editProfileButtonProps
-  thisEditProfileButton.Link = usePathname()+"edit"
+  // var thisEditProfileButton = editProfileButtonProps
+  // thisEditProfileButton.Link = usePathname()+"edit"
 
   return (
     <div className='items-center'>
@@ -41,7 +41,7 @@ export default function EmailServiceProviderProfile({params}:{params:{email:stri
           <p className='text-[18px]'>{serviceProvider.Description}</p>
           {(email == "me") ?(
               <div className='space-y-[20px] block'>
-                <SmallButtonComponent ButtonProps={thisEditProfileButton}></SmallButtonComponent>
+                <SmallButtonComponent ButtonProps={editProfileButtonProps}></SmallButtonComponent>
                 <SmallButtonComponent ButtonProps={chagnePasswordButtonProps}></SmallButtonComponent>
               </div>
           ):(<></>)
