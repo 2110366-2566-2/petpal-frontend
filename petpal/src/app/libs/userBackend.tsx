@@ -1,4 +1,6 @@
-// "use server"
+
+// import { cookies } from 'next/headers'
+import { setCookie } from "cookies-next";
 export async function LoginApi(){
     try {
         console.log("In loginAPI")
@@ -21,6 +23,8 @@ export async function LoginApi(){
         
         const responseData = await response.json();
         const cookie = response.headers.get('Set-Cookie');
+        // cookies().set(responseData)
+        // setCookie("token",responseData.AccessToken);
         return { data: responseData, cookie: cookie };
 
     } catch (error) {
@@ -31,18 +35,18 @@ export async function LoginApi(){
 export async function getCurrentEntity(){
     try {
         // const { cookie } = await LoginApi();
-        const LogData = await new Promise(()=>{return LoginApi()})
-        console.log(LogData)
-        const cookie = await Object(LogData).cookie
-        console.log(cookie)
+        // const LogData = await LoginApi()
+        // console.log(LogData)
+        // const cookie = await Object(LogData).cookie
+        // console.log(cookie)
         const response = await fetch('http://localhost:8080/current-entity', {
             method: 'GET',
             credentials:'include',
-            headers: {
-                'Cookie': `${cookie.split(" ")[0]}`, 
-                'Content-Type': 'application/json',
-                // 'Authorization':`${cookie}`,
-            },
+            // headers: {
+            //     // 'Cookie': `${cookie.split(" ")[0]}`, 
+            //     'Content-Type': 'application/json',
+            //     // 'Authorization':`${cookie}`,
+            // },
         });
 
         if (!response.ok) {

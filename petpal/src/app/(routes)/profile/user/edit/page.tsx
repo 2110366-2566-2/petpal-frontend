@@ -6,7 +6,7 @@ import ServiceProviderInterface from '../../_interface/ServiceProviderInterface'
 import ServiceInterface from '../../_interface/ServiceInterface'
 // import NavBar from '@/app/component/narbar'
 import PetInformation from '../../_components/PetInformation'
-import BankInformation from '../../_components/FetchedBankInformation'
+import FetchBankInformation from '../../_components/FetchedBankInformation'
 import SmallButtonComponent from '../../_components/SmallButtonComponent'
 import { editProfileButtonProps, saveEditButtonProps } from '../../_interface/ButtonPropsInterface'
 
@@ -36,7 +36,7 @@ export default function Profile() {
           <div className = "my-2 ">
             <PetInformation/>
           </div>
-          <BankInformation/>
+          {/* <FetchBankInformation/> */}
         </div>
         <div className='w-[100%] grid grid-cols-1 gap-[16px] md:hidden '>
             <SmallButtonComponent ButtonProps={editProfileButtonProps} Working = {false}></SmallButtonComponent>

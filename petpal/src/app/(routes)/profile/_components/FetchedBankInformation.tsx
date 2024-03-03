@@ -1,30 +1,26 @@
-'use client'
-
 import {deleteBank, getCurrentEntity, setdefaultBank} from '@/app/libs/userBackend';
-import React , {useState ,useEffect} from 'react'
 import BankEditInformation from './BankEditInformation';
 import BankButton from './BankButton';
 import { LoginApi } from '@/app/libs/userBackend';
+import { setCookie } from "cookies-next";
 
-
-export default function FetchBankInformation(){
+export default async function FetchBankInformation(){
     
-    const [deleteReq , setdeleteReq] = useState("")
-    const [userInfo , setUserInfo] = useState(null)
-    const [haveBank , setHaveBank] = useState(false)
-    const [defAccount , setDefAccount] = useState("")
-    const [defBank , setDefBank] = useState("")
+    // const [deleteReq , setdeleteReq] = useState("")
+    // const [userInfo , setUserInfo] = useState(null)
+    // const [haveBank , setHaveBank] = useState(false)
+    // const [defAccount , setDefAccount] = useState("")
+    // const [defBank , setDefBank] = useState("")
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        const fetchCurrentEntity = async () => {
-          const entity = await getCurrentEntity()
-          setUserInfo(entity)
-        };
-        fetchCurrentEntity();
-    } , [])
+    //     const fetchCurrentEntity = async () => {
+    //       const entity = await getCurrentEntity()
+    //       setUserInfo(entity)
+    //     };
+    //     fetchCurrentEntity();
+    // } , [])
     
-
     // const login = async () =>{
     //     return await LoginApi()
     // }
@@ -32,22 +28,26 @@ export default function FetchBankInformation(){
     //     return await getCurrentEntity(login())
     // }
     // const entity = getentity()
-    // const LogData = await LoginApi()
-    // const entity = await getCurrentEntity()
+
+    const LogData = await LoginApi()
+    setCookie("token",LogData?.data.AccessToken);
+    console.log("logdata from login",LogData)
+    const entity = await getCurrentEntity()
     // // const entity = {defaultAccountNumber:"1",defaultBank:"2"}
-    // console.log("in", entity)
-    // const bankMap = new Map(Object.entries(userInfo))
+    console.log("in", entity)
+    // const bankMap = new Map(Object.entries(entity))
     // const haveBank =  bankMap.get('defaultAccountNumber') != '' && bankMap.get('defaultBank') != ''
     // const defAccount = bankMap.get('defaultAccountNumber')
     // const defBank = bankMap.get('defaultBank') 
-    if(!userInfo){
-        return(<p>loading bank....</p>)
-    }else{
-        const bankMap = new Map(Object.entries(userInfo))
-        setHaveBank(bankMap.get('defaultAccountNumber') != '' && bankMap.get('defaultBank') != '')
-        setDefAccount(String(bankMap.get('defaultAccountNumber')))
-        setDefBank(String(bankMap.get('defaultBank')))
-    }
+
+    // if(!userInfo){
+    //     return(<p>loading bank....</p>)
+    // }else{
+    //     const bankMap = new Map(Object.entries(userInfo))
+    //     setHaveBank(bankMap.get('defaultAccountNumber') != '' && bankMap.get('defaultBank') != '')
+    //     setDefAccount(String(bankMap.get('defaultAccountNumber')))
+    //     setDefBank(String(bankMap.get('defaultBank')))
+    // }
 
     let banks = [
         {id:0 , name : "None"},
@@ -55,10 +55,10 @@ export default function FetchBankInformation(){
         {id: 2 , name: "Krungthai"},
         {id: 3 , name: "SCB"}
     ]
-    // const haveBank = true;
-    // console.log(haveBank)
-    // const defAccount = ""
-    // const defBank = ""
+    const haveBank = true;
+    console.log(haveBank)
+    const defAccount = ""
+    const defBank = ""
 
     const handleDeleteButton = async() =>{
         // const response = await deleteBank(userInfo)
