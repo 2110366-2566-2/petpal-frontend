@@ -60,22 +60,16 @@ export async function getCurrentEntity(){
     }
 }
 
-export async function deleteBank(fromLogin:any){
+export async function deleteBank(usertype:String){
 
 
     console.log("get in deleteBank function")
     try{
         // const log = await Login()
-        const response = await fetch(`http://localhost:8080/${fromLogin.logintype}/delete-bank-account`,{
-            method:'Delete',
-            headers :{
-                'Content-Type': 'application/json',
-                'Cookie':`token=${fromLogin.AccessToken}`
-            },
+        const response = await fetch(`http://localhost:8080/${usertype}/delete-bank-account`,{
+            method:'DELETE',
+            credentials:"include",
         })
-        if(!response.ok){
-            throw new Error("Fail to delete bank account")
-        }
         return await response.json() 
     }catch(err){
         console.log(err)
@@ -83,19 +77,16 @@ export async function deleteBank(fromLogin:any){
 
 }
 
-export async function setdefaultBank(fromLogin:any,accountNumber:string , bankAccount:string){
+export async function setdefaultBank(usertype:String,accountNumber:String , bankAccount:String){
     // const log = await Login()
     console.log("in set default bank ")
     try{
-        const response = await fetch(`http://localhost:8080/${fromLogin.logintype}/set-default-bank-account`,{
+        const response = await fetch(`http://localhost:8080/${usertype}/set-default-bank-account`,{
             method:'POST',
-            headers :{
-                'Content-Type': 'application/json',
-                'Cookie':`token=${fromLogin.AccessToken}`
-            },
+            credentials:"include",
             body: JSON.stringify({ 
-                defaultAccountNumber: '789789789',
-                defaultBank: "kaiskorn"
+                defaultAccountNumber: accountNumber,
+                defaultBank: bankAccount
             }) // Replace this with your data object
 
         })

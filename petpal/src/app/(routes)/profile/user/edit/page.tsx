@@ -36,7 +36,7 @@ export default function Profile() {
           <div className = "my-2 ">
             <PetInformation/>
           </div>
-          {/* <FetchBankInformation/> */}
+          <FetchBankInformation/>
         </div>
         <div className='w-[100%] grid grid-cols-1 gap-[16px] md:hidden '>
             <SmallButtonComponent ButtonProps={editProfileButtonProps} Working = {false}></SmallButtonComponent>

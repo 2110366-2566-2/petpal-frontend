@@ -7,7 +7,7 @@ import BankButton from './BankButton';
 import FetchedBankInformation from './FetchedBankInformation'
 import { setdefaultBank } from '@/app/libs/userBackend';
 
-export default function BankEditInformation(Log:any){
+export default function BankEditInformation(){
     const [accountNumber , setAccountNumber] = useState("")
     const [bankAccount , setBankAccount] = useState("")
     const [buttonName ,setButtonName] = useState("Set/Delete Account")
@@ -48,7 +48,7 @@ export default function BankEditInformation(Log:any){
     return(
         <div>
             {!buttonClick &&
-                <FetchedBankInformation appear={buttonClick}/>
+                <FetchedBankInformation />
             }
             {buttonClick &&
                 <div>
