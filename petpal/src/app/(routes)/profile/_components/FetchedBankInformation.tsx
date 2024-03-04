@@ -16,6 +16,7 @@ export default function FetchBankInformation(){
     const [defAccount , setDefAccount] = useState("")
     const [defBank , setDefBank] = useState("")
     const [userType , setUserType] = useState("")
+    const [errorMessage , setErrorMessage] = useState("")
 
     useEffect(() => {
 
@@ -33,7 +34,7 @@ export default function FetchBankInformation(){
 
         };
         fetchCurrentEntity();
-    } , [])
+    } , [addAndDeleteReq])
 
     // const LogData = await LoginApi()
     // setCookie("token",LogData?.data.AccessToken);
@@ -76,17 +77,26 @@ export default function FetchBankInformation(){
     };
     const handleClickAdd = async(event:any) => {
         event.preventDefault();
-        setAddAndDeleteReq(false)
-        setHaveBank(true)
-        if(userType && defAccount && defBank){
-            await setdefaultBank(userType,defAccount,defBank);
+        if(isNaN(Number(defAccount)) || defAccount.length!=10){
+            setErrorMessage("Incorrect account number")
+        }else if(defBank == 'None' || defBank == ""){
+            console.log("not select bank")
+            setErrorMessage("Please select the bank")
+        }else{
+            setErrorMessage("")
+            setAddAndDeleteReq(false)
+            setHaveBank(true)
+            console.log("correct",defBank)
+            if(userType && defAccount && defBank){
+                await setdefaultBank(userType,defAccount,defBank);
+            }
         }
     };
 
     if(!userInfo){
         return <p>loading...</p>
     }else{
-        console.log("userinfo",userInfo)
+        // console.log("userinfo",userInfo)
     }
 
     return (
@@ -139,6 +149,12 @@ export default function FetchBankInformation(){
                 <button className='bg-[#D9D9D9] w-[102px] rounded-[10px] text-[18px] text-center p-[5px] mt-4' onClick={async (e) => {handleClickAdd(e)}}>
                     Add
                 </button>
+                {
+                    (errorMessage != "") &&
+                    <div className='ml-1'>
+                    <span className='text-[#FF0000]'>{errorMessage}</span>
+                    </div>
+                }
             </div>
             }
         </div>
