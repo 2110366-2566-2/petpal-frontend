@@ -1,6 +1,6 @@
 "use client"
 import React from "react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 import HeaderChatHistory from "../_components/HeaderChatHistory";
 import HeaderChatComponent from "../_components/HeaderChatComponent";
@@ -12,26 +12,28 @@ import ChatPageinterface from "../_interface/ChatPageInterface";
 import MessageInteraface from "../_interface/MessageInterface";
 
 import { ExampleChatPageUser1 } from "../_interface/ChatPageInterface";
+import { WebsocketContext } from "../_utils/websocket_provider";
 
 import OnChangeSearch from "../_utils/HandleOnChangeSearch";
+import HandleOnSubmitText from "../_utils/HandleOnSubmitText";
 
 import PlusIcon from "../_src/PlusIcon.png"
 import Maginifying from "../_src/Magnifying.png"
 import UserIdToSelectChat from "../_utils/UseIdToSelectChat";
 
-export default function ChatHistory({ params }: { params: { id: number } }) {
-    var UserId: number
-    var setUserId: (value: number) => void
-    var IsShowChatPreview: boolean
-    var SetIsShowChatPreview: (value: boolean) => void
-    [UserId, setUserId] = useState(params.id);
-    [IsShowChatPreview, SetIsShowChatPreview] = useState(UserId == 0)
+export default function ChatHistory({ params }: { params: { Id: number } }) {
+    var [UserId, setUserId] = useState<number>(params.Id);
+    var [IsShowChatPreview, SetIsShowChatPreview] = useState<boolean>(UserId == 0)
     var ChatPageUser: ChatPageinterface = ExampleChatPageUser1
     var AllChatHistory: ChatHistoryUserInterface[] = ChatPageUser.ChatHistoryList
     var SelectedChatHistory: ChatHistoryUserInterface = UserIdToSelectChat(AllChatHistory, UserId)
-    var ShownChatHistoryUserList: ChatHistoryUserInterface[]
-    var SetShownChatHistoryUserList: (value: ChatHistoryUserInterface[]) => void
-    [ShownChatHistoryUserList, SetShownChatHistoryUserList] = useState(AllChatHistory)
+    const [ShownMessageHistory, SetShownMessageHistory] = useState<MessageInteraface[]>(SelectedChatHistory.MessageHistory)
+    var [ShownChatHistoryUserList, SetShownChatHistoryUserList] = useState<ChatHistoryUserInterface[]>(AllChatHistory)
+
+    const [rooms, setRooms] = useState<{ id: string; name: string }[]>([])
+    const [roomName, setRoomName] = useState('')
+    const { setConn } = useContext(WebsocketContext)
+
     return (
         <div className="h-[calc(100vh-64px)]">
             <div className="flex flex-row items-top grow h-full">
@@ -57,13 +59,13 @@ export default function ChatHistory({ params }: { params: { id: number } }) {
                     </div>
                     <div className="h-[100px] bg-[#D9D9D9] flex-grow flex-col p-[10px] justify-items-end">
                         <ul className="space-y-[5px] mt-auto">
-                            {SelectedChatHistory.MessageHistory.map((MessageHistory: MessageInteraface) => <ChatBubble MessageHistory={MessageHistory} OtherPersonUserId={UserId}></ChatBubble>)}
+                            {ShownMessageHistory.map((MessageHistory: MessageInteraface) => <ChatBubble MessageHistory={MessageHistory} OtherPersonUserId={UserId}></ChatBubble>)}
                         </ul>
                     </div>
                     <div className="h-[75px] bg-white flex flex-row space-x-[5px] items-center">
                         <img src={PlusIcon.src} alt="Maginifying" className="w-[24px] h-[24px] my-auto" />
                         <div className="h-[50px] bg-[#D9D9D9CC] flex-grow rounded-[15px] items-center text-left">
-                            <input className="h-[50px] bg-[#D9D9D9CC] outline-none my-auto" type="text" placeholder="Typing a message..." />
+                            <input onSubmit={(event) => { HandleOnSubmitText(event, 0, UserId, ShownMessageHistory, SetShownMessageHistory) }} name="message" className="h-[50px] bg-[#D9D9D9CC] outline-none my-auto" type="text" placeholder="Typing a message..." />
                         </div>
                         <p></p>
                     </div>
