@@ -16,14 +16,14 @@ export default function Profile() {
   return (
     <div className='items-center'>
       <div className=' md:flex m-[50px] items-center '>
-        <div className='max-w-[300px] space-y-[10px] md:float-left m-auto mt-[0px] items-top'>
+        <div className='max-w-[300px] space-y-[10px] md:float-left m-auto mt-[0px] items-top md:mr-[10px]'>
           <ProfilePictureComponent/>
           <div className='hidden md:grid grid-cols-1 gap-[16px]'>
             <SmallButtonComponent ButtonProps={editProfileButtonProps} Working = {false}></SmallButtonComponent>
             <SmallButtonComponent ButtonProps={saveEditButtonProps}></SmallButtonComponent>
           </div>
         </div>
-        <div className='w-[100%] md:max-w-[600px]   float-right m-auto space-y-[30px] mt-[0px] mb-[20px]'>
+        <div className='w-[100%] md:max-w-[600px]   float-right m-auto space-y-[30px] mt-[0px] mb-[20px] md:ml-[10px]'>
           <div className = "my-2 ">
             <span className='text-black font-bold text-[32px]'>Username</span>
             <input type='username' className='mt-1 block w-[100%] h[45px] rounded-md shadow-sm

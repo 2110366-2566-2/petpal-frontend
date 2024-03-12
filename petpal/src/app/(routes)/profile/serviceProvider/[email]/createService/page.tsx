@@ -5,13 +5,13 @@ export default function createService(){
     return(
         <div className='items-center'>
             <div className=' md:flex m-[50px] items-center '>
-                <div className='max-w-[300px] space-y-[10px] md:float-left m-auto mt-[0px] items-top'>
+                <div className='max-w-[300px] space-y-[10px] md:float-left m-auto mt-[0px] items-top '>
                     <span>Create Service Listing</span>
                     <div>
                         <Image className = 'w-[300px] h-[250px] mx-auto md:mx-0 object-crop rounded-[20px] justify-center' src = {createServiceImage} alt='default'/>
                     </div>
                 </div>
-                <div className='max-w-[300px] space-y-[10px] md:float-left m-auto mt-[0px] items-top'>
+                <div className='max-w-[300px] space-y-[10px] md:float-right m-auto mt-[0px] items-top md:ml-[20px]'>
                     <span>Create Service Information</span>
                     
                     <div className="my-2">
