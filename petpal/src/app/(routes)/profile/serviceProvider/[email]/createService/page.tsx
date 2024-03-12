@@ -72,7 +72,7 @@ export default function createService(){
                     </div>
                     <div className="my-2">
                         <span className='text-black font-bold text-[32px]'>Detail Description</span>
-                        <input type='detailDescription' className='mt-1 block w-[100%] h[45px] rounded-md shadow-sm
+                        <textarea className='mt-1 block w-[100%] h[45px] rounded-md shadow-sm
                         focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 peer-focus:text-primary
                         border-[#D9D9D9] border-[3px]'
                          />
