@@ -4,7 +4,7 @@ import { ExampleMessage0And1_1, ExampleMessage0And1_2, ExampleMessage0And1_3, Ex
 import MockImage from "../../../../../public/gold.jpg"
 
 export default interface ChatHistoryUserInterface {
-    ID: Number;
+    ID: number;
     Name: string;
     MessageHistory: MessageInteraface[];
     Picture: string;

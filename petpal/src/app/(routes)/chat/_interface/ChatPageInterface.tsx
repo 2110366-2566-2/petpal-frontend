@@ -6,10 +6,10 @@ export default interface ChatPageinterface {
     ChatHistoryList: ChatHistoryUserInterface[];
 }
 
-export var ExampleChatPageUser1 = {
+export var ExampleChatPageUser1: ChatPageinterface = {
     ID: 0,
     Name: "lungtuu",
     ChatHistoryList: [
-        ExampleChatHistoryUser1, ExampleChatHistoryUser2, ExampleChatHistoryUser3
+        ExampleChatHistoryUser3, ExampleChatHistoryUser2, ExampleChatHistoryUser1
     ]
 };
