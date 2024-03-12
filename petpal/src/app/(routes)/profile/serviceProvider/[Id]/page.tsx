@@ -1,6 +1,7 @@
 'use client'
 import React from 'react'
 import { usePathname } from 'next/navigation';
+import { useState, useEffect } from 'react';
 // import {getServerSession} from "next-auth";
 
 import ProfilePictureComponent from '../../_components/ProfilePictureComponent'
@@ -17,23 +18,15 @@ import { exampleProvider } from '../../_interface/ServiceProviderInterface'
 import { editProfileButtonProps, chagnePasswordButtonProps } from '../../_interface/ButtonPropsInterface'
 
 
-export default function EmailServiceProviderProfile({ params }: { params: { email: string } }) {
-  var email: string = params.email
-  let serviceProvider: ServiceProviderInterface
-  if (email == "") {
-    serviceProvider = exampleProvider
-  } else {
-    serviceProvider = exampleProvider
-    serviceProvider.Name = email
-  }
+export default function EmailServiceProviderProfile({ params }: { params: { id: number } }) {
+  var [CurrentUser, SetCurrentUser] = useState<number>(0)
+  var [ProfileUserId, SetProfileUserId] = useState<number>(params.id)
+  let serviceProvider: ServiceProviderInterface = exampleProvider
 
   var thisEditProfileButton = editProfileButtonProps
   thisEditProfileButton.Link = usePathname() + "edit"
-
   var buttonPropsList: ButtonPropsInterface[] = [editProfileButtonProps, chagnePasswordButtonProps]
-
-  const MY_EMAIL: string = "me"
-  var showButton: boolean = email == MY_EMAIL
+  var showButton: boolean = CurrentUser == ProfileUserId
 
   return (
     <div className='items-center'>
@@ -46,10 +39,6 @@ export default function EmailServiceProviderProfile({ params }: { params: { emai
           <div className='hidden md:block'>
             {createButtonList(showButton, buttonPropsList = buttonPropsList)}
           </div>
-          {/* <div className='space-y-[20px] block'>
-            <SmallButtonComponent ButtonProps={thisEditProfileButton}></SmallButtonComponent>
-            <SmallButtonComponent ButtonProps={chagnePasswordButtonProps}></SmallButtonComponent>
-          </div> */}
         </div>
         <div className='max-w-[300px] md:max-w-[600px] m-[auto] md:mt-[0px] pt-[20px] md:float-right space-y-[30px] md:ml-[10px]'>
           <AdditionalImageComponent></AdditionalImageComponent>
