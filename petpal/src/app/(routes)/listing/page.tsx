@@ -1,5 +1,5 @@
 'use client'
-import React from "react";
+import React, { useState } from "react";
 import { redirect } from 'next/navigation';
 import { usePathname } from 'next/navigation';
 import Searchbar from "./_components/Searchbar";
@@ -7,6 +7,7 @@ import Searchresult from "./_components/Searchresult";
 import SearchIcon from '@mui/icons-material/Search';
 import { Box, Button, FormControl, Input, InputAdornment, InputLabel, MenuItem, TextField } from '@mui/material';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
+import { Kolker_Brush } from "next/font/google";
 
 interface Column {
     id: 'serviceName' | 'serviceType' | 'price' | 'rating';
@@ -18,18 +19,18 @@ interface Column {
   
   const columns: readonly Column[] = [
     { id: 'serviceName', label: 'Service Name', minWidth: 50 },
-    { id: 'serviceType', label: 'Service Type', minWidth: 50 },
+    { id: 'serviceType', label: 'Service Type', minWidth: 40 },
     {
       id: 'price',
       label: 'Price',
-      minWidth: 50,
+      minWidth: 40,
       align: 'right',
       format: (value: number) => value.toLocaleString('en-US'),
     },
     {
       id: 'rating',
       label: 'Rating',
-      minWidth: 50,
+      minWidth: 40,
       align: 'right',
       format: (value: number) => value.toLocaleString('en-US'),
     },
@@ -52,26 +53,37 @@ interface Column {
   }
   
   const rows = [
-    createData('India', 'IN', 1324171354, 3287263),
-    createData('China', 'CN', 1403500365, 9596961),
-    createData('Italy', 'IT', 60483973, 301340),
-    createData('United States', 'US', 327167434, 9833520),
-    createData('Canada', 'CA', 37602103, 9984670),
-    createData('Australia', 'AU', 25475400, 7692024),
-    createData('Germany', 'DE', 83019200, 357578),
-    createData('Ireland', 'IE', 4857000, 70273),
-    createData('Mexico', 'MX', 126577691, 1972550),
-    createData('Japan', 'JP', 126317000, 377973),
-    createData('France', 'FR', 67022000, 640679),
-    createData('United Kingdom', 'GB', 67545757, 242495),
-    createData('Russia', 'RU', 146793744, 17098246),
-    createData('Nigeria', 'NG', 200962417, 923768),
-    createData('Brazil', 'BR', 210147125, 8515767),
+    createData('serviceName0', 'Healthcare', 16.58, 21.90),
+    createData('serviceName1', 'Grooming', 51.26, 15.54),
+    createData('serviceName2', 'Pet walking', 71.62, 67.07),
+    createData('serviceName3', 'Healthcare', 16.99, 31.90),
+    createData('serviceName4', 'Grooming', 51.00, 15.44),
+    createData('serviceName5', 'Pet walking', 70.62, 77.07),
+    createData('serviceName6', 'Healthcare', 17.28, 21.99),
+    createData('serviceName7', 'Grooming', 45.76, 15.54),
+    createData('serviceName8', 'Pet walking', 81.62, 67.07),
+    createData('serviceName9', 'Healthcare', 46.58, 11.90),
+    createData('serviceName10', 'Grooming', 57.26, 15.59),
+    createData('serviceName11', 'Pet walking', 71.61, 67.07),
+    createData('serviceName12', 'Healthcare', 46.58, 21.90),
+    createData('serviceName13', 'Grooming', 91.86, 45.44),
+    createData('serviceName14', 'Pet walking', 81.12, 27.07),
+    createData('serviceName15', 'Healthcare', 11.07, 21.10),
+    createData('serviceName16', 'Grooming', 51.26, 15.54),
+    createData('serviceName17', 'Pet walking', 21.24, 78.23),
+    createData('serviceName18', 'Others', 88.23, 11.12),
+    createData('serviceName19', 'Others', 18.13, 59.20),
+    createData('serviceName20', 'Others', 58.93, 17.78),
+    createData('serviceName21', 'Others', 26.89, 28.12),
+    createData('serviceName22', 'Others', 69.69, 8.12),
   ];
 
-export default async function ServiceListing(){
-    const currentPage = usePathname();
+export default function ServiceListing(){
     const category = [
+        {
+            value: 'All',
+            label: 'All',
+        },
         {
           value: 'Healthcare',
           label: '🏥 Healthcare',
@@ -91,6 +103,10 @@ export default async function ServiceListing(){
       ];
       const sortby = [
         {
+            value: 'serviceName',
+            label: 'Service Name',
+        },
+        {
           value: 'priceMax',
           label: 'Price MAX to MIN',
         },
@@ -107,6 +123,7 @@ export default async function ServiceListing(){
           label: 'Rating MIN to MAX',
         },
       ];
+
       const [page, setPage] = React.useState(0);
       const [rowsPerPage, setRowsPerPage] = React.useState(10);
     
@@ -118,10 +135,13 @@ export default async function ServiceListing(){
         setRowsPerPage(+event.target.value);
         setPage(0);
       };
-    
+      
+      const [search,setSearch] = useState('')
+      const [cat,setCat] = useState('')
+      const [sortBy, setSortBy] = useState('serviceName');
     return (
         <main>
-            <div>
+            <main>
                 <div className="flex flex-row p-5 gap-2 justify-center"> 
                     <Box sx={{ display: 'flex', alignItems: 'flex-start'}}>
                         <TextField id="input-with-sx" label="Search services" variant="outlined" 
@@ -130,14 +150,16 @@ export default async function ServiceListing(){
                             InputProps={{
                                 startAdornment: <InputAdornment position="start"><SearchIcon/></InputAdornment>,
                             }}
+                            onChange={(e)=>setSearch(e.target.value)}
                         />
                     </Box>
                     <TextField
                         id="select-category"
                         select
                         label="Select category"
-                        defaultValue="Healthcare"
+                        defaultValue="All"
                         className='bg-white min-w-[160px]'
+                        onChange={(e)=>setCat(e.target.value)}
                     >
                         {category.map((option) => (
                             <MenuItem key={option.value} value={option.value}>
@@ -149,8 +171,9 @@ export default async function ServiceListing(){
                         id="sort-by"
                         select
                         label="Sort by"
-                        defaultValue="priceMin"
+                        defaultValue="serviceName"
                         className='bg-white min-w-[186px]'
+                        onChange={(e)=>setSortBy(e.target.value)}
                     >
                         {sortby.map((option) => (
                             <MenuItem key={option.value} value={option.value}>
@@ -158,11 +181,10 @@ export default async function ServiceListing(){
                             </MenuItem>
                         ))}
                     </TextField>
-                    <Button variant="contained" className='bg-orange font-semibold'>Search</Button>
                 </div>
-            </div>
-            <div className="flex flex-row p-5 justify-center">
-                <Paper sx={{ width: '50%', overflow: 'hidden' }}>
+            </main>      
+            <main className='flex flex-row p-5 justify-center'>
+                <Paper sx={{ width: '90%', overflow: 'hidden', maxWidth: 700 }}>
                     <TableContainer sx={{ maxHeight: 470 }}>
                     <Table stickyHeader aria-label="sticky table">
                         <TableHead>
@@ -171,7 +193,8 @@ export default async function ServiceListing(){
                             <TableCell
                                 key={column.id}
                                 align={column.align}
-                                style={{ minWidth: column.minWidth }}
+                                style={{ minWidth: column.minWidth}}
+                                className="font-bold"
                             >
                                 {column.label}
                             </TableCell>
@@ -180,6 +203,32 @@ export default async function ServiceListing(){
                         </TableHead>
                         <TableBody>
                         {rows
+                            .filter((row)=> {
+                                return search.toLowerCase() === ''
+                                ? row 
+                                : row.serviceName.toLowerCase().includes(search);
+                            })
+                            .filter((row)=> {
+                                return cat === 'All'
+                                ? row 
+                                : row.serviceType.includes(cat);
+                            })
+                            .sort((b, a) => {
+                                if (sortBy === 'priceMax') {
+                                    return (a.price || 0) - (b.price || 0);
+                                } else if (sortBy === 'priceMin') {
+                                    return (b.price || 0) - (a.price || 0);
+                                } else if (sortBy === 'ratingMax') {
+                                    return (a.rating || 0) - (b.rating || 0);
+                                } else if (sortBy === 'ratingMin') {
+                                    return (b.rating || 0) - (a.rating || 0);
+                                } else if (sortBy === 'serviceName') {
+                                    if (a.serviceName < b.serviceName) return 1;
+                                    if (a.serviceName > b.serviceName) return -1;
+                                    return 0;
+                                }
+                                return 0; // Default case
+                            })
                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                             .map((row) => {
                             return (
@@ -210,7 +259,7 @@ export default async function ServiceListing(){
                     onRowsPerPageChange={handleChangeRowsPerPage}
                     />
                 </Paper>
-            </div>
+            </main>     
         </main>
     )
 }

@@ -1,7 +1,10 @@
+'use client'
 import React from 'react'
 import SearchIcon from '@mui/icons-material/Search';
 import { Box, Button, FormControl, Input, InputAdornment, InputLabel, MenuItem, TextField } from '@mui/material';
 import BasicButton from '@/app/_component/BasicButton';
+import { usePathname, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/router';
 
 export default function Searchbar() {
     const category = [
@@ -78,7 +81,6 @@ export default function Searchbar() {
                     </MenuItem>
                 ))}
             </TextField>
-            <Button variant="contained" className='bg-orange font-semibold'>Search</Button>
         </div>
     </main>
   )

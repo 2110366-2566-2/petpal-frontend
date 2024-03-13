@@ -11,18 +11,18 @@ interface Column {
   
   const columns: readonly Column[] = [
     { id: 'serviceName', label: 'Service Name', minWidth: 50 },
-    { id: 'serviceType', label: 'Service Type', minWidth: 50 },
+    { id: 'serviceType', label: 'Service Type', minWidth: 40 },
     {
       id: 'price',
       label: 'Price',
-      minWidth: 50,
+      minWidth: 40,
       align: 'right',
       format: (value: number) => value.toLocaleString('en-US'),
     },
     {
       id: 'rating',
       label: 'Rating',
-      minWidth: 50,
+      minWidth: 40,
       align: 'right',
       format: (value: number) => value.toLocaleString('en-US'),
     },
@@ -45,21 +45,29 @@ interface Column {
   }
   
   const rows = [
-    createData('India', 'IN', 1324171354, 3287263),
-    createData('China', 'CN', 1403500365, 9596961),
-    createData('Italy', 'IT', 60483973, 301340),
-    createData('United States', 'US', 327167434, 9833520),
-    createData('Canada', 'CA', 37602103, 9984670),
-    createData('Australia', 'AU', 25475400, 7692024),
-    createData('Germany', 'DE', 83019200, 357578),
-    createData('Ireland', 'IE', 4857000, 70273),
-    createData('Mexico', 'MX', 126577691, 1972550),
-    createData('Japan', 'JP', 126317000, 377973),
-    createData('France', 'FR', 67022000, 640679),
-    createData('United Kingdom', 'GB', 67545757, 242495),
-    createData('Russia', 'RU', 146793744, 17098246),
-    createData('Nigeria', 'NG', 200962417, 923768),
-    createData('Brazil', 'BR', 210147125, 8515767),
+    createData('serviceName0', 'Healthcare', 16.58, 21.90),
+    createData('serviceName1', 'Grooming', 51.26, 15.54),
+    createData('serviceName2', 'Pet walking', 71.62, 67.07),
+    createData('serviceName3', 'Healthcare', 16.99, 31.90),
+    createData('serviceName4', 'Grooming', 51.00, 15.44),
+    createData('serviceName5', 'Pet walking', 70.62, 77.07),
+    createData('serviceName6', 'Healthcare', 17.28, 21.99),
+    createData('serviceName7', 'Grooming', 45.76, 15.54),
+    createData('serviceName8', 'Pet walking', 81.62, 67.07),
+    createData('serviceName9', 'Healthcare', 46.58, 11.90),
+    createData('serviceName10', 'Grooming', 57.26, 15.59),
+    createData('serviceName11', 'Pet walking', 71.61, 67.07),
+    createData('serviceName12', 'Healthcare', 46.58, 21.90),
+    createData('serviceName13', 'Grooming', 91.86, 45.44),
+    createData('serviceName14', 'Pet walking', 81.12, 27.07),
+    createData('serviceName15', 'Healthcare', 11.07, 21.10),
+    createData('serviceName16', 'Grooming', 51.26, 15.54),
+    createData('serviceName17', 'Pet walking', 21.24, 78.23),
+    createData('serviceName18', 'Others', 88.23, 11.12),
+    createData('serviceName19', 'Others', 18.13, 59.20),
+    createData('serviceName20', 'Others', 58.93, 17.78),
+    createData('serviceName21', 'Others', 26.89, 28.12),
+    createData('serviceName22', 'Others', 69.69, 8.12),
   ];
   
   export default function Searchresult() {
@@ -77,7 +85,7 @@ interface Column {
   
     return (
     <main className='flex flex-row p-5 justify-center'>
-      <Paper sx={{ width: '50%', overflow: 'hidden' }}>
+      <Paper sx={{ width: '90%', overflow: 'hidden', maxWidth: 700 }}>
         <TableContainer sx={{ maxHeight: 470 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -95,6 +103,7 @@ interface Column {
             </TableHead>
             <TableBody>
               {rows
+                
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => {
                   return (
@@ -125,6 +134,6 @@ interface Column {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      </main>
+    </main>
     );
   }
