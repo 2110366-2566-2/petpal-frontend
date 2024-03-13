@@ -2,33 +2,7 @@
 import getBookingHistory from "@/app/libs/getBookingHistory";
 import React, { useState, useEffect } from "react";
 import Booking from "../../../_interface/Booking";
-// type Booking = {
-//     serviceName: string;
-//     status: string; // Assuming 'completed' or other statuses
-//     providerName: string;
-//     date: string;
-//     time: string;
-//     price: number;
-// };
-// const bookings: Booking[] = [
-//     {
-//         serviceName: "Service Name 1",
-//         status: "completed",
-//         providerName: "Provider Name 1",
-//         date: "Feb 7",
-//         time: "14.00 - 16.00",
-//         price: 500,
-//     },
-//     {
-//         serviceName: "Service Name 2",
-//         status: "completed",
-//         providerName: "Provider Name 1",
-//         date: "Feb 7",
-//         time: "14.00 - 16.00",
-//         price: 500,
-//     },
-//     // Add more bookings as needed
-// ];
+import cancelBooking from "@/app/libs/cancelBooking";
 
 function formatTimeToHourMinute(datetimeString: string) {
     const date = new Date(datetimeString);
@@ -54,6 +28,24 @@ function formatDate(datetimeString: string) {
     return date.toLocaleDateString("en-US", options);
 }
 
+function getBookingStatus(booking: Booking): string {
+    if (booking.status.userCompleted) {
+        return "Completed";
+    } else if (booking.status.svcpCompleted) {
+        return "Service Completed";
+    } else if (booking.status.paymentStatus) {
+        return "Paid";
+    } else if (booking.status.svcpConfirmed) {
+        return "Confirmed";
+    } else if (!booking.status.svcpConfirmed) {
+        return "Pending";
+    } else if (booking.cancel.cancelStatus) {
+        return "Cancel";
+    } else {
+        return "";
+    }
+}
+
 export default function BookingHistory() {
     const [bookings, setBookings] = useState<Booking[]>([]);
 
@@ -70,7 +62,9 @@ export default function BookingHistory() {
 
         fetchBookings();
     }, []);
-
+    const handleCancel = async (id: string, reason: string) => {
+        cancelBooking(id, reason);
+    };
     return (
         <main className="flex flex-col items-center pt-10">
             {bookings.map((booking, index) => (
@@ -85,7 +79,7 @@ export default function BookingHistory() {
                                 {booking.serviceName} {/* Visible on Mobile */}
                             </div>
                             <div className="font-medium text-[18px] text-[#12B837]">
-                                {/* {booking.status} */}
+                                {getBookingStatus(booking)}
                             </div>
                         </div>
                         {/* Provider Name: Below on mobile, in a box on the right on desktop */}
@@ -128,9 +122,15 @@ export default function BookingHistory() {
                             <div className="font-bold text-[16px] text-[#FFD600]">
                                 Reschedule
                             </div>
-                            <div className="font-bold text-[16px] ml-3 text-[#FF5858]">
-                                Cancel
-                            </div>
+                            <button
+                                onClick={() =>
+                                    handleCancel(booking.bookingID, "")
+                                }
+                            >
+                                <div className="font-bold text-[16px] ml-3 text-[#FF5858]">
+                                    Cancel
+                                </div>
+                            </button>
                         </div>
                         <div className="text-right font-semibold text-[16px] text-[#858585]">
                             Write Feedback
