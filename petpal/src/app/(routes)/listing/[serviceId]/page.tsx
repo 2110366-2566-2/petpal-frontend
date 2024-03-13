@@ -1,3 +1,4 @@
+import FeedbackPage from "./feedback/page"
 
 
 export default function ServicePage({params}:{params:{serviceId:string}}) {
@@ -21,6 +22,7 @@ export default function ServicePage({params}:{params:{serviceId:string}}) {
       <div className='items-center'>
         <span>SERVICE ID</span>
         <span>{id}</span>
+        {/* <FeedbackPage serviceId="65f172b72d00a205a6f54672"/> */}
       </div>
     )
   }
