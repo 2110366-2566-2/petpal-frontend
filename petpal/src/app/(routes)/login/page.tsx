@@ -1,6 +1,7 @@
 "use client";
 import React, { ChangeEvent, useState } from "react";
 import Button from "../register/_components/Button";
+import login from "@/app/libs/login";
 
 export default function Login() {
     const [registrationType, setRegistrationType] = useState("user");
@@ -21,28 +22,7 @@ export default function Login() {
         }
 
         try {
-            // console.log(email);
-            // console.log(registrationType);
-            // console.log(password);
-            const response = await fetch("http://localhost:8080/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    email: email,
-                    logintype: registrationType,
-                    password: password,
-                }),
-            });
-
-            if (response.ok) {
-                // Login successful
-                console.log("Login successful");
-            } else {
-                // Login failed
-                console.error("Login failed");
-            }
+            login(email, registrationType, password);
         } catch (error) {
             console.error("Error during login:", error);
         }
