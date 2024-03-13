@@ -1,6 +1,8 @@
 "use client";
 import React, { ChangeEvent, useState } from "react";
 import Button from "./_components/Button";
+import registerUser from "@/app/libs/registerUser";
+import registerSVCP from "@/app/libs/registerSVCP";
 
 export default function Register() {
     const [address, setAddress] = useState("");
@@ -54,73 +56,21 @@ export default function Register() {
         // console.log(dateOfBirth);
         if (registrationType === "User") {
             try {
-                const response = await fetch(
-                    "http://localhost:8080/register-user",
-                    {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            address: address,
-                            dateOfBirth: dateOfBirth + "T00:00:00Z",
-                            email: email,
-                            fullName: fullName,
-                            password: password,
-                            phoneNumber: phoneNumber,
-                            username: username,
-                        }),
-                    }
+                registerUser(
+                    address,
+                    dateOfBirth,
+                    email,
+                    fullName,
+                    password,
+                    phoneNumber,
+                    username
                 );
-
-                if (response.ok) {
-                    // Register successful
-                    console.log("Register successful");
-                    console.log(response.status);
-                } else {
-                    // Register failed
-                    console.error("Register failed");
-                    try {
-                        const errorMessage = await response.text();
-                        console.error("Error message:", errorMessage);
-                    } catch (error) {
-                        console.error("Failed to parse error message:", error);
-                    }
-                }
             } catch (error) {
                 console.error("Error during register:", error);
             }
         } else if (registrationType === "Service Provider") {
             try {
-                const response = await fetch(
-                    "http://localhost:8080/register-svcp",
-                    {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            SVCPEmail: email,
-                            SVCPPassword: password,
-                            SVCPServiceType: serviceType,
-                            SVCPUsername: username,
-                        }),
-                    }
-                );
-
-                if (response.ok) {
-                    // Register successful
-                    console.log("Register successful");
-                } else {
-                    // Register failed
-                    console.error("Register failed");
-                    try {
-                        const errorMessage = await response.text();
-                        console.error("Error message:", errorMessage);
-                    } catch (error) {
-                        console.error("Failed to parse error message:", error);
-                    }
-                }
+                registerSVCP(email, password, serviceType, username);
             } catch (error) {
                 console.error("Error during register:", error);
             }

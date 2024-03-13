@@ -37,3 +37,19 @@ export var addPetButtonProps:ButtonPropsInterface = {
     FontColor:"text-[#000]",
     Link:"",
 }
+
+export var createServiceButton:ButtonPropsInterface = {
+    Name:"Submit",
+    Width:"w-[102px]",
+    BgColor:"bg-orange",
+    FontColor:"text-[#FFF]",
+    Link:"./",
+}
+
+export var cancelServiceButton:ButtonPropsInterface = {
+    Name:"Cancel",
+    Width:"w-[102px]",
+    BgColor:"bg-[#D9D9D9]",
+    FontColor:"text-[#000]",
+    Link:"./",
+}

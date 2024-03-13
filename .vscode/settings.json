@@ -3,6 +3,7 @@
         "register.tsx",
         "login/page.tsx",
         "ResponsiveNavbar.tsx",
-        "chat"
+        "chat",
+        "homepage"
     ]
 }
