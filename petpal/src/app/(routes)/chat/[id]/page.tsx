@@ -1,6 +1,6 @@
 "use client"
 import React from "react";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 
 import HeaderChatHistory from "../_components/HeaderChatHistory";
 import HeaderChatComponent from "../_components/HeaderChatComponent";
@@ -48,6 +48,8 @@ export default function ChatHistory({ params }: { params: { Id: number } }) {
     // const { conn, setConn } = useContext(WebsocketContext)
     const [conn, setConn] = useState<Conn>(null)
 
+    const connection = useRef<WebSocket | null>(null)
+
 
     useEffect(() => {
         SetShownMessageHistory(SelectedChatHistory.MessageHistory)
@@ -72,11 +74,19 @@ export default function ChatHistory({ params }: { params: { Id: number } }) {
             console.log("Does not have conn might error")
         } else {
             console.log("connect")
+            conn.onerror = (error) => {
+                console.log(`Websocket error: ${error.target}`);
+            };
+            conn.onopen = (event) => {
+                console.log("connection start")
+                conn.send("connection start")
+            }
             conn.onmessage = (message) => {
-                const m: Message = JSON.parse(message.data)
-                console.log(m.content)
+                // const m: Message = JSON.parse(message.data)
+                // console.log(m.content)
                 console.log("555535115353")
             }
+            connection.current = conn
         }
     }, [conn])
 
