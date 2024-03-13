@@ -6,7 +6,7 @@ export default async function getBookingHistory() {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({}),
+            body: "{}",
         }
     );
     if (response.ok) {
