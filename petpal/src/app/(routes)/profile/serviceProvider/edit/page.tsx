@@ -7,6 +7,7 @@ import ServiceInterface from '../../_interface/ServiceInterface'
 // import NavBar from '@/app/component/narbar'
 import { saveEditButtonProps , editProfileButtonProps } from '../../_interface/ButtonPropsInterface'
 import SmallButtonComponent from '../../_components/SmallButtonComponent'
+import FetchBankInformation from '../../_components/FetchedBankInformation'
 
 
 export default function Profile() {
@@ -56,6 +57,7 @@ export default function Profile() {
             border-[#D9D9D9] border-[3px]'
             placeholder='099-xxx-xxxx' />
           </div>
+          <div><FetchBankInformation/></div>
         </div>
         <div className='w-[100%] grid grid-cols-1 gap-[16px] md:hidden '>
             <SmallButtonComponent ButtonProps={editProfileButtonProps} Working = {false}></SmallButtonComponent>
