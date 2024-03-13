@@ -72,16 +72,17 @@ export default function ChatHistory({ params }: { params: { Id: number } }) {
             console.log("Does not have conn might error")
         } else {
             console.log("connect")
-            conn.onmessage = () => {
-                console.log("555")
+            conn.onmessage = (message) => {
+                const m: Message = JSON.parse(message.data)
+                console.log(m.content)
+                console.log("555535115353")
             }
         }
     }, [conn])
 
     const sendMessage = () => {
         HandleOnSubmitText(currentMessage, 0, UserId, ShownMessageHistory, SetShownMessageHistory)
-        conn?.send("555")
-        console.log("send success")
+        conn?.send(currentMessage)
         setCurrentMessage("");
     }
     return (
