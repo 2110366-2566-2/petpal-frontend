@@ -57,28 +57,31 @@ export default function ChatHistory({ params }: { params: { Id: number } }) {
     useEffect(() => {
         let ChatHistory
         for (ChatHistory of AllChatHistory) {
-            const UserRoom: UserRoomInterface = {
-                Id: UserId,
-                Username: `UserId:${UserId}`,
-                Role: "user",
+            // const UserRoom: UserRoomInterface = {
+            //     Id: UserId,
+            //     Username: `UserId:${UserId}`,
+            //     Role: "user",
 
-            }
-            WebsocketJoinRoom(ChatHistory.RoomId, UserRoom, setConn)
+            // }
+            // WebsocketJoinRoom(ChatHistory.RoomId, UserRoom, setConn)
         }
+        WebsocketJoinRoom(AllChatHistory[0].RoomId, { Id: UserId, Username: `UserId:${UserId}`, Role: "user" }, setConn)
     }, [])
     useEffect(() => {
         if (conn == null) {
             console.log("Does not have conn might error")
         } else {
             console.log("connect")
-            conn.onmessage = (message) => {
-                console.log(message.data)
+            conn.onmessage = () => {
+                console.log("555")
             }
         }
     }, [conn])
 
     const sendMessage = () => {
         HandleOnSubmitText(currentMessage, 0, UserId, ShownMessageHistory, SetShownMessageHistory)
+        conn?.send("555")
+        console.log("send success")
         setCurrentMessage("");
     }
     return (

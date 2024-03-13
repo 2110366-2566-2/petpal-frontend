@@ -4,7 +4,8 @@ export default function HandleOnSubmitText(
     CurrentUserId: number,
     OtherPersonUserId: number,
     ShownMessageHistory: MessageInteraface[],
-    SetShownMessageHistory: (value: MessageInteraface[]) => void
+    SetShownMessageHistory: (value: MessageInteraface[]) => void,
+
 ) {
     const MessageText: string = message;
     const NewMessage: MessageInteraface = {
