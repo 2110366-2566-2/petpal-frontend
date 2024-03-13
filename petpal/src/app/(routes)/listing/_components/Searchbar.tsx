@@ -22,10 +22,28 @@ export default function Searchbar() {
           label: '🐾 Others',
         },
       ];
+      const sortby = [
+        {
+          value: 'priceMax',
+          label: 'Price MAX to MIN',
+        },
+        {
+          value: 'priceMin',
+          label: 'Price MIN to MAX',
+        },
+        {
+          value: 'ratingMax',
+          label: 'Rating MAX to MIN',
+        },
+        {
+          value: 'ratingMin',
+          label: 'Rating MIN to MAX',
+        },
+      ];
   return (
     <main>
         <div className="flex flex-row p-5 gap-2 justify-center"> 
-            <Box sx={{ display: 'flex', alignItems: 'flex-end'}}>
+            <Box sx={{ display: 'flex', alignItems: 'flex-start'}}>
                 <TextField id="input-with-sx" label="Search services" variant="outlined" 
                     className='bg-white'
                     placeholder='Search services...'
@@ -42,6 +60,19 @@ export default function Searchbar() {
                 className='bg-white min-w-[160px]'
             >
                 {category.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                    </MenuItem>
+                ))}
+            </TextField>
+            <TextField
+                id="sort-by"
+                select
+                label="Sort by"
+                defaultValue="priceMin"
+                className='bg-white min-w-[186px]'
+            >
+                {sortby.map((option) => (
                     <MenuItem key={option.value} value={option.value}>
                         {option.label}
                     </MenuItem>
