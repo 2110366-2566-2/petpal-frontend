@@ -26,6 +26,14 @@ import UserIdToSelectChat from "../_utils/UseIdToSelectChat";
 
 import WebsocketJoinRoom from "../_utils/WebsocketJoinRoom";
 
+type Message = {
+    content: string
+    client_id: string
+    username: string
+    room_id: string
+    type: 'recv' | 'self'
+}
+
 export default function ChatHistory({ params }: { params: { Id: number } }) {
     const [UserId, setUserId] = useState<number>(params.Id);
     const [IsShowChatPreview, SetIsShowChatPreview] = useState<boolean>(UserId == 0)
@@ -53,7 +61,28 @@ export default function ChatHistory({ params }: { params: { Id: number } }) {
     const [rooms, setRooms] = useState<{ id: string; name: string }[]>([])
     const [roomName, setRoomName] = useState('')
     const [currentMessage, setCurrentMessage] = useState<string>("");
-    const { setConn } = useContext(WebsocketContext)
+    const { conn, setConn } = useContext(WebsocketContext)
+
+    if (conn == null) {
+        console.log("Does not have conn might error")
+    }
+
+    conn?.onmessage = (message) => {
+        const m: Message = JSON.parse(message.data)
+        if (m.content == 'A new user has joined the room') {
+            setUsers([...users, { username: m.username }])
+        }
+
+        if (m.content == 'user left the chat') {
+            const deleteUser = users.filter((user) => user.username != m.username)
+            setUsers([...deleteUser])
+            setMessage([...messages, m])
+            return
+        }
+
+        user?.username == m.username ? (m.type = 'self') : (m.type = 'recv')
+        setMessage([...messages, m])
+    }
 
     const sendMessage = () => {
         HandleOnSubmitText(currentMessage, 0, UserId, ShownMessageHistory, SetShownMessageHistory)
