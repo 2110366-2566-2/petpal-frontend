@@ -1,13 +1,13 @@
 import MessageInteraface from "../_interface/MessageInterface";
 export default function HandleOnSubmitText(
-    message : string,
+    message: string,
     CurrentUserId: number,
     OtherPersonUserId: number,
     ShownMessageHistory: MessageInteraface[],
     SetShownMessageHistory: (value: MessageInteraface[]) => void
 ) {
     const MessageText: string = message;
-    var NewMessage: MessageInteraface = {
+    const NewMessage: MessageInteraface = {
         SenderID: CurrentUserId,
         ReciverID: OtherPersonUserId,
         Content: MessageText,

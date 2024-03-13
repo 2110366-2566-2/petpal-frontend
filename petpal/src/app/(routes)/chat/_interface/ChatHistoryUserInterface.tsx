@@ -4,7 +4,8 @@ import { ExampleMessage0And1_1, ExampleMessage0And1_2, ExampleMessage0And1_3, Ex
 import MockImage from "../../../../../public/gold.jpg"
 
 export default interface ChatHistoryUserInterface {
-    ID: number;
+    Id: number;
+    RoomId: number;
     Name: string;
     MessageHistory: MessageInteraface[];
     Picture: string;
@@ -12,7 +13,8 @@ export default interface ChatHistoryUserInterface {
 }
 
 export var ExampleChatHistoryUser1: ChatHistoryUserInterface = {
-    ID: 1,
+    Id: 1,
+    RoomId: 10,
     Name: "lungPom",
     MessageHistory: [ExampleMessage0And1_1, ExampleMessage0And1_2, ExampleMessage0And1_3],
     Picture: MockImage.src,
@@ -20,7 +22,8 @@ export var ExampleChatHistoryUser1: ChatHistoryUserInterface = {
 };
 
 export var ExampleChatHistoryUser2: ChatHistoryUserInterface = {
-    ID: 2,
+    Id: 2,
+    RoomId: 20,
     Name: "lungDang",
     MessageHistory: [ExampleMessage0And2_1, ExampleMessage0And2_2, ExampleMessage0And2_3, ExampleMessage0And2_4, ExampleMessage0And2_5],
     Picture: MockImage.src,
@@ -28,7 +31,8 @@ export var ExampleChatHistoryUser2: ChatHistoryUserInterface = {
 };
 
 export var ExampleChatHistoryUser3: ChatHistoryUserInterface = {
-    ID: 3,
+    Id: 3,
+    RoomId: 30,
     Name: "lungDum",
     MessageHistory: [],
     Picture: MockImage.src,

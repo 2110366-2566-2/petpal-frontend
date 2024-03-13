@@ -15,7 +15,7 @@ export default function CreateDateFromNow(
         Mins = 0,
         Seconds = 0, }: CreateDateFromNowParameterInterface
 ): Date {
-    var WantedTime: Date = new Date()
+    const WantedTime: Date = new Date()
     WantedTime.setFullYear(WantedTime.getFullYear() + Years)
     WantedTime.setMonth(WantedTime.getMonth() + Months)
     WantedTime.setDate(WantedTime.getDate() + Days)

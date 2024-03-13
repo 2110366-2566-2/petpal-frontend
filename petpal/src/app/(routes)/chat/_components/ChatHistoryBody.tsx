@@ -1,5 +1,5 @@
 import ChatBubble from "./ChatBubble";
-import TimeDivide from "./TimeDivide";
+// import TimeDivide from "./TimeDivide";
 
 import MessageInteraface from "../_interface/MessageInterface";
 
@@ -8,10 +8,10 @@ function createMessageWithTime(ShownMessageHistory: MessageInteraface[], OtherPe
     if (ShownMessageHistory.length > 1) {
         let MessageHistory: MessageInteraface
         let LastTime: Date = ShownMessageHistory[0].TimeSend
-        MessageElementList.push(<TimeDivide time={LastTime}></TimeDivide>)
+        // MessageElementList.push(<TimeDivide time={LastTime}></TimeDivide>)
         for (MessageHistory of ShownMessageHistory) {
 
-            MessageElementList.push(<ChatBubble MessageHistory={MessageHistory} OtherPersonUserId={OtherPersonUserId}></ChatBubble>)
+            MessageElementList.push(<ChatBubble key={MessageHistory.TimeSend.getTime()} MessageHistory={MessageHistory} OtherPersonUserId={OtherPersonUserId}></ChatBubble>)
         }
     }
     return MessageElementList

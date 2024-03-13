@@ -59,7 +59,7 @@ var getNumReadNotification = (MessageHistory: MessageInteraface[], LastSee: Date
 
 
 export default function ChatPreview({ ChatHistoryUser, setUserId }: { ChatHistoryUser: ChatHistoryUserInterface, setUserId: (value: number) => void }): JSX.Element {
-    var ID: number = ChatHistoryUser.ID
+    var Id: number = ChatHistoryUser.Id
     var Name: string = ChatHistoryUser.Name
     var MessageHistory: MessageInteraface[] = ChatHistoryUser.MessageHistory
     var Picture: string = ChatHistoryUser.Picture
@@ -67,11 +67,11 @@ export default function ChatPreview({ ChatHistoryUser, setUserId }: { ChatHistor
 
     const currentPage: string = usePathname();
     var PathComponent: string[] = currentPage.split("/")
-    var newPath: string = PathComponent.slice(0, -1).join("/") + `/${ID}`
+    var newPath: string = PathComponent.slice(0, -1).join("/") + `/${Id}`
     // router.push(newPath)
 
     return (
-        <div onClick={() => { setUserId(ID) }} className="bg-white flex felx-row px-[20px] py-[12px] space-x-[20px] hover:bg-[#D9D9D9A1] focus:bg-[#000000]">
+        <div onClick={() => { setUserId(Id) }} className="bg-white flex felx-row px-[20px] py-[12px] space-x-[20px] hover:bg-[#D9D9D9A1] focus:bg-[#000000]">
             <img src={Picture} alt="" className="w-[60px] h-[60px] rounded-full select-none" />
             <div className="m-auto block grow">
                 <div className="m-auto flex felx-row space-x-[10px]">

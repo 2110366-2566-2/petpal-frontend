@@ -1,7 +1,6 @@
 import MessageInteraface from "../_interface/MessageInterface"
 export default function ChatBubble({ MessageHistory, OtherPersonUserId }: { MessageHistory: MessageInteraface, OtherPersonUserId: number }) {
     const IsOtherPersonMessage: boolean = MessageHistory.SenderID == OtherPersonUserId
-    console.log(IsOtherPersonMessage, MessageHistory.SenderID, OtherPersonUserId)
     const BgColor: string = ((IsOtherPersonMessage) ? "bg-[#FFFFFF]" : "bg-[#FF8A00]")
     const ItemsAlign: string = ((IsOtherPersonMessage) ? "items-start" : "items-end")
     const Margin: string = ((IsOtherPersonMessage) ? "mr-auto" : "ml-auto")
