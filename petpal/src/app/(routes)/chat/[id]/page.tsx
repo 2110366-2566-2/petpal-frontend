@@ -19,6 +19,8 @@ import HandleOnSubmitText from "../_utils/HandleOnSubmitText";
 
 import PlusIcon from "../_src/PlusIcon.png"
 import Maginifying from "../_src/Magnifying.png"
+import ImageLogo from "../_src/ImageLogo.png"
+
 import UserIdToSelectChat from "../_utils/UseIdToSelectChat";
 
 export default function ChatHistory({ params }: { params: { Id: number } }) {
@@ -66,11 +68,13 @@ export default function ChatHistory({ params }: { params: { Id: number } }) {
                             {ShownMessageHistory.map((MessageHistory: MessageInteraface) => <ChatBubble MessageHistory={MessageHistory} OtherPersonUserId={UserId}></ChatBubble>)}
                         </ul>
                     </div>
-                    <div className="h-[75px] bg-white flex flex-row space-x-[5px] items-center">
+                    <div className="pl-[15px] h-[75px] bg-white flex flex-row space-x-[15px] items-center">
                         <img src={PlusIcon.src} alt="Maginifying" className="w-[24px] h-[24px] my-auto" />
-                        <div className="h-[50px] bg-[#D9D9D9CC] flex-grow rounded-[15px] items-center text-left">
-                            <input onSubmit={(event) => { HandleOnSubmitText(event, 0, UserId, ShownMessageHistory, SetShownMessageHistory) }} name="message" className="h-[50px] bg-[#D9D9D9CC] outline-none my-auto" type="text" placeholder="Typing a message..." />
-                        </div>
+                        {/* <div className="h-[50px] bg-[#D9D9D9CC] flex-grow rounded-[15px] items-center text-left">
+                            <input onSubmit={(event) => { HandleOnSubmitText(event, 0, UserId, ShownMessageHistory, SetShownMessageHistory) }} name="message" className="h-[50px] bg-[#D9D9D9CC] outline-none my-auto flex-grow" type="text" placeholder="Typing a message..." />
+                        </div> */}
+                        <input onSubmit={(event) => { HandleOnSubmitText(event, 0, UserId, ShownMessageHistory, SetShownMessageHistory) }} name="message" className="h-[50px] bg-[#D9D9D9CC] outline-none my-auto flex-grow p-[10px] rounded-[15px]" type="text" placeholder="Typing a message..." />
+                        <img src={ImageLogo.src} alt="Maginifying" className="w-[24px] h-[24px] my-auto" />
                         <p></p>
                     </div>
                 </div>
