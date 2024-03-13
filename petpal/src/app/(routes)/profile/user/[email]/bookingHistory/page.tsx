@@ -1,32 +1,76 @@
-type Booking = {
-    serviceName: string;
-    status: string; // Assuming 'completed' or other statuses
-    providerName: string;
-    date: string;
-    time: string;
-    price: number;
-};
-const bookings: Booking[] = [
-    {
-        serviceName: "Service Name 1",
-        status: "completed",
-        providerName: "Provider Name 1",
-        date: "Feb 7",
-        time: "14.00 - 16.00",
-        price: 500,
-    },
-    {
-        serviceName: "Service Name 2",
-        status: "completed",
-        providerName: "Provider Name 1",
-        date: "Feb 7",
-        time: "14.00 - 16.00",
-        price: 500,
-    },
-    // Add more bookings as needed
-];
+"use client";
+import getBookingHistory from "@/app/libs/getBookingHistory";
+import React, { useState, useEffect } from "react";
+import Booking from "../../../_interface/Booking";
+// type Booking = {
+//     serviceName: string;
+//     status: string; // Assuming 'completed' or other statuses
+//     providerName: string;
+//     date: string;
+//     time: string;
+//     price: number;
+// };
+// const bookings: Booking[] = [
+//     {
+//         serviceName: "Service Name 1",
+//         status: "completed",
+//         providerName: "Provider Name 1",
+//         date: "Feb 7",
+//         time: "14.00 - 16.00",
+//         price: 500,
+//     },
+//     {
+//         serviceName: "Service Name 2",
+//         status: "completed",
+//         providerName: "Provider Name 1",
+//         date: "Feb 7",
+//         time: "14.00 - 16.00",
+//         price: 500,
+//     },
+//     // Add more bookings as needed
+// ];
+
+function formatTimeToHourMinute(datetimeString: string) {
+    const date = new Date(datetimeString);
+    // Use 'getHours' and 'getMinutes' to extract time parts
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    // Pad single digits with leading zero
+    const formattedHours = hours.toString().padStart(2, "0");
+    const formattedMinutes = minutes.toString().padStart(2, "0");
+    // Combine hours and minutes in HH:mm format
+    return `${formattedHours}:${formattedMinutes}`;
+}
+
+function formatDate(datetimeString: string) {
+    const date = new Date(datetimeString);
+    // Corrected options with specific string literals for TypeScript
+    const options: Intl.DateTimeFormatOptions = {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+    };
+    // Adjust 'en-US' to your preferred locale if needed
+    return date.toLocaleDateString("en-US", options);
+}
 
 export default function BookingHistory() {
+    const [bookings, setBookings] = useState<Booking[]>([]);
+
+    // useEffect hook to fetch bookings when component mounts
+    useEffect(() => {
+        const fetchBookings = async () => {
+            try {
+                const response = await getBookingHistory();
+                setBookings(response.result);
+            } catch (error) {
+                console.error("Error fetching bookings:", error);
+            }
+        };
+
+        fetchBookings();
+    }, []);
+
     return (
         <main className="flex flex-col items-center pt-10">
             {bookings.map((booking, index) => (
@@ -41,7 +85,7 @@ export default function BookingHistory() {
                                 {booking.serviceName} {/* Visible on Mobile */}
                             </div>
                             <div className="font-medium text-[18px] text-[#12B837]">
-                                {booking.status}
+                                {/* {booking.status} */}
                             </div>
                         </div>
                         {/* Provider Name: Below on mobile, in a box on the right on desktop */}
@@ -52,22 +96,23 @@ export default function BookingHistory() {
                                     {/* Hidden on Mobile, visible on Desktop */}
                                 </div>
                                 <div className="font-bold text-[18px] text-[#858585]">
-                                    {booking.providerName}
+                                    {booking.SVCPName}
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div className="flex justify-between">
                         <div className="font-medium text-[24px] xl:mr-[20px]">
-                            {booking.date}
+                            {formatDate(booking.startTime)}
                         </div>
                         <div className="font-medium text-[24px]">
-                            {booking.time}
+                            {formatTimeToHourMinute(booking.startTime)} -{" "}
+                            {formatTimeToHourMinute(booking.endTime)}
                         </div>
                     </div>
                     <div className="flex justify-between items-center">
                         <div className="font-medium text-[32px]">
-                            {booking.price}฿
+                            {booking.totalBookingPrice}฿
                         </div>
                         <div className="flex xl:hidden">
                             <div className="font-bold text-[16px] text-[#FFD600]">
