@@ -1,3 +1,4 @@
+
 "use client";
 import getBookingHistory from "@/app/libs/getBookingHistory";
 import React, { useState, useEffect } from "react";
@@ -141,3 +142,4 @@ export default function BookingHistory() {
         </main>
     );
 }
+
