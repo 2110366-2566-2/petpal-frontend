@@ -68,30 +68,26 @@ export default function ChatHistory({ params }: { params: { Id: number } }) {
                     <div className="border-solid border-b-2 border-[#D9D9D9a1]">
                         <HeaderChatHistory Text={SelectedChatHistory.Name} ImgSrc={SelectedChatHistory.Picture}></HeaderChatHistory>
                     </div>
-                    <div className="h-[100px] bg-[#D9D9D9] flex-grow flex-col p-[10px] justify-items-end">
+                    <div className="h-[100px] bg-[#D9D9D9] flex-grow flex-col p-[10px] justify-items-end overflow-scroll">
                         <ul className="space-y-[5px] mt-auto">
                             {ShownMessageHistory.map((MessageHistory: MessageInteraface) => <ChatBubble MessageHistory={MessageHistory} OtherPersonUserId={UserId}></ChatBubble>)}
                         </ul>
                     </div>
                     <div className="pl-[15px] h-[75px] bg-white flex flex-row space-x-[15px] items-center">
                         <img src={PlusIcon.src} alt="Maginifying" className="w-[24px] h-[24px] my-auto" />
-                        <div className="h-[50px] bg-[#D9D9D9CC] flex-grow rounded-[15px] items-center text-left">
-                            <input name="message" className="h-[50px] bg-[#D9D9D9CC] outline-none my-auto" type="text" placeholder="Typing a message..." value={currentMessage}
-                                onChange={(event) => {
-                                    setCurrentMessage(event.target.value);
-                                }}
-                                onKeyDown={(event) => {
-                                    if (event.key === 'Enter') {
-                                        // Handle Enter key press here, for example, submit the form or perform any action
-                                        // For now, let's just log the message to console
-                                        sendMessage()
-                                    }
-                                }}
-                            />
-                        </div>
-                        <input onSubmit={(event) => { HandleOnSubmitText(event, 0, UserId, ShownMessageHistory, SetShownMessageHistory) }} name="message" className="h-[50px] bg-[#D9D9D9CC] outline-none my-auto flex-grow p-[10px] rounded-[15px]" type="text" placeholder="Typing a message..." />
                         <img src={ImageLogo.src} alt="Maginifying" className="w-[24px] h-[24px] my-auto" />
-
+                        <input name="message" className="h-[50px] bg-[#D9D9D9CC] outline-none my-auto flex-grow p-[10px] rounded-[15px]" type="text" placeholder="Typing a message..." value={currentMessage}
+                            onChange={(event) => {
+                                setCurrentMessage(event.target.value);
+                            }}
+                            onKeyDown={(event) => {
+                                if (event.key === 'Enter') {
+                                    // Handle Enter key press here, for example, submit the form or perform any action
+                                    // For now, let's just log the message to console
+                                    sendMessage()
+                                }
+                            }}
+                        />
                         <button onClick={sendMessage}>
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
