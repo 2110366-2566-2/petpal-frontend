@@ -27,8 +27,8 @@ export default function EmailServiceProviderProfile({params}:{params:{email:stri
     serviceProvider.Name = email
   }
 
-  var thisEditProfileButton = editProfileButtonProps
-  thisEditProfileButton.Link = usePathname()+"edit"
+  // var thisEditProfileButton = editProfileButtonProps
+  // thisEditProfileButton.Link = usePathname()+"edit"
 
   var buttonPropsList:ButtonPropsInterface[] = [editProfileButtonProps,chagnePasswordButtonProps]
 
@@ -46,6 +46,13 @@ export default function EmailServiceProviderProfile({params}:{params:{email:stri
           <div className='hidden md:block'>
             {createButtonList(showButton,buttonPropsList=buttonPropsList)}
           </div>
+          {(email == "me") ?(
+              <div className='space-y-[20px] block'>
+                <SmallButtonComponent ButtonProps={editProfileButtonProps}></SmallButtonComponent>
+                <SmallButtonComponent ButtonProps={chagnePasswordButtonProps}></SmallButtonComponent>
+              </div>
+          ):(<></>)
+          }
           {/* <div className='space-y-[20px] block'>
             <SmallButtonComponent ButtonProps={thisEditProfileButton}></SmallButtonComponent>
             <SmallButtonComponent ButtonProps={chagnePasswordButtonProps}></SmallButtonComponent>

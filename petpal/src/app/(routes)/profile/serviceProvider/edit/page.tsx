@@ -5,7 +5,6 @@ import ServiceListComponent from '../../_components/ServiceListComponent'
 import ServiceProviderInterface from '../../_interface/ServiceProviderInterface'
 import ServiceInterface from '../../_interface/ServiceInterface'
 // import NavBar from '@/app/component/narbar'
-import BankInformation from '../../_components/BankInformation'
 import { saveEditButtonProps , editProfileButtonProps } from '../../_interface/ButtonPropsInterface'
 import SmallButtonComponent from '../../_components/SmallButtonComponent'
 
@@ -57,7 +56,6 @@ export default function Profile() {
             border-[#D9D9D9] border-[3px]'
             placeholder='099-xxx-xxxx' />
           </div>
-          <BankInformation/>
         </div>
         <div className='w-[100%] grid grid-cols-1 gap-[16px] md:hidden '>
             <SmallButtonComponent ButtonProps={editProfileButtonProps} Working = {false}></SmallButtonComponent>
