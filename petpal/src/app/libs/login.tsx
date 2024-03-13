@@ -1,3 +1,4 @@
+import { setCookie } from "cookies-next";
 export default async function login(
     email: string,
     registrationType: string,
@@ -17,10 +18,15 @@ export default async function login(
     if (response.ok) {
         // Login successful
         console.log("Login successful");
+        const data = await response.json()
+        setCookie("token",data?.AccessToken);
+        return data;
+
     } else {
         // Login failed
         console.error("Login failed");
     }
 
-    return await response.json();
+
+    
 }
