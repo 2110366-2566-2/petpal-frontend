@@ -19,7 +19,6 @@ export default function CreateServiceForm(){
 
     
     const addtimeslot = () =>{
-        console.log("add timeslot" , timeslot)
         setTimeslot([...timeslot , 
         
             {
@@ -28,13 +27,6 @@ export default function CreateServiceForm(){
             }
             
         ])
-        // setFormattime([...formattime , 
-        //     {
-        //         id:countTimeslot,
-        //         start:"",
-        //         end:""
-        //     }
-        // ])
     }
 
     const deletetimeslot = (idToDelete:Object) =>{

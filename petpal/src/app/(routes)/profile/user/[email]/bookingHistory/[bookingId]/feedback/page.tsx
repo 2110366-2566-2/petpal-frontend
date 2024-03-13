@@ -14,7 +14,6 @@ export default function UserFeedbackPage(){
 
     const handleRating = (rating:any) =>{
         setRating(rating)
-        console.log(rating)
     }
 
     const postFeedback = async(content:string , rating:number , id:string) =>{

@@ -17,7 +17,6 @@ export async function postFeedbackApi(
     content:string,
     rating:number
 ){
-    console.log("in api post",id,content,rating)
     const response = await fetch(`http://localhost:8080/service/feedback/${id}`,{
         method:'POST',
         credentials:'include',
