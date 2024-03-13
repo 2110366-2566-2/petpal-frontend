@@ -92,7 +92,7 @@ export default function CreateServiceForm(){
                         <Image className = 'w-[300px] h-[250px] mx-auto md:mx-0 object-crop rounded-[20px] justify-center' src = {createServiceImage} alt='default'/>
                     </div>
                     <div className='hidden md:grid grid-cols-1 gap-[16px]'>
-                    <SmallButtonComponent ButtonProps={createServiceButton}></SmallButtonComponent>
+                    <SmallButtonComponent ButtonProps={createServiceButton} onClick={async() => {postService(price,serviceDes,serviceName,serviceType,convertTime())}}></SmallButtonComponent>
                     <SmallButtonComponent ButtonProps={cancelServiceButton}></SmallButtonComponent>
                     </div>
                 </div>
