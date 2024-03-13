@@ -5,6 +5,7 @@ import { useState, useEffect, useContext } from "react";
 import HeaderChatHistory from "../_components/HeaderChatHistory";
 import HeaderChatComponent from "../_components/HeaderChatComponent";
 import ChatPreview from "../_components/ChatPreview";
+import ChatHistoryBody from "../_components/ChatHistoryBody";
 import ChatBubble from "../_components/ChatBubble";
 
 import ChatHistoryUserInterface from "../_interface/ChatHistoryUserInterface";
@@ -68,11 +69,10 @@ export default function ChatHistory({ params }: { params: { Id: number } }) {
                     <div className="border-solid border-b-2 border-[#D9D9D9a1]">
                         <HeaderChatHistory Text={SelectedChatHistory.Name} ImgSrc={SelectedChatHistory.Picture}></HeaderChatHistory>
                     </div>
-                    <div className="h-[100px] bg-[#D9D9D9] flex-grow flex-col p-[10px] justify-items-end overflow-scroll">
-                        <ul className="space-y-[5px] mt-auto">
-                            {ShownMessageHistory.map((MessageHistory: MessageInteraface) => <ChatBubble MessageHistory={MessageHistory} OtherPersonUserId={UserId}></ChatBubble>)}
-                        </ul>
+                    <div className="h-[100px] bg-[#D9D9D9] flex-grow flex-col p-[10px] justify-items-end overflow-y-scroll">
+                        <ChatHistoryBody ShownMessageHistory={ShownMessageHistory} OtherPersonUserId={UserId}></ChatHistoryBody>
                     </div>
+                    {/* <ChatHistoryBody ShownMessageHistory={ShownMessageHistory} OtherPersonUserId={UserId}></ChatHistoryBody> */}
                     <div className="pl-[15px] h-[75px] bg-white flex flex-row space-x-[15px] items-center">
                         <img src={PlusIcon.src} alt="Maginifying" className="w-[24px] h-[24px] my-auto" />
                         <img src={ImageLogo.src} alt="Maginifying" className="w-[24px] h-[24px] my-auto" />
