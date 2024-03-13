@@ -3,9 +3,8 @@ export default async function getBookingHistory() {
         "http://localhost:8080/service/booking/all/user",
         {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
+            credentials: "include",
+
             body: "{}",
         }
     );
