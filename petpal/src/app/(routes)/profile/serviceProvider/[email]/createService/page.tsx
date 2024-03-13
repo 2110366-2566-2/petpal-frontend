@@ -106,17 +106,20 @@ export default function createService(){
                         <button className='bg-[#D9D9D9]  justify-center items-center flex' onClick={()=>{setCountTimeslot(countTimeslot+1);addtimeslot()}}>Add timeslot</button>
                     </div>
                     
-                    <div className="my-2">
+                    <div className="my-2 ">
                         <span className='text-black font-bold text-[32px]'>Price</span>
-                        <input type='price' className='mt-1 block w-[100%] h[45px] rounded-md shadow-sm
+                        <div className='flex'>
+                        <input type='price' className='mt-1 block w-[30%] h[45px] rounded-md shadow-sm
                         focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 peer-focus:text-primary
                         border-[#D9D9D9] border-[3px]'
                         />
+                        <span className='ml-2 mt-1  justify-center text-black text-[20px]'>Baht</span>
+                        </div>
                     </div>
-                    <div className="my-2 grid grid-cols-1">
+                    {/*<div className="my-2 grid grid-cols-1">
                         <span className='text-black font-bold text-[32px]'>Cover Photo</span>
                         <button className="bg-[#D9D9D9] w-[158px] h-[45px] rounded-[10px] text-[18px] text-center p-[5px]" type='button'>Upload Image</button>
-                    </div>
+                    </div>*/}
                     
                 </div>
             </div>
