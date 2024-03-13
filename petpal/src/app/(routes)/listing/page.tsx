@@ -2,12 +2,17 @@
 import React from "react";
 import { redirect } from 'next/navigation';
 import { usePathname } from 'next/navigation';
+import Searchbar from "./_components/Searchbar";
+import Searchresult from "./_components/Searchresult";
 
 
 export default async function ServiceListing(){
     const currentPage = usePathname();
-    redirect(currentPage+"/id")
+    
     return (
-        <h1>hello{currentPage}</h1>
+        <main>
+            <Searchbar/>
+            <Searchresult/>
+        </main>
     )
 }

@@ -18,7 +18,8 @@ const config: Config = {
       "orange" : "#FF872F",
       "blue" : "#0075FF",
       "white" : "#FFFFFF",
-      "gray" : "#D9D9D9"
+      "gray" : "#D9D9D9",
+      "cream" : "#FAF8ED",
     },
   },
   plugins: [

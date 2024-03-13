@@ -4,6 +4,7 @@
         "login/page.tsx",
         "ResponsiveNavbar.tsx",
         "chat",
-        "homepage"
+        "homepage",
+        "listing"
     ]
 }
