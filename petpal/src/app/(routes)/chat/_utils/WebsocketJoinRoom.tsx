@@ -5,7 +5,7 @@ import { WebsocketContext } from './WebsocketProvider'
 import UserRoomInterface from '../_interface/UserRoomInterface'
 
 
-export default function WebsocketJoinRoom(roomId: number, User: UserRoomInterface, setConn: (value: any) => void) {
+export default function WebsocketJoinRoom(roomId: number, User: UserRoomInterface, setConn: (value: WebSocket | null) => void) {
     const ws = new WebSocket(
         `${WEBSOCKET_URL}/chat/joinRoom/${roomId}?clientId=${User.Id}&username=${User.Username}&role=${User.Role}`
     )

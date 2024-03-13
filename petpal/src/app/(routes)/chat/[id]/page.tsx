@@ -35,6 +35,8 @@ type Message = {
     type: 'recv' | 'self'
 }
 
+type Conn = WebSocket | null
+
 export default function ChatHistory({ params }: { params: { Id: number } }) {
     const [UserId, setUserId] = useState<number>(params.Id);
     const [IsShowChatPreview, SetIsShowChatPreview] = useState<boolean>(UserId == 0)
@@ -43,102 +45,87 @@ export default function ChatHistory({ params }: { params: { Id: number } }) {
     const SelectedChatHistory: ChatHistoryUserInterface = UserIdToSelectChat(AllChatHistory, UserId)
     const [ShownMessageHistory, SetShownMessageHistory] = useState<MessageInteraface[]>(SelectedChatHistory.MessageHistory)
     const [ShownChatHistoryUserList, SetShownChatHistoryUserList] = useState<ChatHistoryUserInterface[]>(AllChatHistory)
-    const { conn, setConn } = useContext(WebsocketContext)
+    // const { conn, setConn } = useContext(WebsocketContext)
+    const [conn, setConn] = useState<Conn>(null)
 
 
     useEffect(() => {
         SetShownMessageHistory(SelectedChatHistory.MessageHistory)
     }, [UserId])
 
-    let ChatHistory
-    for (ChatHistory of AllChatHistory) {
-        const UserRoom: UserRoomInterface = {
-            Id: UserId,
-            Username: `UserId:${UserId}`,
-            Role: "user",
-
-        }
-        WebsocketJoinRoom(ChatHistory.RoomId, UserRoom, setConn)
-    }
-
     const [currentMessage, setCurrentMessage] = useState<string>("");
+    useEffect(() => {
+        let ChatHistory
+        for (ChatHistory of AllChatHistory) {
+            const UserRoom: UserRoomInterface = {
+                Id: UserId,
+                Username: `UserId:${UserId}`,
+                Role: "user",
 
-    if (conn == null) {
-        console.log("Does not have conn might error")
-    } else {
-        conn.onmessage = (message) => {
-            // const m: Message = message.data
-            // if (m.content == 'A new user has joined the room') {
-            //     setUsers([...users, { username: m.username }])
-            // }
-
-            // if (m.content == 'user left the chat') {
-            //     const deleteUser = users.filter((user) => user.username != m.username)
-            //     setUsers([...deleteUser])
-            //     setMessage([...messages, m])
-            //     return
-            // }
-
-            // user?.username == m.username ? (m.type = 'self') : (m.type = 'recv')
-            // setMessage([...messages, m])
-            console.log(message.data)
+            }
+            WebsocketJoinRoom(ChatHistory.RoomId, UserRoom, setConn)
         }
-    }
-    console.log(conn)
+    }, [])
+    useEffect(() => {
+        if (conn == null) {
+            console.log("Does not have conn might error")
+        } else {
+            console.log("connect")
+            conn.onmessage = (message) => {
+                console.log(message.data)
+            }
+        }
+    }, [conn])
 
     const sendMessage = () => {
         HandleOnSubmitText(currentMessage, 0, UserId, ShownMessageHistory, SetShownMessageHistory)
         setCurrentMessage("");
     }
     return (
-        <WebSocketProvider>
-            <div className="h-[calc(100vh-64px)]">
-                <div className="flex flex-row items-top grow h-full">
-                    <div className={`${IsShowChatPreview ? "md:flex md:flex-col" : "hidden md:flex md:flex-col"} h-inherit flex-grow md:float-left md:max-w-[400px] outline-8 border-solid border-r-2 md:p-[30px] md:pr-[10px]`}>
-                        <div>
-                            <HeaderChatComponent Text="Chats"></HeaderChatComponent>
-                            <div className="p-[10px] md:px-[0px] md:pt-[0px]">
-                                <div className="flex flex-row space-x-[10px] m-auto bg-[#D9D9D9] py-[2px] px-[20px] rounded-[5px]">
-                                    <img src={Maginifying.src} alt="Maginifying" className="w-[12px] h-[12px] my-auto" />
-                                    <input onChange={(event) => OnChangeSearch(event, AllChatHistory, SetShownChatHistoryUserList)} className="bg-[#D9D9D9] outline-none" type="text" placeholder="Search" />
-                                </div>
+        <div className="h-[calc(100vh-64px)]">
+            <div className="flex flex-row items-top grow h-full">
+                <div className={`${IsShowChatPreview ? "md:flex md:flex-col" : "hidden md:flex md:flex-col"} h-inherit flex-grow md:float-left md:max-w-[400px] outline-8 border-solid border-r-2 md:p-[30px] md:pr-[10px]`}>
+                    <div>
+                        <HeaderChatComponent Text="Chats"></HeaderChatComponent>
+                        <div className="p-[10px] md:px-[0px] md:pt-[0px]">
+                            <div className="flex flex-row space-x-[10px] m-auto bg-[#D9D9D9] py-[2px] px-[20px] rounded-[5px]">
+                                <img src={Maginifying.src} alt="Maginifying" className="w-[12px] h-[12px] my-auto" />
+                                <input onChange={(event) => OnChangeSearch(event, AllChatHistory, SetShownChatHistoryUserList)} className="bg-[#D9D9D9] outline-none" type="text" placeholder="Search" />
                             </div>
                         </div>
-                        <div className="space-y-[10px]">
-                            <ul className="flex flex-col-reverse">
-                                {ShownChatHistoryUserList.map((ChatHistoryUser: ChatHistoryUserInterface) => <ChatPreview ChatHistoryUser={ChatHistoryUser} setUserId={setUserId} key={String(ChatHistoryUser.Id)} />)}
-                            </ul>
-                        </div>
                     </div>
-                    <div className={`${IsShowChatPreview ? "hidden md:flex" : "flex-row md:flex"} items-top md:flex-col md:float-right flex-grow   my-[0px] md:p-[10px] space-y-[10px]`}>
-                        <div className="border-solid border-b-2 border-[#D9D9D9a1]">
-                            <HeaderChatHistory Text={SelectedChatHistory.Name} ImgSrc={SelectedChatHistory.Picture}></HeaderChatHistory>
-                        </div>
-                        <div className="h-[100px] bg-[#D9D9D9] flex-grow flex-col p-[10px] justify-items-end overflow-y-scroll">
-                            <ChatHistoryBody ShownMessageHistory={ShownMessageHistory} OtherPersonUserId={UserId}></ChatHistoryBody>
-                        </div>
-                        {/* <ChatHistoryBody ShownMessageHistory={ShownMessageHistory} OtherPersonUserId={UserId}></ChatHistoryBody> */}
-                        <div className="pl-[15px] h-[75px] bg-white flex flex-row space-x-[15px] items-center">
-                            <img src={PlusIcon.src} alt="Maginifying" className="w-[24px] h-[24px] my-auto" />
-                            <input name="message" className="h-[50px] bg-[#D9D9D9CC] outline-none my-auto flex-grow p-[10px] rounded-[15px]" type="text" placeholder="Typing a message..." value={currentMessage}
-                                onChange={(event) => {
-                                    setCurrentMessage(event.target.value);
-                                }}
-                                onKeyDown={(event) => {
-                                    if (event.key === 'Enter') {
-                                        // Handle Enter key press here, for example, submit the form or perform any action
-                                        // For now, let's just log the message to console
-                                        sendMessage()
-                                    }
-                                }}
-                            />
-                            <img src={ImageLogo.src} alt="Maginifying" className="w-[24px] h-[24px] my-auto" />
-                            <p></p>
-                        </div>
+                    <div className="space-y-[10px]">
+                        <ul className="flex flex-col-reverse">
+                            {ShownChatHistoryUserList.map((ChatHistoryUser: ChatHistoryUserInterface) => <ChatPreview ChatHistoryUser={ChatHistoryUser} setUserId={setUserId} key={String(ChatHistoryUser.Id)} />)}
+                        </ul>
                     </div>
-                </div >
+                </div>
+                <div className={`${IsShowChatPreview ? "hidden md:flex" : "flex-row md:flex"} items-top md:flex-col md:float-right flex-grow   my-[0px] md:p-[10px] space-y-[10px]`}>
+                    <div className="border-solid border-b-2 border-[#D9D9D9a1]">
+                        <HeaderChatHistory Text={SelectedChatHistory.Name} ImgSrc={SelectedChatHistory.Picture}></HeaderChatHistory>
+                    </div>
+                    <div className="h-[100px] bg-[#D9D9D9] flex-grow flex-col p-[10px] justify-items-end overflow-y-scroll">
+                        <ChatHistoryBody ShownMessageHistory={ShownMessageHistory} OtherPersonUserId={UserId}></ChatHistoryBody>
+                    </div>
+                    {/* <ChatHistoryBody ShownMessageHistory={ShownMessageHistory} OtherPersonUserId={UserId}></ChatHistoryBody> */}
+                    <div className="pl-[15px] h-[75px] bg-white flex flex-row space-x-[15px] items-center">
+                        <img src={PlusIcon.src} alt="Maginifying" className="w-[24px] h-[24px] my-auto" />
+                        <input name="message" className="h-[50px] bg-[#D9D9D9CC] outline-none my-auto flex-grow p-[10px] rounded-[15px]" type="text" placeholder="Typing a message..." value={currentMessage}
+                            onChange={(event) => {
+                                setCurrentMessage(event.target.value);
+                            }}
+                            onKeyDown={(event) => {
+                                if (event.key === 'Enter') {
+                                    sendMessage()
+                                }
+                            }}
+                        />
+                        <img src={ImageLogo.src} alt="Maginifying" className="w-[24px] h-[24px] my-auto" />
+                        <p></p>
+                    </div>
+                </div>
             </div >
-        </WebSocketProvider>
+        </div >
     )
 
 }
