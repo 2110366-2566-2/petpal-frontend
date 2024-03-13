@@ -1,23 +1,79 @@
 "use client";
 import React, { ChangeEvent, useState } from "react";
 import Button from "./_components/Button";
+import registerUser from "@/app/libs/registerUser";
+import registerSVCP from "@/app/libs/registerSVCP";
 
 export default function Register() {
-    const [registrationType, setRegistrationType] = useState("User");
-    const [username, setUsername] = useState("");
+    const [address, setAddress] = useState("");
+    const [dateOfBirth, setDateOfBirth] = useState("");
     const [email, setEmail] = useState("");
+    const [fullName, setFullName] = useState("");
+    const [password, setPassword] = useState("");
+    const [password2, setPassword2] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
+    const [username, setUsername] = useState("");
+    const [serviceType, setServiceType] = useState("");
+
+    const [registrationType, setRegistrationType] = useState("User");
     const [errorMessage, setErrorMessage] = useState("");
 
     const handleRegistrationTypeChange = (
         e: ChangeEvent<HTMLSelectElement>
     ) => {
         setRegistrationType(e.target.value);
+        // console.log(registrationType);
     };
-    const handleSubmit = () => {
+
+    const handleServiceTypeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+        setServiceType(e.target.value);
+    };
+    const handleSubmit = async () => {
         // Validate form fields
-        if (!username.trim() || !email.trim()) {
-            setErrorMessage("Username and email are required.");
+        console.log(address);
+        console.log(dateOfBirth + "T00:00:00Z");
+        console.log(email);
+        console.log(fullName);
+        console.log(password);
+        console.log(password2);
+        console.log(phoneNumber);
+        console.log(username);
+        console.log(serviceType);
+        console.log(registrationType);
+        if (
+            !email.trim() ||
+            !password.trim() ||
+            !password2.trim() ||
+            !username.trim()
+        ) {
+            setErrorMessage(" Please fill all fields");
             return;
+        }
+        if (password != password2) {
+            setErrorMessage(" Passwords do not match. Please try again.");
+            return;
+        }
+        // console.log(dateOfBirth);
+        if (registrationType === "User") {
+            try {
+                registerUser(
+                    address,
+                    dateOfBirth,
+                    email,
+                    fullName,
+                    password,
+                    phoneNumber,
+                    username
+                );
+            } catch (error) {
+                console.error("Error during register:", error);
+            }
+        } else if (registrationType === "Service Provider") {
+            try {
+                registerSVCP(email, password, serviceType, username);
+            } catch (error) {
+                console.error("Error during register:", error);
+            }
         }
     };
 
@@ -56,6 +112,8 @@ export default function Register() {
                         className="p-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm
            focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                         placeholder="Firstname Lastname"
+                        value={fullName}
+                        onChange={(e) => setFullName(e.target.value)}
                     />
                 </div>
                 <div className="w-[75%] m-3">
@@ -76,6 +134,30 @@ export default function Register() {
                         className="p-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm
            focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                         placeholder="xxxxxxxxxx"
+                        value={phoneNumber}
+                        onChange={(e) => setPhoneNumber(e.target.value)}
+                    />
+                </div>
+                <div className="w-[75%] m-3">
+                    <span className="text-gray-700">Address</span>
+                    <input
+                        type="text"
+                        className="p-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm
+           focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                        placeholder="123 Main Street"
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                    />
+                </div>
+                <div className="w-[75%] m-3">
+                    <span className="text-gray-700">Date of Birth</span>
+                    <input
+                        type="date"
+                        className="p-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm
+           focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                        placeholder="2/1/02"
+                        value={dateOfBirth}
+                        onChange={(e) => setDateOfBirth(e.target.value)}
                     />
                 </div>
                 <div className="w-[75%] m-3">
@@ -85,6 +167,8 @@ export default function Register() {
                         className="p-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm
            focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                         placeholder="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                     />
                 </div>
                 <div className="w-[75%] m-3">
@@ -94,6 +178,8 @@ export default function Register() {
                         className="p-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm
            focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                         placeholder="password"
+                        value={password2}
+                        onChange={(e) => setPassword2(e.target.value)}
                     />
                 </div>
                 <div className="w-[75%] m-3">
@@ -114,6 +200,8 @@ export default function Register() {
                         <select
                             className="p-1 block w-full mt-1 rounded-md border-gray-300 shadow-sm
                 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            value={serviceType}
+                            onChange={handleServiceTypeChange}
                         >
                             <option>Healthcare</option>
                             <option>Dog walker</option>

@@ -2,6 +2,8 @@
     "conventionalCommits.scopes": [
         "register.tsx",
         "login/page.tsx",
-        "ResponsiveNavbar.tsx"
+        "ResponsiveNavbar.tsx",
+        "chat",
+        "homepage"
     ]
 }

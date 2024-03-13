@@ -7,13 +7,6 @@ export default interface ButtonPropsInterface{
     Link:string,
 }
 
-// export var exampleButtonProps = {
-//     Name:"EDIT PROFILE",
-//     BgColor:"#FF872F",
-//     FontColor:"#000000",
-//     Link:""
-// }
-
 export var editProfileButtonProps:ButtonPropsInterface = {
     Name:"EDIT PROFILE",
     Width:"w-[152px]",
@@ -25,8 +18,8 @@ export var editProfileButtonProps:ButtonPropsInterface = {
 export var chagnePasswordButtonProps:ButtonPropsInterface = {
     Name:"CHANGE PASSWORD",
     Width:"w-[212px]",
-    BgColor: "bg-orange",
-    FontColor:"text-[#FFFF]",
+    BgColor: "bg-[#D9D9D9]",
+    FontColor:"text-[#000]",
     Link:"",
 }
 
@@ -43,4 +36,20 @@ export var addPetButtonProps:ButtonPropsInterface = {
     BgColor:"bg-[#D9D9D9]",
     FontColor:"text-[#000]",
     Link:"",
+}
+
+export var createServiceButton:ButtonPropsInterface = {
+    Name:"Submit",
+    Width:"w-[102px]",
+    BgColor:"bg-orange",
+    FontColor:"text-[#FFF]",
+    Link:"./",
+}
+
+export var cancelServiceButton:ButtonPropsInterface = {
+    Name:"Cancel",
+    Width:"w-[102px]",
+    BgColor:"bg-[#D9D9D9]",
+    FontColor:"text-[#000]",
+    Link:"./",
 }
