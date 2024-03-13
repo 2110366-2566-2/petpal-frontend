@@ -1,6 +1,6 @@
 "use client"
 import React from "react";
-import { useState, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 
 import HeaderChatHistory from "../_components/HeaderChatHistory";
 import HeaderChatComponent from "../_components/HeaderChatComponent";
@@ -29,6 +29,10 @@ export default function ChatHistory({ params }: { params: { Id: number } }) {
     var SelectedChatHistory: ChatHistoryUserInterface = UserIdToSelectChat(AllChatHistory, UserId)
     const [ShownMessageHistory, SetShownMessageHistory] = useState<MessageInteraface[]>(SelectedChatHistory.MessageHistory)
     var [ShownChatHistoryUserList, SetShownChatHistoryUserList] = useState<ChatHistoryUserInterface[]>(AllChatHistory)
+
+    useEffect(() => {
+        SetShownMessageHistory(SelectedChatHistory.MessageHistory)
+    }, [UserId])
 
     const [rooms, setRooms] = useState<{ id: string; name: string }[]>([])
     const [roomName, setRoomName] = useState('')

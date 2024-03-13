@@ -59,8 +59,6 @@ var getNumReadNotification = (MessageHistory: MessageInteraface[], LastSee: Date
 
 
 export default function ChatPreview({ ChatHistoryUser, setUserId }: { ChatHistoryUser: ChatHistoryUserInterface, setUserId: (value: number) => void }): JSX.Element {
-    const router = useRouter()
-
     var ID: number = ChatHistoryUser.ID
     var Name: string = ChatHistoryUser.Name
     var MessageHistory: MessageInteraface[] = ChatHistoryUser.MessageHistory
