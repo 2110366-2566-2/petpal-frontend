@@ -11,54 +11,54 @@ export var ExampleMessage0And1_1: MessageInteraface = {
     SenderID: 0,
     ReciverID: 1,
     Content: "Love me Love my Dog",
-    TimeSend: CreateDateFromNow({ Mins: -15 }),
+    TimeSend: new Date('2024-03-11T09:20:00Z'),
 };
 
 export var ExampleMessage0And1_2: MessageInteraface = {
     SenderID: 0,
     ReciverID: 1,
     Content: "lol lollllllllllllllllllllllllllllllllllllllllllllllllll",
-    TimeSend: CreateDateFromNow({ Mins: -15, Seconds: 10 }),
+    TimeSend: new Date('2024-03-11T09:20:10Z'),
 };
 
 export var ExampleMessage0And1_3: MessageInteraface = {
     SenderID: 1,
     ReciverID: 0,
     Content: "roger That we love 555",
-    TimeSend: CreateDateFromNow({ Mins: -15, Seconds: 15 }),
+    TimeSend: new Date('2024-03-11T09:20:15Z'),
 };
 
 
 export var ExampleMessage0And2_1: MessageInteraface = {
     SenderID: 2,
     ReciverID: 0,
-    Content: "roger That we love money",
-    TimeSend: CreateDateFromNow({ Mins: -30 }),
+    Content: "roger That we love money1",
+    TimeSend: new Date('2024-02-10T07:20:00Z'),
 }
 
 export var ExampleMessage0And2_2: MessageInteraface = {
     SenderID: 2,
     ReciverID: 0,
-    Content: "roger That we love money",
-    TimeSend: CreateDateFromNow({ Mins: -30, Seconds: 15 }),
+    Content: "roger That we love money2",
+    TimeSend: new Date('2024-02-10T07:25:00Z'),
 }
 
 export var ExampleMessage0And2_3: MessageInteraface = {
     SenderID: 0,
     ReciverID: 2,
-    Content: "roger That we love money",
-    TimeSend: CreateDateFromNow({ Mins: -30, Seconds: 30 }),
+    Content: "roger That we love money3",
+    TimeSend: new Date('2024-02-11T07:25:00Z'),
 }
 
 export var ExampleMessage0And2_4: MessageInteraface = {
     SenderID: 0,
     ReciverID: 2,
     Content: "roger That we love money",
-    TimeSend: CreateDateFromNow({ Mins: -30, Seconds: 45 }),
+    TimeSend: new Date('2024-03-11T07:25:00Z'),
 }
 export var ExampleMessage0And2_5: MessageInteraface = {
     SenderID: 0,
     ReciverID: 2,
     Content: "roger That we love money",
-    TimeSend: CreateDateFromNow({ Mins: -30, Seconds: 60 }),
+    TimeSend: new Date('2024-02-11T19:25:00Z'),
 }
