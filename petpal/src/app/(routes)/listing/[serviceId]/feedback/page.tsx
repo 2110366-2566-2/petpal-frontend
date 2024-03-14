@@ -32,8 +32,8 @@ export default function FeedbackPage({serviceId}: {serviceId:string}){
     }
 
     return(
-        <div className="items-center flex flex-col border-1 m-[50px] bg-[#DFDFDF] rounded-[10px]">
-            <div className="m-auto mt-[30px] mb-[30px] ">
+        <div className="items-center flex flex-col border-1 m-[50px] bg-white shadow-md rounded-[10px]">
+            <div className="m-auto mt-[30px] mb-[30px] font-bold ">
             <span>Rating and Feedback this Booking</span>
             </div>
             
@@ -42,11 +42,12 @@ export default function FeedbackPage({serviceId}: {serviceId:string}){
                 <div className="jgrid grid-cols-1 content-start mb-[30px] grid-flow-row m-auto w-[90%]">
                     <div className='flex justify-between'>
                     <div className="grid grid-cols-1">
-                        <span>Feedback :</span>
+                        <span className='font-bold text[24px]'>Feedback :</span>
                         <span>{component.content}</span>
                     </div>
                     <div>
-                    <span>Rating : {component.rating}</span>
+                    <span className='font-bold text[24px]'>Rating :</span>
+                    <span> {component.rating}</span>
                     </div>
                     </div>
                 </div>
