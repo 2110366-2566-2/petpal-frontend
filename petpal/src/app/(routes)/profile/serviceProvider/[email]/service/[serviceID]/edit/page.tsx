@@ -3,12 +3,13 @@ import { useState, useEffect } from 'react'
 const createServiceImage = require('../../../../../_components/createServiceImage.jpg')
 import Image from 'next/image'
 import SmallButtonComponent from '../../../../../_components/SmallButtonComponent'
-import { createServiceButton , cancelServiceButton } from '../../../../../_interface/ButtonPropsInterface'
+import { editServiceButton , cancelServiceButton } from '../../../../../_interface/ButtonPropsInterface'
 import AppointmentTime from '../../../../../_components/AppointmentTime'
 import get_service_by_id from '../../../../../../../libs/service'
 import  {ServiceInterface, TimeslotInterface}  from '../../_interface/service'
+import updateServiceAPI from '@/app/libs/updateServiceApi'
 
-export default function createService({params}:{params:{email:string, serviceID:string}}){
+export default function editService({params}:{params:{email:string, serviceID:string}}){
     const [countTimeslot , setCountTimeslot] = useState(1)
     const [deleteTime , setDeleteTime] = useState(false)
     const [timeslot , setTimeslot] = useState<{id:number, value:{date:string, stime:string, etime:string}}[]>([])
@@ -76,7 +77,22 @@ export default function createService({params}:{params:{email:string, serviceID:
             );
             setTimeslot(newTimeslot);
             console.log('update timeslot' , newTimeslot)
-      };
+    };
+
+    const updateService = async (
+        service_id:string,
+        service_name:string,
+        service_type:string,
+        service_description:string,
+        price:number,
+        timeslot:Array<Object>
+    ) => {
+        return await updateServiceAPI(service_id, service_name, service_type, service_description, price, timeslot)
+    }
+
+    const navigateBack = () => {
+        window.history.back()
+    }
 
     return(
         <div className='items-center'>
@@ -95,6 +111,7 @@ export default function createService({params}:{params:{email:string, serviceID:
                         focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 peer-focus:text-primary
                         border-[#D9D9D9] border-[3px]'
                         defaultValue={service_name}
+                        onChange={(e) => setServiceName(e.target.value)}
                          />
                     </div>
                     <div className="my-2">
@@ -103,6 +120,7 @@ export default function createService({params}:{params:{email:string, serviceID:
                         focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 peer-focus:text-primary
                         border-[#D9D9D9] border-[3px]'
                         defaultValue={service_type}
+                        onChange={(e) => setServiceType(e.target.value)}
                          />
                     </div>
                     <div className="my-2">
@@ -111,6 +129,7 @@ export default function createService({params}:{params:{email:string, serviceID:
                         focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 peer-focus:text-primary
                         border-[#D9D9D9] border-[3px]'
                         defaultValue={service_description}
+                        onChange={(e) => setServiceDescription(e.target.value)}
                          />
                     </div>
                     <div>
@@ -147,10 +166,11 @@ export default function createService({params}:{params:{email:string, serviceID:
                         focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 peer-focus:text-primary
                         border-[#D9D9D9] border-[3px]'
                         defaultValue={price}
+                        onChange={(e) => setPrice(parseInt(e.target.value))}
                         />
                     </div>
                     <div className='hidden md:grid grid-cols-2 gap-[16px]'>
-                        <SmallButtonComponent ButtonProps={createServiceButton}></SmallButtonComponent>
+                        <SmallButtonComponent ButtonProps={editServiceButton} onClick={async() => {updateService(params.serviceID, service_name, service_type, service_description, price, timeslot)}}></SmallButtonComponent>
                         <SmallButtonComponent ButtonProps={cancelServiceButton}></SmallButtonComponent>
                     </div>
                 </div>

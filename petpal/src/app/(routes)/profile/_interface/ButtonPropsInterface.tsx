@@ -46,6 +46,14 @@ export var createServiceButton:ButtonPropsInterface = {
     Link:"./",
 }
 
+export var editServiceButton:ButtonPropsInterface = {
+    Name:"Submit",
+    Width:"w-[102px]",
+    BgColor:"bg-orange",
+    FontColor:"text-[#FFF]",
+    Link:"./edit",
+}
+
 export var cancelServiceButton:ButtonPropsInterface = {
     Name:"Cancel",
     Width:"w-[102px]",
