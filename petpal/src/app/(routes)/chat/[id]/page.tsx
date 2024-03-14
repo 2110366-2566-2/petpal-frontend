@@ -72,22 +72,23 @@ export default function ChatHistory({ params }: { params: { Id: number } }) {
     useEffect(() => {
         if (conn == null) {
             console.log("Does not have conn might error")
-        } else {
-            console.log("connect")
-            conn.onerror = (error) => {
-                console.log(`Websocket error: ${error.target}`);
-            };
-            conn.onopen = (event) => {
-                console.log("connection start")
-                conn.send("connection start")
-            }
-            conn.onmessage = (message) => {
-                // const m: Message = JSON.parse(message.data)
-                // console.log(m.content)
-                console.log("555535115353")
-            }
-            connection.current = conn
+            return;
         }
+        console.log("connect")
+        conn.onerror = (error) => {
+            console.log(`Websocket error: ${error.target}`);
+        };
+        conn.onopen = (event) => {
+            console.log("connection start")
+            conn.send("connection start")
+        }
+        conn.onmessage = (message) => {
+            // const m: Message = JSON.parse(message.data)
+            // console.log(m.content)
+            console.log(message.data)
+        }
+        connection.current = conn
+
     }, [conn])
 
     const sendMessage = () => {
