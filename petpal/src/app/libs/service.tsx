@@ -31,7 +31,10 @@ interface Service {
 export default async function get_service_by_id(id : string){
     // get current entity and wait for the response
     const current_entity = await getCurrentEntity()
-    console.log('current entity', current_entity)   
+    console.log('current entity', current_entity)
+    console.log('services', current_entity.services)
+    console.log('id', id)
+  
     const service = current_entity.services.find((service : Service) => service.serviceID === id)
 
     return service

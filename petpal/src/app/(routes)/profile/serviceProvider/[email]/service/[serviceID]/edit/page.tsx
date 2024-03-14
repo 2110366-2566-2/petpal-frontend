@@ -9,7 +9,7 @@ import get_service_by_id from '../../../../../../../libs/service'
 import  {ServiceInterface, TimeslotInterface}  from '../../_interface/service'
 import updateServiceAPI from '@/app/libs/updateServiceApi'
 
-export default function editService({params}:{params:{email:string, serviceID:string}}){
+export default function editService({params}:{params:{email:string, serviceId:string}}){
     const [countTimeslot , setCountTimeslot] = useState(1)
     const [deleteTime , setDeleteTime] = useState(false)
     const [timeslot , setTimeslot] = useState<{id:number, value:{date:string, stime:string, etime:string}}[]>([])
@@ -19,9 +19,10 @@ export default function editService({params}:{params:{email:string, serviceID:st
     const [service_type, setServiceType] = useState('')
     const [service_description, setServiceDescription] = useState('')
     const [price, setPrice] = useState(0)
+    console.log('param id', params.serviceId)
     useEffect(() => {
-        get_service_by_id(params.serviceID).then((service : ServiceInterface) => {
-            console.log(service)
+        get_service_by_id(params.serviceId).then((service : ServiceInterface) => {
+            console.log('service', service)
             // copy values from service to state
             setServiceName(service.serviceName)
             setServiceType(service.serviceType)
@@ -64,8 +65,7 @@ export default function editService({params}:{params:{email:string, serviceID:st
         return () => {
             console.log('delete timeslot',idToDelete)
             const updatedComponents = timeslot.filter((index) => index.id !== idToDelete);
-            setTimeslot(updatedComponents);
-            
+            setTimeslot(updatedComponents);  
         };
     }
 
@@ -170,7 +170,7 @@ export default function editService({params}:{params:{email:string, serviceID:st
                         />
                     </div>
                     <div className='hidden md:grid grid-cols-2 gap-[16px]'>
-                        <SmallButtonComponent ButtonProps={editServiceButton} onClick={async() => {updateService(params.serviceID, service_name, service_type, service_description, price, timeslot)}}></SmallButtonComponent>
+                        <SmallButtonComponent ButtonProps={editServiceButton} onClick={async() => {updateService(params.serviceId, service_name, service_type, service_description, price, timeslot)}}></SmallButtonComponent>
                         <SmallButtonComponent ButtonProps={cancelServiceButton}></SmallButtonComponent>
                     </div>
                 </div>

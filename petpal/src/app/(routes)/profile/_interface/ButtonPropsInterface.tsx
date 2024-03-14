@@ -46,6 +46,15 @@ export var createServiceButton: ButtonPropsInterface = {
     Link: "./",
 }
 
+export var editServiceButton: ButtonPropsInterface = {
+    Name: "Confirm",
+    Width: "w-[102px]",
+    BgColor: "bg-orange",
+    FontColor: "text-[#FFF]",
+    Link: "./edit",
+}
+
+
 export var cancelServiceButton: ButtonPropsInterface = {
     Name: "Cancel",
     Width: "w-[102px]",
