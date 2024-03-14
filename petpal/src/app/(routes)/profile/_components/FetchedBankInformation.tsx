@@ -21,10 +21,10 @@ export default function FetchBankInformation(){
     useEffect(() => {
 
         const fetchCurrentEntity = async () => {
-            const LogData = await LoginApi()
-            setCookie("token",LogData?.data.AccessToken);
-            console.log("logdata from login",LogData)
-            setUserType(LogData?.data.logintype)
+            // const LogData = await LoginApi()
+            // setCookie("token",LogData?.data.AccessToken);
+            // console.log("logdata from login",LogData)
+            // setUserType(LogData?.data.logintype)
             const entity =await getCurrentEntity()
             setUserInfo(entity)
             setHaveBank(entity.defaultAccountNumber != "" && entity.defaultBank != "")
