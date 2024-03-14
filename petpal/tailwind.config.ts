@@ -22,8 +22,6 @@ const config: Config = {
       "cream" : "#FAF8ED",
     },
   },
-  plugins: [
-    // require('@tailwindcss/forms'),
-  ],
+  plugins: [],
 };
 export default config;

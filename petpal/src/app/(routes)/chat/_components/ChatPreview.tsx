@@ -1,11 +1,12 @@
 import ChatHistoryUserInterface from "../_interface/ChatHistoryUserInterface";
-import MockImage from "../../../../../public/gold.jpg"
+import { useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation';
 import MessageInteraface from "../_interface/MessageInterface";
 
 var getLastSendTimeText = (MessageHistory: MessageInteraface[]) => {
     var ArrayLength: number = MessageHistory.length
     if (ArrayLength == 0) {
-        return <p className="text-buttom text-[8px] text-white font-extralight select-none">00/00</p>
+        return <p className="text-buttom text-[8px] text-white font-extralight select-none"></p>
     } else {
         var LastMessageSent = MessageHistory[MessageHistory.length - 1].TimeSend
         var Day = LastMessageSent.getDate()
@@ -19,7 +20,7 @@ var getLastSendTimeText = (MessageHistory: MessageInteraface[]) => {
 var getLastSendText = (MessageHistory: MessageInteraface[]) => {
     var ArrayLength: number = MessageHistory.length
     if (ArrayLength == 0) {
-        return <p className="text-left mr-auto truncate text-white font-extralight text-[14px] select-none" >No Text</p>
+        return <div className="text-left mr-auto truncate text-white font-extralight text-[14px] select-none" ></div>
     } else {
         var LastMessageContent = MessageHistory[MessageHistory.length - 1].Content
         return (
@@ -54,15 +55,23 @@ var getNumReadNotification = (MessageHistory: MessageInteraface[], LastSee: Date
     }
 }
 
-export default function ChatPreview({ ChatHistoryUser }: { ChatHistoryUser: ChatHistoryUserInterface }): JSX.Element {
-    var ID: Number = ChatHistoryUser.ID
+
+
+
+export default function ChatPreview({ ChatHistoryUser, setUserId }: { ChatHistoryUser: ChatHistoryUserInterface, setUserId: (value: number) => void }): JSX.Element {
+    var Id: number = ChatHistoryUser.Id
     var Name: string = ChatHistoryUser.Name
     var MessageHistory: MessageInteraface[] = ChatHistoryUser.MessageHistory
     var Picture: string = ChatHistoryUser.Picture
     var LastSee: Date = ChatHistoryUser.LastSee
 
+    const currentPage: string = usePathname();
+    var PathComponent: string[] = currentPage.split("/")
+    var newPath: string = PathComponent.slice(0, -1).join("/") + `/${Id}`
+    // router.push(newPath)
+
     return (
-        <div className="bg-white flex felx-row px-[20px] py-[12px] space-x-[20px] hover:bg-[#D9D9D9A1] focus:bg-[#000000]">
+        <div onClick={() => { setUserId(Id) }} className="bg-white flex felx-row px-[20px] py-[12px] space-x-[20px] hover:bg-[#D9D9D9A1] focus:bg-[#000000]">
             <img src={Picture} alt="" className="w-[60px] h-[60px] rounded-full select-none" />
             <div className="m-auto block grow">
                 <div className="m-auto flex felx-row space-x-[10px]">
