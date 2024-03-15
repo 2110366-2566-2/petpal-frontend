@@ -1,4 +1,5 @@
-import ChatHistoryUserInterface from "../_interface/ChatHistoryUserInterface"
+import ChatHistoryUserInterface from "@app/(routes)/chat/_interface/ChatHistoryUserInterface";
+
 export default function OnChangeSearch(event: React.ChangeEvent<HTMLInputElement>, AllChatHistory: ChatHistoryUserInterface[], SetShownChatHistoryUserList: (value: ChatHistoryUserInterface[]) => void): void {
     const SearchText: string = event.currentTarget.value
     let NewShownChatHistory: ChatHistoryUserInterface[] = []

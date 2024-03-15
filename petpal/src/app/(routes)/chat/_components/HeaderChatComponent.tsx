@@ -1,4 +1,4 @@
-import BackArrow from "../_src/BackArrow.png";
+import BackArrow from "@app/(routes)/chat/_src/BackArrow.png";
 // import { ReactComponent as MySuperCustomIconComponent } from '../_src/vector.svg';
 export default function HeaderChatComponent({ Text }: { Text: string }) {
   var HeaderText: string = Text

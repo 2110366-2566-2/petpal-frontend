@@ -1,5 +1,6 @@
-import ChatHistoryUserInterface from "./ChatHistoryUserInterface";
-import { ExampleChatHistoryUser1, ExampleChatHistoryUser2, ExampleChatHistoryUser3 } from "./ChatHistoryUserInterface";
+import ChatHistoryUserInterface from "@app/(routes)/chat/_interface/ChatHistoryUserInterface";
+import { ExampleChatHistoryUser1, ExampleChatHistoryUser2, ExampleChatHistoryUser3 } from "@app/(routes)/chat/_interface/ChatHistoryUserInterface";
+
 export default interface ChatPageinterface {
     ID: Number;
     Name: string;

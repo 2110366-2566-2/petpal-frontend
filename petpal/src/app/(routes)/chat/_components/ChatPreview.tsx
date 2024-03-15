@@ -1,7 +1,7 @@
-import ChatHistoryUserInterface from "../_interface/ChatHistoryUserInterface";
+import ChatHistoryUserInterface from "@app/(routes)/chat/_interface/ChatHistoryUserInterface";
 import { useRouter } from 'next/navigation'
 import { usePathname } from 'next/navigation';
-import MessageInteraface from "../_interface/MessageInterface";
+import MessageInteraface from "@app/(routes)/chat/_interface/MessageInterface";
 
 var getLastSendTimeText = (MessageHistory: MessageInteraface[]) => {
     var ArrayLength: number = MessageHistory.length

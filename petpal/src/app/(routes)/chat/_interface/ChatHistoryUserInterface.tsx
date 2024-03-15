@@ -1,7 +1,16 @@
-import MessageInteraface from "./MessageInterface";
-import CreateDateFromNow from "../_utils/CreateDateFromNow";
-import { ExampleMessage0And1_1, ExampleMessage0And1_2, ExampleMessage0And1_3, ExampleMessage0And2_1, ExampleMessage0And2_2, ExampleMessage0And2_3, ExampleMessage0And2_4, ExampleMessage0And2_5 } from "./MessageInterface";
+import MessageInteraface from "@app/(routes)/chat/_interface/MessageInterface";
+import CreateDateFromNow from "@app/(routes)/chat/_utils/CreateDateFromNow";
+import { 
+    ExampleMessage0And1_1, 
+    ExampleMessage0And1_2, 
+    ExampleMessage0And1_3, 
+    ExampleMessage0And2_1, 
+    ExampleMessage0And2_2, 
+    ExampleMessage0And2_3, 
+    ExampleMessage0And2_4, 
+    ExampleMessage0And2_5 } from "@app/(routes)/chat/_interface/MessageInterface";
 import MockImage from "../../../../../public/gold.jpg"
+
 
 export default interface ChatHistoryUserInterface {
     Id: number;
