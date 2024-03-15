@@ -3,8 +3,8 @@
 
 import {ChangeEvent, useState} from 'react'
 import React from 'react'
-import BankButton from './BankButton';
-import FetchedBankInformation from './FetchedBankInformation'
+import BankButton from "@app/(routes)/profile/_components/BankButton";
+import FetchedBankInformation from "@app/(routes)/profile/_components/FetchedBankInformation"
 import { setdefaultBank } from '@/app/libs/user/userBackend';
 
 export default function BankEditInformation(){

@@ -1,6 +1,6 @@
 "use client";
 import React, { ChangeEvent, useState } from "react";
-import Button from "../register/_components/Button";
+import Button from "@/app/(routes)/register/_components/Button";
 import login from "@/app/libs/auth/login";
 
 export default function Login() {

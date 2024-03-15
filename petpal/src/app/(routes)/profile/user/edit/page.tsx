@@ -1,14 +1,13 @@
 import React from 'react'
-import ProfilePictureComponent from '../../_components/ProfilePictureComponent'
-import RatingComponent from '../../_components/RatingComponent'
-import ServiceListComponent from '../../_components/ServiceListComponent'
-import ServiceProviderInterface from '../../_interface/ServiceProviderInterface'
-import ServiceInterface from '../../_interface/ServiceInterface'
-// import NavBar from '@/app/component/narbar'
-import PetInformation from '../../_components/PetInformation'
-import FetchBankInformation from '../../_components/FetchedBankInformation'
-import SmallButtonComponent from '../../_components/SmallButtonComponent'
-import { editProfileButtonProps, saveEditButtonProps } from '../../_interface/ButtonPropsInterface'
+import ProfilePictureComponent from "@app/(routes)/profile/_components/ProfilePictureComponent"
+import RatingComponent from "@app/(routes)/profile/_components/RatingComponent"
+import ServiceListComponent from "@app/(routes)/profile/_components/ServiceListComponent"
+import ServiceProviderInterface from "@app/(routes)/profile/_interface/ServiceProviderInterface"
+import ServiceInterface from "@app/(routes)/profile/_interface/ServiceInterface"
+import PetInformation from "@app/(routes)/profile/_components/PetInformation"
+import FetchBankInformation from "@app/(routes)/profile/_components/FetchedBankInformation"
+import SmallButtonComponent from "@app/(routes)/profile/_components/SmallButtonComponent"
+import { editProfileButtonProps, saveEditButtonProps } from "@app/(routes)/profile/_interface/ButtonPropsInterface"
 
 
 export default function Profile() {

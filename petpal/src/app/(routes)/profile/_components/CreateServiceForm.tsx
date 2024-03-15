@@ -1,10 +1,10 @@
 'use client'
 import { useState , useEffect } from 'react'
-import createServiceImage from '../_components/createServiceImage.jpg'
+import createServiceImage from "@app/(routes)/profile/_components/createServiceImage.jpg"
 import Image from 'next/image'
-import SmallButtonComponent from '../_components/SmallButtonComponent'
-import { createServiceButton , cancelServiceButton } from '../_interface/ButtonPropsInterface'
-import AppointmentTime from '../_components/AppointmentTime'
+import SmallButtonComponent from "@app/(routes)/profile/_components/SmallButtonComponent"
+import { createServiceButton , cancelServiceButton } from "@app/(routes)/profile/_interface/ButtonPropsInterface"
+import AppointmentTime from "@app/(routes)/profile/_components/AppointmentTime"
 import createServiceApi from '@/app/libs/service/createServiceApi'
 export default function CreateServiceForm(){
     const [countTimeslot , setCountTimeslot] = useState(1)

@@ -1,4 +1,4 @@
-import CreateServiceForm from "../../../_components/CreateServiceForm";
+import CreateServiceForm from "@app/(routes)/profile/_components/CreateServiceForm"
 
 export default function createService(){
     return(

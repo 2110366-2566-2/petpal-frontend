@@ -1,8 +1,8 @@
 "use client";
 import React, { ChangeEvent, useState } from "react";
-import Button from "./_components/Button";
-import registerUser from "@/app/libs/auth/registerUser";
-import registerSVCP from "@/app/libs/auth/registerSVCP";
+import Button from "@app/(routes)/register/_components/Button"
+import registerUser from "@app/libs/auth/registerUser";
+import registerSVCP from "@app/libs/auth/registerSVCP";
 
 export default function Register() {
     const [address, setAddress] = useState("");

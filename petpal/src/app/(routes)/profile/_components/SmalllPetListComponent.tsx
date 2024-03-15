@@ -1,4 +1,4 @@
-import PetInterface from "../_interface/PetInterface"
+import PetInterface from "@app/(routes)/profile/_interface/PetInterface"
 
 
 var getPetEmoji = (PetType:string):string => {

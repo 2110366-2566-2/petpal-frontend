@@ -2,8 +2,8 @@
 import React, { useState } from "react";
 import { redirect } from 'next/navigation';
 import { usePathname } from 'next/navigation';
-import Searchbar from "./_components/Searchbar";
-import Searchresult from "./_components/Searchresult";
+import Searchbar from "@app/(routes)/listing/_components/Searchbar";
+import Searchresult from "@app/(routes)/listing/_components/Searchresult";
 import SearchIcon from '@mui/icons-material/Search';
 import { Box, Button, FormControl, Input, InputAdornment, InputLabel, MenuItem, TextField } from '@mui/material';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
