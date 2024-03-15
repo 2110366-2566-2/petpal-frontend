@@ -2,7 +2,7 @@ import Image from "next/image";
 import defaultImage from "./cat.png";
 import BasicButton from "@/app/_component/BasicButton";
 import { useRouter } from "next/router";
-import getSVCP from "@/app/libs/getSVCP";
+import getSVCP from "@/app/libs/serviceProvider/getSVCP";
 import ConfirmAppointmentButton from "@/app/(routes)/profile/_components/ConfirmAppointmentBtn";
 export default function BookAppointment() {
     return (

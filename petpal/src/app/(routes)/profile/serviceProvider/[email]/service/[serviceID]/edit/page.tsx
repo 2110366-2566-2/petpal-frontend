@@ -5,9 +5,9 @@ import Image from 'next/image'
 import SmallButtonComponent from '../../../../../_components/SmallButtonComponent'
 import { editServiceButton , cancelServiceButton } from '../../../../../_interface/ButtonPropsInterface'
 import AppointmentTime from '../../../../../_components/AppointmentTime'
-import get_service_by_id from '../../../../../../../libs/service'
+import get_service_by_id from '../../../../../../../libs/service/service'
 import  {ServiceInterface, TimeslotInterface}  from '../../_interface/service'
-import updateServiceAPI from '@/app/libs/updateServiceApi'
+import updateServiceAPI from '@/app/libs/service/updateServiceApi'
 
 export default function editService({params}:{params:{email:string, serviceId:string}}){
     const [countTimeslot , setCountTimeslot] = useState(1)

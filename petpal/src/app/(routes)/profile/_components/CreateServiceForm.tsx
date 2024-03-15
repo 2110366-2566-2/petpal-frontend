@@ -5,7 +5,7 @@ import Image from 'next/image'
 import SmallButtonComponent from '../_components/SmallButtonComponent'
 import { createServiceButton , cancelServiceButton } from '../_interface/ButtonPropsInterface'
 import AppointmentTime from '../_components/AppointmentTime'
-import createServiceApi from '@/app/libs/createServiceApi'
+import createServiceApi from '@/app/libs/service/createServiceApi'
 export default function CreateServiceForm(){
     const [countTimeslot , setCountTimeslot] = useState(1)
     const [deleteTime , setDeleteTime] = useState(false)

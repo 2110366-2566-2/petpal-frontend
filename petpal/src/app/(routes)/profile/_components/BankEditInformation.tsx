@@ -5,7 +5,7 @@ import {ChangeEvent, useState} from 'react'
 import React from 'react'
 import BankButton from './BankButton';
 import FetchedBankInformation from './FetchedBankInformation'
-import { setdefaultBank } from '@/app/libs/userBackend';
+import { setdefaultBank } from '@/app/libs/user/userBackend';
 
 export default function BankEditInformation(){
     const [accountNumber , setAccountNumber] = useState("")

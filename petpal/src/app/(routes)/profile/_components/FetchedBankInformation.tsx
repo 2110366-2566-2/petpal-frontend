@@ -1,9 +1,9 @@
 'use client'
 
-import {deleteBank, getCurrentEntity, setdefaultBank} from '@/app/libs/userBackend';
+import {deleteBank, getCurrentEntity, setdefaultBank} from '@/app/libs/user/userBackend';
 import BankEditInformation from './BankEditInformation';
 import BankButton from './BankButton';
-import { LoginApi } from '@/app/libs/userBackend';
+import { LoginApi } from '@/app/libs/user/userBackend';
 import { setCookie } from "cookies-next";
 import { useState , useEffect, ReactEventHandler, ReactElement, ReactComponentElement } from 'react';
 
