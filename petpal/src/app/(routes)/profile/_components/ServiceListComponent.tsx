@@ -1,5 +1,5 @@
 import React from "react";
-import ServiceInterface from "../_interface/ServiceInterface";
+import ServiceInterface from "@app/(routes)/profile/_interface/ServiceInterface";
 
 
 

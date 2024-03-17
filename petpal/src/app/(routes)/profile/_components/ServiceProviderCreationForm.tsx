@@ -1,15 +1,15 @@
 'use client'
 import React from 'react'
-import ProfilePictureComponent from '../_components/ProfilePictureComponent'
-import RatingComponent from '../_components/RatingComponent'
-import ServiceListComponent from '../_components/ServiceListComponent'
-import ServiceProviderInterface from '../_interface/ServiceProviderInterface'
-import ServiceInterface from '../_interface/ServiceInterface'
+import ProfilePictureComponent from "@app/(routes)/profile/_components/ProfilePictureComponent";
+import RatingComponent from "@app/(routes)/profile/_components/RatingComponent";
+import ServiceListComponent from "@app/(routes)/profile/_components/ServiceListComponent";
+import ServiceProviderInterface from "@app/(routes)/profile/_interface/ServiceProviderInterface";
+import ServiceInterface from "@app/(routes)/profile/_interface/ServiceInterface";
 // import NavBar from '@/app/component/narbar'
-import BankEditInformation from '../_components/BankEditInformation'
-import FetchedBankInformation from '../_components/FetchedBankInformation'
-import { saveEditButtonProps , editProfileButtonProps } from '../_interface/ButtonPropsInterface'
-import SmallButtonComponent from '../_components/SmallButtonComponent'
+import BankEditInformation from "@app/(routes)/profile/_components/BankEditInformation";
+import FetchedBankInformation from "@app/(routes)/profile/_components/FetchedBankInformation";
+import { saveEditButtonProps , editProfileButtonProps } from "@app/(routes)/profile/_interface/ButtonPropsInterface";
+import SmallButtonComponent from "@app/(routes)/profile/_components/SmallButtonComponent";
 
 
 export default function ServiceProviderCreationForm() {

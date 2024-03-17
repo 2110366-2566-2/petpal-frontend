@@ -4,18 +4,18 @@ import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 // import {getServerSession} from "next-auth";
 
-import ProfilePictureComponent from '../../_components/ProfilePictureComponent'
-import RatingComponent from '../../_components/RatingComponent'
-import ServiceListComponent from '../../_components/ServiceListComponent'
-import AdditionalImageComponent from '../../_components/AdditionalImageComponent'
-import createButtonList from '../../_utils/createButtonList';
+import ProfilePictureComponent from "@app/(routes)/profile/_components/ProfilePictureComponent"
+import RatingComponent from "@app/(routes)/profile/_components/RatingComponent"
+import ServiceListComponent from "@app/(routes)/profile/_components/ServiceListComponent"
+import AdditionalImageComponent from "@app/(routes)/profile/_components/AdditionalImageComponent"
+import createButtonList from "@app/(routes)/profile/_utils/createButtonList"
 
-import ServiceInterface from '../../_interface/ServiceInterface'
-import ServiceProviderInterface from '../../_interface/ServiceProviderInterface'
-import ButtonPropsInterface from '../../_interface/ButtonPropsInterface'
+import ServiceInterface from "@app/(routes)/profile/_interface/ServiceInterface"
+import ServiceProviderInterface from "@app/(routes)/profile/_interface/ServiceProviderInterface"
+import ButtonPropsInterface from "@app/(routes)/profile/_interface/ButtonPropsInterface"
 
-import { exampleProvider } from '../../_interface/ServiceProviderInterface'
-import { editProfileButtonProps, chagnePasswordButtonProps } from '../../_interface/ButtonPropsInterface'
+import { exampleProvider } from "@app/(routes)/profile/_interface/ServiceProviderInterface"
+import { editProfileButtonProps, chagnePasswordButtonProps } from "@app/(routes)/profile/_interface/ButtonPropsInterface"
 
 
 export default function EmailServiceProviderProfile({ params }: { params: { id: number } }) {

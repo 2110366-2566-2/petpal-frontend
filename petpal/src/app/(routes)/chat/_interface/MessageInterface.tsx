@@ -1,4 +1,4 @@
-import CreateDateFromNow from "../_utils/CreateDateFromNow";
+import CreateDateFromNow from "@app/(routes)/chat/_utils/CreateDateFromNow";
 
 export default interface MessageInteraface {
     SenderID: Number;

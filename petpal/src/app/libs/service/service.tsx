@@ -1,4 +1,4 @@
-import { getCurrentEntity } from "./userBackend";
+import { getCurrentEntity } from "../user/userBackend";
 
 // type Service struct {
 // 	ServiceID          string     `json:"serviceID" bson:"serviceID,omitempty"`

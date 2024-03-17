@@ -1,5 +1,5 @@
 'use client'
-import { getFeedbackApi } from '@/app/libs/feedback';
+import { getFeedbackApi } from '@/app/libs/service/feedback';
 import { orange } from '@mui/material/colors';
 import { useState,useEffect } from 'react';
 import React from 'react'; 

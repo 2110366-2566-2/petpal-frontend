@@ -1,10 +1,11 @@
-import ChatHistoryUserInterface from "../_interface/ChatHistoryUserInterface";
+import ChatHistoryUserInterface from "@app/(routes)/chat/_interface/ChatHistoryUserInterface";
+
 export default function UserIdToSelectChat(AllChatHistory: ChatHistoryUserInterface[], UserId: number): ChatHistoryUserInterface {
     const DefaultSelectChat = AllChatHistory[AllChatHistory.length - 1]
     let ChatHistory: ChatHistoryUserInterface
     for (let index = 0; index < AllChatHistory.length; index++) {
         ChatHistory = AllChatHistory[index]
-        if (ChatHistory.ID == UserId) return ChatHistory
+        if (ChatHistory.Id == UserId) return ChatHistory
     }
     return DefaultSelectChat
 }

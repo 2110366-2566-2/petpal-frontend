@@ -1,5 +1,5 @@
-import FeedbackPage from "./feedback/page"
-
+// import FeedbackPage from "./feedback/page"
+import FeedbackPage from "@app/(routes)/listing/[serviceId]/feedback/page"
 
 export default function ServicePage({params}:{params:{serviceId:string}}) {
     var id:string = params.serviceId

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import ButtonPropsInterface from '../_interface/ButtonPropsInterface'
+import ButtonPropsInterface from "@app/(routes)/profile/_interface/ButtonPropsInterface"
 import Link from 'next/link'
 
 export default function SmallButtonComponent({ButtonProps,Working,onClick}:{ButtonProps:ButtonPropsInterface,Working?:boolean,onClick?:any}) {

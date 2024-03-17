@@ -2,30 +2,30 @@
 import React from "react";
 import { useState, useEffect, useContext, useRef } from "react";
 
-import HeaderChatHistory from "../_components/HeaderChatHistory";
-import HeaderChatComponent from "../_components/HeaderChatComponent";
-import ChatPreview from "../_components/ChatPreview";
-import ChatHistoryBody from "../_components/ChatHistoryBody";
-import WebSocketProvider from "../_utils/WebsocketProvider";
+import HeaderChatHistory from "@app/(routes)/chat/_components/HeaderChatHistory";
+import HeaderChatComponent from "@app/(routes)/chat/_components/HeaderChatComponent";
+import ChatPreview from "@app/(routes)/chat/_components/ChatPreview";
+import ChatHistoryBody from "@app/(routes)/chat/_components/ChatHistoryBody";
+import WebSocketProvider from "@app/(routes)/chat/_utils/WebsocketProvider";
 
-import ChatHistoryUserInterface from "../_interface/ChatHistoryUserInterface";
-import ChatPageinterface from "../_interface/ChatPageInterface";
-import MessageInteraface from "../_interface/MessageInterface";
-import UserRoomInterface from "../_interface/UserRoomInterface";
+import ChatHistoryUserInterface from "@app/(routes)/chat/_interface/ChatHistoryUserInterface";
+import ChatPageinterface from "@app/(routes)/chat/_interface/ChatPageInterface";
+import MessageInteraface from "@app/(routes)/chat/_interface/MessageInterface";
+import UserRoomInterface from "@app/(routes)/chat/_interface/UserRoomInterface";
 
-import { ExampleChatPageUser1 } from "../_interface/ChatPageInterface";
-import { WebsocketContext } from "../_utils/WebsocketProvider";
+import { ExampleChatPageUser1 } from "@app/(routes)/chat/_interface/ChatPageInterface";
+import { WebsocketContext } from "@app/(routes)/chat/_utils/WebsocketProvider";
 
-import OnChangeSearch from "../_utils/HandleOnChangeSearch";
-import HandleOnSubmitText from "../_utils/HandleOnSubmitText";
+import OnChangeSearch from "@app/(routes)/chat/_utils/HandleOnChangeSearch";
+import HandleOnSubmitText from "@app/(routes)/chat/_utils/HandleOnSubmitText";
 
-import PlusIcon from "../_src/PlusIcon.png"
-import Maginifying from "../_src/Magnifying.png"
-import ImageLogo from "../_src/ImageLogo.png"
+import PlusIcon from "@app/(routes)/chat/_src/PlusIcon.png";
+import Maginifying from "@app/(routes)/chat/_src/Magnifying.png";
+import ImageLogo from "@app/(routes)/chat/_src/ImageLogo.png";
 
-import UserIdToSelectChat from "../_utils/UseIdToSelectChat";
+import UserIdToSelectChat from "@app/(routes)/chat/_utils/UseIdToSelectChat";
 
-import WebsocketJoinRoom from "../_utils/WebsocketJoinRoom";
+import WebsocketJoinRoom from "@app/(routes)/chat/_utils/WebsocketJoinRoom";
 
 type Message = {
     content: string

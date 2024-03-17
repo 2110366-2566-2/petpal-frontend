@@ -1,4 +1,5 @@
-import MessageInteraface from "../_interface/MessageInterface";
+import MessageInteraface from "@app/(routes)/chat/_interface/MessageInterface";
+
 export default function HandleOnSubmitText(
     message: string,
     CurrentUserId: number,

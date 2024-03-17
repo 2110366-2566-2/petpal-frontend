@@ -3,7 +3,7 @@ import { orange } from '@mui/material/colors';
 import { useState } from 'react';
 import React from 'react'; 
 import ReactStars from 'react-stars'
-import { postFeedbackApi } from '@/app/libs/feedback';
+import { postFeedbackApi } from '@/app/libs/service/feedback';
 export default function UserFeedbackPage(){
 
     const [content,setContent] = useState("")

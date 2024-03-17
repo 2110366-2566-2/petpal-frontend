@@ -1,5 +1,5 @@
-import SmallButtonComponent from "../_components/SmallButtonComponent"
-import ButtonPropsInterface from "../_interface/ButtonPropsInterface"
+import SmallButtonComponent from "@app/(routes)/profile/_components/SmallButtonComponent"
+import ButtonPropsInterface from "@app/(routes)/profile/_interface/ButtonPropsInterface"
 
 export default function createButtonList(isShow:boolean,buttonPropsList:ButtonPropsInterface[]){
     return (
