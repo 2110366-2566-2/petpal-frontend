@@ -1,13 +1,14 @@
 'use client'
 import { useState, useEffect } from 'react'
-const createServiceImage = require('../../../../../_components/createServiceImage.jpg')
+import createServiceImage from '@app/(routes)/profile/_components/createServiceImage.jpg'
 import Image from 'next/image'
-import SmallButtonComponent from '../../../../../_components/SmallButtonComponent'
-import { editServiceButton , cancelServiceButton } from '../../../../../_interface/ButtonPropsInterface'
-import AppointmentTime from '../../../../../_components/AppointmentTime'
-import get_service_by_id from '../../../../../../../libs/service/service'
-import  {ServiceInterface, TimeslotInterface}  from '../../_interface/service'
+import SmallButtonComponent from '@app/(routes)/profile/_components/SmallButtonComponent'
+import AppointmentTime from '@app/(routes)/profile/_components/AppointmentTime'
+import get_service_by_id from '@app/libs/service/service'
+import  {ServiceInterface, TimeslotInterface}  from '@app/(routes)/profile/serviceProvider/[email]/service/_interface/service'
 import updateServiceAPI from '@/app/libs/service/updateServiceApi'
+import { editServiceButton, cancelServiceButton } from '@app/(routes)/profile/_interface/ButtonPropsInterface'
+
 
 export default function editService({params}:{params:{email:string, serviceId:string}}){
     const [countTimeslot , setCountTimeslot] = useState(1)

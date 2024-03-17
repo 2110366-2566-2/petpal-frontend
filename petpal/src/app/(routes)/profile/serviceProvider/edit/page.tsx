@@ -1,14 +1,12 @@
 import React from 'react'
-import ProfilePictureComponent from '../../_components/ProfilePictureComponent'
-import RatingComponent from '../../_components/RatingComponent'
-import ServiceListComponent from '../../_components/ServiceListComponent'
-import ServiceProviderInterface from '../../_interface/ServiceProviderInterface'
-import ServiceInterface from '../../_interface/ServiceInterface'
-// import NavBar from '@/app/component/narbar'
-import BankInformation from '../../_components/BankInformation'
-import { saveEditButtonProps, editProfileButtonProps } from '../../_interface/ButtonPropsInterface'
-import SmallButtonComponent from '../../_components/SmallButtonComponent'
-import FetchBankInformation from '../../_components/FetchedBankInformation'
+import ProfilePictureComponent from '@app/(routes)/profile/_components/ProfilePictureComponent'
+import RatingComponent from '@app/(routes)/profile/_components/RatingComponent'
+import ServiceListComponent from '@app/(routes)/profile/_components/ServiceListComponent'
+import ServiceProviderInterface from '@app/(routes)/profile/_interface/ServiceProviderInterface'
+import ServiceInterface from '@app/(routes)/profile/_interface/ServiceInterface'
+import { saveEditButtonProps, editProfileButtonProps } from '@app/(routes)/profile/_interface/ButtonPropsInterface'
+import SmallButtonComponent from '@app/(routes)/profile/_components/SmallButtonComponent'
+import FetchBankInformation from '@app/(routes)/profile/_components/FetchedBankInformation'
 
 
 export default function Profile() {
