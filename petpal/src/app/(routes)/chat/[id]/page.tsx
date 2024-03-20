@@ -38,10 +38,9 @@ type Message = {
 
 type Conn = WebSocket | null
 
-export default function ChatHistory({ params }: { params: { Id: number } }) {
-    const [UserId, setUserId] = useState<number>(params.Id || 7);
+export default function ChatHistory({ params }: { params: { id: number } }) {
+    const [UserId, setUserId] = useState<number>(params.id || 7);
     const [IsShowChatPreview, SetIsShowChatPreview] = useState<boolean>(UserId == 0)
-    
     const ChatPageUser: ChatPageinterface = ExampleChatPageUser1
     const AllChatHistory: ChatHistoryUserInterface[] = ChatPageUser.ChatHistoryList
     const SelectedChatHistory: ChatHistoryUserInterface = UserIdToSelectChat(AllChatHistory, UserId)
@@ -62,7 +61,6 @@ export default function ChatHistory({ params }: { params: { Id: number } }) {
             //     Id: UserId,
             //     Username: `UserId:${UserId}`,
             //     Role: "user",
-
             // }
             // WebsocketJoinRoom(ChatHistory.RoomId, UserRoom, setConn)
         }
@@ -72,20 +70,13 @@ export default function ChatHistory({ params }: { params: { Id: number } }) {
             return;
         }
         ws.onopen = () =>{
-            console.log("Connecting to Websocket",ws)
+            console.log("Connecting to Websocket")
         }   
         ws.onmessage = (message) => {
             const m: Message = JSON.parse(message.data);
-            console.log(m);
-            const NewMessage: MessageInterface = {
-                SenderID: UserId,
-                ReceiverID: 0,
-                Content: m.content,
-                TimeSend: new Date()
+            if(m.content !== "A new user has joined the room" &&  m.content !== "user left the chat") {
+                HandleOnSubmitText(m.content, 0, UserId, ShownMessageHistory, SetShownMessageHistory)
             }
-            console.log("new message",NewMessage)
-            const NewShownMessageHistory: MessageInterface[] = [...ShownMessageHistory, NewMessage]
-            SetShownMessageHistory(NewShownMessageHistory)
         };
         setConn(ws);
     }, [])

@@ -10,21 +10,15 @@ export default interface MessageInterface {
 export var ExampleMessage0And1_1: MessageInterface = {
     SenderID: 0,
     ReceiverID: 1,
-    Content: "Love me Love my Dog",
+    Content: "Hello User1",
     TimeSend: new Date('2024-03-11T09:20:00Z'),
 };
 
-export var ExampleMessage0And1_2: MessageInterface = {
-    SenderID: 0,
-    ReceiverID: 1,
-    Content: "lol lollllllllllllllllllllllllllllllllllllllllllllllllll",
-    TimeSend: new Date('2024-03-11T09:20:10Z'),
-};
 
 export var ExampleMessage0And1_3: MessageInterface = {
     SenderID: 1,
     ReceiverID: 0,
-    Content: "roger That we love 555",
+    Content: "Hello User0",
     TimeSend: new Date('2024-03-11T09:20:15Z'),
 };
 

@@ -1,9 +1,9 @@
 import ChatHistoryUserInterface from "../_interface/ChatHistoryUserInterface";
 import { useRouter } from 'next/navigation'
 import { usePathname } from 'next/navigation';
-import MessageInteraface from "../_interface/MessageInterface";
+import MessageInterface from "../_interface/MessageInterface";
 
-var getLastSendTimeText = (MessageHistory: MessageInteraface[]) => {
+var getLastSendTimeText = (MessageHistory: MessageInterface[]) => {
     var ArrayLength: number = MessageHistory.length
     if (ArrayLength == 0) {
         return <p className="text-buttom text-[8px] text-white font-extralight select-none"></p>
@@ -17,7 +17,7 @@ var getLastSendTimeText = (MessageHistory: MessageInteraface[]) => {
     }
 }
 
-var getLastSendText = (MessageHistory: MessageInteraface[]) => {
+var getLastSendText = (MessageHistory: MessageInterface[]) => {
     var ArrayLength: number = MessageHistory.length
     if (ArrayLength == 0) {
         return <div className="text-left mr-auto truncate text-white font-extralight text-[14px] select-none" ></div>
@@ -29,7 +29,7 @@ var getLastSendText = (MessageHistory: MessageInteraface[]) => {
     }
 }
 
-var getNumReadNotification = (MessageHistory: MessageInteraface[], LastSee: Date) => {
+var getNumReadNotification = (MessageHistory: MessageInterface[], LastSee: Date) => {
     let count: number = 0
     for (let i = 0; i < MessageHistory.length; i++) {
         if (MessageHistory[i].TimeSend > LastSee) {
@@ -61,7 +61,7 @@ var getNumReadNotification = (MessageHistory: MessageInteraface[], LastSee: Date
 export default function ChatPreview({ ChatHistoryUser, setUserId }: { ChatHistoryUser: ChatHistoryUserInterface, setUserId: (value: number) => void }): JSX.Element {
     var Id: number = ChatHistoryUser.Id
     var Name: string = ChatHistoryUser.Name
-    var MessageHistory: MessageInteraface[] = ChatHistoryUser.MessageHistory
+    var MessageHistory: MessageInterface[] = ChatHistoryUser.MessageHistory
     var Picture: string = ChatHistoryUser.Picture
     var LastSee: Date = ChatHistoryUser.LastSee
 

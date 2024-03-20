@@ -1,22 +1,22 @@
-import MessageInteraface from "./MessageInterface";
+import MessageInterface from "./MessageInterface";
 import CreateDateFromNow from "../_utils/CreateDateFromNow";
-import { ExampleMessage0And1_1, ExampleMessage0And1_2, ExampleMessage0And1_3, ExampleMessage0And2_1, ExampleMessage0And2_2, ExampleMessage0And2_3, ExampleMessage0And2_4, ExampleMessage0And2_5 } from "./MessageInterface";
+import { ExampleMessage0And1_1, ExampleMessage0And1_3, ExampleMessage0And2_1, ExampleMessage0And2_2, ExampleMessage0And2_3, ExampleMessage0And2_4, ExampleMessage0And2_5 } from "./MessageInterface";
 import MockImage from "../../../../../public/gold.jpg"
 
 export default interface ChatHistoryUserInterface {
     Id: number;
     RoomId: number;
     Name: string;
-    MessageHistory: MessageInteraface[];
+    MessageHistory: MessageInterface[];
     Picture: string;
-    LastSee: Date
+    LastSee: Date;
 }
 
 export var ExampleChatHistoryUser1: ChatHistoryUserInterface = {
     Id: 1,
     RoomId: 10,
     Name: "lungPom",
-    MessageHistory: [ExampleMessage0And1_1, ExampleMessage0And1_2, ExampleMessage0And1_3],
+    MessageHistory: [ExampleMessage0And1_1, ExampleMessage0And1_3],
     Picture: MockImage.src,
     LastSee: CreateDateFromNow({}),
 };
