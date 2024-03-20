@@ -41,6 +41,7 @@ type Conn = WebSocket | null
 export default function ChatHistory({ params }: { params: { Id: number } }) {
     const [UserId, setUserId] = useState<number>(params.Id || 7);
     const [IsShowChatPreview, SetIsShowChatPreview] = useState<boolean>(UserId == 0)
+    
     const ChatPageUser: ChatPageinterface = ExampleChatPageUser1
     const AllChatHistory: ChatHistoryUserInterface[] = ChatPageUser.ChatHistoryList
     const SelectedChatHistory: ChatHistoryUserInterface = UserIdToSelectChat(AllChatHistory, UserId)
