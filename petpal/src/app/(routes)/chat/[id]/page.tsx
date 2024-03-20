@@ -10,7 +10,7 @@ import WebSocketProvider from "../_utils/WebsocketProvider";
 
 import ChatHistoryUserInterface from "../_interface/ChatHistoryUserInterface";
 import ChatPageinterface from "../_interface/ChatPageInterface";
-import MessageInteraface from "../_interface/MessageInterface";
+import MessageInterface from "../_interface/MessageInterface";
 import UserRoomInterface from "../_interface/UserRoomInterface";
 
 import { ExampleChatPageUser1 } from "../_interface/ChatPageInterface";
@@ -32,22 +32,22 @@ type Message = {
     client_id: string
     username: string
     room_id: string
+    timestamp : Date
     type: 'recv' | 'self'
 }
 
 type Conn = WebSocket | null
 
 export default function ChatHistory({ params }: { params: { Id: number } }) {
-    const [UserId, setUserId] = useState<number>(params.Id);
+    const [UserId, setUserId] = useState<number>(params.Id || 7);
     const [IsShowChatPreview, SetIsShowChatPreview] = useState<boolean>(UserId == 0)
     const ChatPageUser: ChatPageinterface = ExampleChatPageUser1
     const AllChatHistory: ChatHistoryUserInterface[] = ChatPageUser.ChatHistoryList
     const SelectedChatHistory: ChatHistoryUserInterface = UserIdToSelectChat(AllChatHistory, UserId)
-    const [ShownMessageHistory, SetShownMessageHistory] = useState<MessageInteraface[]>(SelectedChatHistory.MessageHistory)
+    const [ShownMessageHistory, SetShownMessageHistory] = useState<MessageInterface[]>(SelectedChatHistory.MessageHistory)
     const [ShownChatHistoryUserList, SetShownChatHistoryUserList] = useState<ChatHistoryUserInterface[]>(AllChatHistory)
-    // const { conn, setConn } = useContext(WebsocketContext)
+    //const { conn, setConn } = useContext(WebsocketContext)
     const [conn, setConn] = useState<Conn>(null)
-
 
     useEffect(() => {
         SetShownMessageHistory(SelectedChatHistory.MessageHistory)
@@ -65,26 +65,37 @@ export default function ChatHistory({ params }: { params: { Id: number } }) {
             // }
             // WebsocketJoinRoom(ChatHistory.RoomId, UserRoom, setConn)
         }
-        WebsocketJoinRoom(AllChatHistory[0].RoomId, { Id: UserId, Username: `UserId:${UserId}`, Role: "user" }, setConn)
-    }, [])
-    useEffect(() => {
-        if (conn == null) {
-            console.log("Does not have conn might error")
-        } else {
-            console.log("connect")
-            conn.onmessage = (message) => {
-                const m: Message = JSON.parse(message.data)
-                console.log(m.content)
-                console.log("555535115353")
-            }
+        const ws = WebsocketJoinRoom(AllChatHistory[0].RoomId, { Id: UserId, Username: `UserId:${UserId}`, Role: "user" });
+        if (ws == null) {
+            console.log("Connection is not established. Skipping event handler setup.");
+            return;
         }
-    }, [conn])
+        ws.onopen = () =>{
+            console.log("Connecting to Websocket",ws)
+        }   
+        ws.onmessage = (message) => {
+            const m: Message = JSON.parse(message.data);
+            console.log(m);
+            const NewMessage: MessageInterface = {
+                SenderID: UserId,
+                ReceiverID: 0,
+                Content: m.content,
+                TimeSend: new Date()
+            }
+            console.log("new message",NewMessage)
+            const NewShownMessageHistory: MessageInterface[] = [...ShownMessageHistory, NewMessage]
+            SetShownMessageHistory(NewShownMessageHistory)
+        };
+        setConn(ws);
+    }, [])
 
     const sendMessage = () => {
+        if(currentMessage === '') return;
         HandleOnSubmitText(currentMessage, 0, UserId, ShownMessageHistory, SetShownMessageHistory)
         conn?.send(currentMessage)
         setCurrentMessage("");
     }
+
     return (
         <div className="h-[calc(100vh-64px)]">
             <div className="flex flex-row items-top grow h-full">
