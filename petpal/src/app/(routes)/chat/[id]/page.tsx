@@ -1,30 +1,20 @@
 "use client"
 import React from "react";
-import { useState, useEffect, useContext } from "react";
-
+import { useState, useEffect} from "react";
 import HeaderChatHistory from "../_components/HeaderChatHistory";
 import HeaderChatComponent from "../_components/HeaderChatComponent";
 import ChatPreview from "../_components/ChatPreview";
 import ChatHistoryBody from "../_components/ChatHistoryBody";
-import WebSocketProvider from "../_utils/WebsocketProvider";
-
 import ChatHistoryUserInterface from "../_interface/ChatHistoryUserInterface";
 import ChatPageinterface from "../_interface/ChatPageInterface";
 import MessageInterface from "../_interface/MessageInterface";
-import UserRoomInterface from "../_interface/UserRoomInterface";
-
 import { ExampleChatPageUser1 } from "../_interface/ChatPageInterface";
-import { WebsocketContext } from "../_utils/WebsocketProvider";
-
 import OnChangeSearch from "../_utils/HandleOnChangeSearch";
 import HandleOnSubmitText from "../_utils/HandleOnSubmitText";
-
 import PlusIcon from "../_src/PlusIcon.png"
 import Maginifying from "../_src/Magnifying.png"
 import ImageLogo from "../_src/ImageLogo.png"
-
 import UserIdToSelectChat from "../_utils/UseIdToSelectChat";
-
 import WebsocketJoinRoom from "../_utils/WebsocketJoinRoom";
 
 type Message = {
@@ -39,14 +29,13 @@ type Message = {
 type Conn = WebSocket | null
 
 export default function ChatHistory({ params }: { params: { id: number } }) {
-    const [UserId, setUserId] = useState<number>(params.id || 7);
+    const [UserId, setUserId] = useState<number>(params.id);
     const [IsShowChatPreview, SetIsShowChatPreview] = useState<boolean>(UserId == 0)
     const ChatPageUser: ChatPageinterface = ExampleChatPageUser1
     const AllChatHistory: ChatHistoryUserInterface[] = ChatPageUser.ChatHistoryList
     const SelectedChatHistory: ChatHistoryUserInterface = UserIdToSelectChat(AllChatHistory, UserId)
     const [ShownMessageHistory, SetShownMessageHistory] = useState<MessageInterface[]>(SelectedChatHistory.MessageHistory)
     const [ShownChatHistoryUserList, SetShownChatHistoryUserList] = useState<ChatHistoryUserInterface[]>(AllChatHistory)
-    //const { conn, setConn } = useContext(WebsocketContext)
     const [conn, setConn] = useState<Conn>(null)
 
     useEffect(() => {
@@ -55,22 +44,24 @@ export default function ChatHistory({ params }: { params: { id: number } }) {
 
     const [currentMessage, setCurrentMessage] = useState<string>("");
     useEffect(() => {
-        let ChatHistory
-        for (ChatHistory of AllChatHistory) {
-            // const UserRoom: UserRoomInterface = {
-            //     Id: UserId,
-            //     Username: `UserId:${UserId}`,
-            //     Role: "user",
-            // }
-            // WebsocketJoinRoom(ChatHistory.RoomId, UserRoom, setConn)
-        }
         const ws = WebsocketJoinRoom(AllChatHistory[0].RoomId, { Id: UserId, Username: `UserId:${UserId}`, Role: "user" });
         if (ws == null) {
             console.log("Connection is not established. Skipping event handler setup.");
             return;
         }
+        // When websocket is start
         ws.onopen = () =>{
             console.log("Connecting to Websocket")
+            // Load Chat History
+            let ChatHistory
+            for (ChatHistory of AllChatHistory) {
+                // const UserRoom: UserRoomInterface = {
+                //     Id: UserId,
+                //     Username: `UserId:${UserId}`,
+                //     Role: "user",
+                // }
+                // WebsocketJoinRoom(ChatHistory.RoomId, UserRoom, setConn)
+            }
         }   
         ws.onmessage = (message) => {
             const m: Message = JSON.parse(message.data);
@@ -78,6 +69,10 @@ export default function ChatHistory({ params }: { params: { id: number } }) {
                 HandleOnSubmitText(m.content, 0, UserId, ShownMessageHistory, SetShownMessageHistory)
             }
         };
+        // When socket is close 
+        ws.onclose = () =>{
+            // save chat history soon
+        }
         setConn(ws);
     }, [])
 
