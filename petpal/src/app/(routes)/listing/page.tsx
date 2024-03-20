@@ -1,13 +1,13 @@
 'use client'
 import React, { useState } from "react";
-import { redirect } from 'next/navigation';
+import { redirect, useSearchParams } from 'next/navigation';
 import { usePathname } from 'next/navigation';
 import Searchbar from "@app/(routes)/listing/_components/Searchbar";
 import Searchresult from "@app/(routes)/listing/_components/Searchresult";
 import SearchIcon from '@mui/icons-material/Search';
 import { Box, Button, FormControl, Input, InputAdornment, InputLabel, MenuItem, TextField } from '@mui/material';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
-import { Kolker_Brush } from "next/font/google";
+
 
 interface Column {
     id: 'serviceName' | 'serviceType' | 'price' | 'rating';
@@ -136,9 +136,15 @@ export default function ServiceListing(){
         setPage(0);
       };
       
-      const [search,setSearch] = useState('')
-      const [cat,setCat] = useState('')
-      const [sortBy, setSortBy] = useState('serviceName');
+      //const [search,setSearch] = useState('')
+      //const [cat,setCat] = useState('')
+      //const [sortBy, setSortBy] = useState('serviceName');
+      const [searchParams, setSearchParams] = useSearchParams({search: "", cat:"", sortBy:"serviceName"})
+      const search = searchParams.get("search")
+      const cat = searchParams.get("cat")
+      const sortBy = searchParams.get("sortBy")
+
+
     return (
         <main>
             <main>
@@ -150,7 +156,11 @@ export default function ServiceListing(){
                             InputProps={{
                                 startAdornment: <InputAdornment position="start"><SearchIcon/></InputAdornment>,
                             }}
-                            onChange={(e)=>setSearch(e.target.value)}
+                            value={search}
+                            onChange={(e)=> setSearchParams((prev:any) => {
+                              prev.set("search",e.target.value)
+                              return prev
+                            })}
                         />
                     </Box>
                     <TextField
@@ -159,7 +169,10 @@ export default function ServiceListing(){
                         label="Select category"
                         defaultValue="All"
                         className='bg-white min-w-[160px]'
-                        onChange={(e)=>setCat(e.target.value)}
+                        onChange={(e)=> setSearchParams((prev:any) => {
+                          prev.set("cat",e.target.value)
+                          return prev
+                        })}
                     >
                         {category.map((option) => (
                             <MenuItem key={option.value} value={option.value}>
@@ -173,7 +186,10 @@ export default function ServiceListing(){
                         label="Sort by"
                         defaultValue="serviceName"
                         className='bg-white min-w-[186px]'
-                        onChange={(e)=>setSortBy(e.target.value)}
+                        onChange={(e)=> setSearchParams((prev:any) => {
+                          prev.set("sortBy",e.target.value)
+                          return prev
+                        })}
                     >
                         {sortby.map((option) => (
                             <MenuItem key={option.value} value={option.value}>
@@ -187,14 +203,14 @@ export default function ServiceListing(){
                 <Paper sx={{ width: '90%', overflow: 'hidden', maxWidth: 700 }}>
                     <TableContainer sx={{ maxHeight: 470 }}>
                     <Table stickyHeader aria-label="sticky table">
-                        <TableHead>
+                        <TableHead className="bg-gray">
                         <TableRow>
                             {columns.map((column) => (
                             <TableCell
                                 key={column.id}
                                 align={column.align}
                                 style={{ minWidth: column.minWidth}}
-                                className="font-bold"
+                                className="text-cream text-base font-bold bg-orange"
                             >
                                 {column.label}
                             </TableCell>
