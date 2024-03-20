@@ -1,13 +1,31 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Prompt } from "next/font/google";
 import "./globals.css";
+import NavBar from "./_component/navbar";
+import ReponsiveNavbar from "./_component/ReponsiveNavbar";
 
-const inter = Inter({ subsets: ["latin"] });
+
+const prompt = Prompt({
+  subsets: ["latin", "thai"],
+  weight: ['100','200','300','400','500','600','700','800','900'],
+});
+
+const navitems = [
+  {name : "Listing" , link : "/listing"},
+  {name : "Booking" , link : "/booking"},
+  {name : "Profile" , link : "/profile"}
+]
 
 export const metadata: Metadata = {
   title: "PetPal",
   description: "petpal",
 };
+
+let items = [
+  {name : "Listing" , link : "/listing"},
+  {name : "Booking" , link : "/booking"},
+  {name : "Profile" , link : "/profile"}
+]
 
 export default function RootLayout({
   children,
@@ -16,7 +34,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={prompt.className}>
+        <ReponsiveNavbar brandName={"PETPAL"} navItems={navitems}/>
+        {children}
+      </body>
     </html>
   );
 }
