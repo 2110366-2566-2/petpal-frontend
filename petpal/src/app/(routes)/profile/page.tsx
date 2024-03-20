@@ -3,7 +3,7 @@ import React from "react";
 import { redirect } from 'next/navigation';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from "react";
-import { LoginApi } from '@/app/libs/userBackend';
+import { LoginApi } from '@/app/libs/user/userBackend';
 
 export default function Profile() {
     var UserType: string

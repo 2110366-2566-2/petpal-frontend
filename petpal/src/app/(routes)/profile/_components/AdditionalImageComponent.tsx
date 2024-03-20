@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import defaultImage from './gold.jpg'
+import defaultImage from "@app/(routes)/profile/_components/gold.jpg"
 
 export default function AdditionalImageComponent() {
     return (

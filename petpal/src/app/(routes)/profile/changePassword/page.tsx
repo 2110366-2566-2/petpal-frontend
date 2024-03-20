@@ -1,7 +1,7 @@
 import React from 'react'
-import ProfilePictureComponent from '../_components/ProfilePictureComponent'
-import SmallButtonComponent from '../_components/SmallButtonComponent'
-import { editProfileButtonProps,saveEditButtonProps } from '../_interface/ButtonPropsInterface'
+import ProfilePictureComponent from "@app/(routes)/profile/_components/ProfilePictureComponent"
+import SmallButtonComponent from "@app/(routes)/profile/_components/SmallButtonComponent"
+import { editProfileButtonProps,saveEditButtonProps } from "@app/(routes)/profile/_interface/ButtonPropsInterface"
 
 export default function changePassword() {
   

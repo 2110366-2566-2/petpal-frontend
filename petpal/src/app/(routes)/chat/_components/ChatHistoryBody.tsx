@@ -1,7 +1,5 @@
-import ChatBubble from "./ChatBubble";
-// import TimeDivide from "./TimeDivide";
-
-import MessageInteraface from "../_interface/MessageInterface";
+import ChatBubble from "@app/(routes)/chat/_components/ChatBubble";
+import MessageInteraface from "@app/(routes)/chat/_interface/MessageInterface";
 
 function createMessageWithTime(ShownMessageHistory: MessageInteraface[], OtherPersonUserId: number): JSX.Element[] {
     var MessageElementList: JSX.Element[] = []

@@ -1,5 +1,5 @@
 import React from 'react'
-import defaultImage from './gold.jpg'
+import defaultImage from "@app/(routes)/profile/_components/gold.jpg"
 import Image from 'next/image'
 
 export default function ProfilePictureComponent(){

@@ -1,4 +1,5 @@
 import MessageInterface from "../_interface/MessageInterface";
+
 export default function HandleOnSubmitText(
     message: string,
     CurrentUserId: number,

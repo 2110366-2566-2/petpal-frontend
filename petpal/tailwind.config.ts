@@ -17,11 +17,11 @@ const config: Config = {
     colors:{
       "orange" : "#FF872F",
       "blue" : "#0075FF",
-      "gray" : "#D9D9D9"
+      "white" : "#FFFFFF",
+      "gray" : "#D9D9D9",
+      "cream" : "#FAF8ED",
     },
   },
-  plugins: [
-    // require('@tailwindcss/forms'),
-  ],
+  plugins: [],
 };
 export default config;

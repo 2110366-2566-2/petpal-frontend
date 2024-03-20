@@ -1,9 +1,9 @@
 'use client'
 
-import {deleteBank, getCurrentEntity, setdefaultBank} from '@/app/libs/userBackend';
-import BankEditInformation from './BankEditInformation';
-import BankButton from './BankButton';
-import { LoginApi } from '@/app/libs/userBackend';
+import {deleteBank, getCurrentEntity, setdefaultBank} from '@app/libs/user/userBackend';
+import BankEditInformation from "@app/(routes)/profile/_components/BankEditInformation";
+import BankButton from "@app/(routes)/profile/_components/BankButton";
+import { LoginApi } from '@/app/libs/user/userBackend';
 import { setCookie } from "cookies-next";
 import { useState , useEffect, ReactEventHandler, ReactElement, ReactComponentElement } from 'react';
 
@@ -21,10 +21,10 @@ export default function FetchBankInformation(){
     useEffect(() => {
 
         const fetchCurrentEntity = async () => {
-            const LogData = await LoginApi()
-            setCookie("token",LogData?.data.AccessToken);
-            console.log("logdata from login",LogData)
-            setUserType(LogData?.data.logintype)
+            // const LogData = await LoginApi()
+            // setCookie("token",LogData?.data.AccessToken);
+            // console.log("logdata from login",LogData)
+            // setUserType(LogData?.data.logintype)
             const entity =await getCurrentEntity()
             setUserInfo(entity)
             setHaveBank(entity.defaultAccountNumber != "" && entity.defaultBank != "")
