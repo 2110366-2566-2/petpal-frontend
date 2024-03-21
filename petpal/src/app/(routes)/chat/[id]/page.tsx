@@ -1,55 +1,42 @@
 "use client"
 import React from "react";
-import { useState, useEffect, useContext, useRef } from "react";
-
-import HeaderChatHistory from "@app/(routes)/chat/_components/HeaderChatHistory";
-import HeaderChatComponent from "@app/(routes)/chat/_components/HeaderChatComponent";
-import ChatPreview from "@app/(routes)/chat/_components/ChatPreview";
-import ChatHistoryBody from "@app/(routes)/chat/_components/ChatHistoryBody";
-import WebSocketProvider from "@app/(routes)/chat/_utils/WebsocketProvider";
-
-import ChatHistoryUserInterface from "@app/(routes)/chat/_interface/ChatHistoryUserInterface";
-import ChatPageinterface from "@app/(routes)/chat/_interface/ChatPageInterface";
-import MessageInteraface from "@app/(routes)/chat/_interface/MessageInterface";
-import UserRoomInterface from "@app/(routes)/chat/_interface/UserRoomInterface";
-
-import { ExampleChatPageUser1 } from "@app/(routes)/chat/_interface/ChatPageInterface";
-import { WebsocketContext } from "@app/(routes)/chat/_utils/WebsocketProvider";
-
-import OnChangeSearch from "@app/(routes)/chat/_utils/HandleOnChangeSearch";
-import HandleOnSubmitText from "@app/(routes)/chat/_utils/HandleOnSubmitText";
-
-import PlusIcon from "@app/(routes)/chat/_src/PlusIcon.png";
-import Maginifying from "@app/(routes)/chat/_src/Magnifying.png";
-import ImageLogo from "@app/(routes)/chat/_src/ImageLogo.png";
-
-import UserIdToSelectChat from "@app/(routes)/chat/_utils/UseIdToSelectChat";
-
-import WebsocketJoinRoom from "@app/(routes)/chat/_utils/WebsocketJoinRoom";
+import { useState, useEffect} from "react";
+import HeaderChatHistory from "../_components/HeaderChatHistory";
+import HeaderChatComponent from "../_components/HeaderChatComponent";
+import ChatPreview from "../_components/ChatPreview";
+import ChatHistoryBody from "../_components/ChatHistoryBody";
+import ChatHistoryUserInterface from "../_interface/ChatHistoryUserInterface";
+import ChatPageinterface from "../_interface/ChatPageInterface";
+import MessageInterface from "../_interface/MessageInterface";
+import { ExampleChatPageUser1 } from "../_interface/ChatPageInterface";
+import OnChangeSearch from "../_utils/HandleOnChangeSearch";
+import HandleOnSubmitText from "../_utils/HandleOnSubmitText";
+import PlusIcon from "../_src/PlusIcon.png"
+import Maginifying from "../_src/Magnifying.png"
+import ImageLogo from "../_src/ImageLogo.png"
+import UserIdToSelectChat from "../_utils/UseIdToSelectChat";
+import WebsocketJoinRoom from "../_utils/WebsocketJoinRoom";
 
 type Message = {
     content: string
     client_id: string
     username: string
     room_id: string
+    timestamp : Date
     type: 'recv' | 'self'
 }
 
 type Conn = WebSocket | null
 
-export default function ChatHistory({ params }: { params: { Id: number } }) {
-    const [UserId, setUserId] = useState<number>(params.Id);
+export default function ChatHistory({ params }: { params: { id: number } }) {
+    const [UserId, setUserId] = useState<number>(params.id);
     const [IsShowChatPreview, SetIsShowChatPreview] = useState<boolean>(UserId == 0)
     const ChatPageUser: ChatPageinterface = ExampleChatPageUser1
     const AllChatHistory: ChatHistoryUserInterface[] = ChatPageUser.ChatHistoryList
     const SelectedChatHistory: ChatHistoryUserInterface = UserIdToSelectChat(AllChatHistory, UserId)
-    const [ShownMessageHistory, SetShownMessageHistory] = useState<MessageInteraface[]>(SelectedChatHistory.MessageHistory)
+    const [ShownMessageHistory, SetShownMessageHistory] = useState<MessageInterface[]>(SelectedChatHistory.MessageHistory)
     const [ShownChatHistoryUserList, SetShownChatHistoryUserList] = useState<ChatHistoryUserInterface[]>(AllChatHistory)
-    // const { conn, setConn } = useContext(WebsocketContext)
     const [conn, setConn] = useState<Conn>(null)
-
-    const connection = useRef<WebSocket | null>(null)
-
 
     useEffect(() => {
         SetShownMessageHistory(SelectedChatHistory.MessageHistory)
@@ -57,45 +44,45 @@ export default function ChatHistory({ params }: { params: { Id: number } }) {
 
     const [currentMessage, setCurrentMessage] = useState<string>("");
     useEffect(() => {
-        let ChatHistory
-        for (ChatHistory of AllChatHistory) {
-            // const UserRoom: UserRoomInterface = {
-            //     Id: UserId,
-            //     Username: `UserId:${UserId}`,
-            //     Role: "user",
-
-            // }
-            // WebsocketJoinRoom(ChatHistory.RoomId, UserRoom, setConn)
-        }
-        WebsocketJoinRoom(AllChatHistory[0].RoomId, { Id: UserId, Username: `UserId:${UserId}`, Role: "user" }, setConn)
-    }, [])
-    useEffect(() => {
-        if (conn == null) {
-            console.log("Does not have conn might error")
+        const ws = WebsocketJoinRoom(AllChatHistory[0].RoomId, { Id: UserId, Username: `UserId:${UserId}`, Role: "user" });
+        if (ws == null) {
+            console.log("Connection is not established. Skipping event handler setup.");
             return;
         }
-        console.log("connect")
-        conn.onerror = (error) => {
-            console.log(`Websocket error: ${error.target}`);
+        // When websocket is start
+        ws.onopen = () =>{
+            console.log("Connecting to Websocket")
+            // Load Chat History
+            let ChatHistory
+            for (ChatHistory of AllChatHistory) {
+                // const UserRoom: UserRoomInterface = {
+                //     Id: UserId,
+                //     Username: `UserId:${UserId}`,
+                //     Role: "user",
+                // }
+                // WebsocketJoinRoom(ChatHistory.RoomId, UserRoom, setConn)
+            }
+        }   
+        ws.onmessage = (message) => {
+            const m: Message = JSON.parse(message.data);
+            if(m.content !== "A new user has joined the room" &&  m.content !== "user left the chat") {
+                HandleOnSubmitText(m.content, 0, UserId, ShownMessageHistory, SetShownMessageHistory)
+            }
         };
-        conn.onopen = (event) => {
-            console.log("connection start")
-            conn.send("connection start")
+        // When socket is close 
+        ws.onclose = () =>{
+            // save chat history soon
         }
-        conn.onmessage = (message) => {
-            // const m: Message = JSON.parse(message.data)
-            // console.log(m.content)
-            console.log(message.data)
-        }
-        connection.current = conn
-
-    }, [conn])
+        setConn(ws);
+    }, [])
 
     const sendMessage = () => {
+        if(currentMessage === '') return;
         HandleOnSubmitText(currentMessage, 0, UserId, ShownMessageHistory, SetShownMessageHistory)
         conn?.send(currentMessage)
         setCurrentMessage("");
     }
+
     return (
         <div className="h-[calc(100vh-64px)]">
             <div className="flex flex-row items-top grow h-full">
