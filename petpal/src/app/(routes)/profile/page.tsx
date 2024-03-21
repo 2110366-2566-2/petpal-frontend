@@ -6,9 +6,7 @@ import { useState, useEffect } from "react";
 import { LoginApi } from '@/app/libs/user/userBackend';
 
 export default function Profile() {
-    var UserType: string
-    var SetUserType: (value: string) => void
-    [UserType, SetUserType] = useState("")
+    const [isUser, SetisUser] = useState<boolean>(true)
     // useEffect(() => {
 
     //     const fetchCurrentEntity = async () => {
