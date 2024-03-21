@@ -1,4 +1,4 @@
-import { getCurrentEntity } from "./getCurrentEntity";
+import { getCurrentEntity } from "./userBackend";
 import { Svcp } from "@/app/_interface/svcp/svcp";
 
 export async function getCurrentEntitySvcp(): Promise<Svcp> {
