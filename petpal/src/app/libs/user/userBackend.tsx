@@ -62,7 +62,6 @@ export async function getCurrentEntity(){
 
 export async function deleteBank(usertype:String){
 
-
     console.log("get in deleteBank function")
     try{
         // const log = await Login()

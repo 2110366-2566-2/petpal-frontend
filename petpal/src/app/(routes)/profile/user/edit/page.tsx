@@ -17,7 +17,7 @@ export default function Profile() {
   return (
     <div className='items-center'>
       <div className='md:flex m-[50px] items-center'>
-        <div className='max-w-[300px] space-y-[10px] md:float-left m-auto mt-[0px] items-top'>
+        <div className='max-w-[300px] space-y-[10px] md:float-left m-auto mt-[0px] md:mr-3 items-top'>
           <ProfilePictureComponent/>
           <div className='hidden md:grid grid-cols-1 gap-[16px]'>
             <SmallButtonComponent ButtonProps={editProfileButtonProps} Working = {false}></SmallButtonComponent>
