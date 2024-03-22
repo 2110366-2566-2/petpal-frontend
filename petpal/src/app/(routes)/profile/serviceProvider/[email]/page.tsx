@@ -18,7 +18,7 @@ import { exampleProvider } from "@app/(routes)/profile/_interface/ServiceProvide
 import { editProfileButtonProps, chagnePasswordButtonProps } from "@app/(routes)/profile/_interface/ButtonPropsInterface"
 
 
-export default function EmailServiceProviderProfile({ params }: { params: { id: number } }) {
+export default function EmailServiceProviderProfile({ params }: { params: { email: number } }) {
     var [CurrentUser, SetCurrentUser] = useState<number>(0)
     var [ProfileUserId, SetProfileUserId] = useState<number>(params.id)
     let serviceProvider: ServiceProviderInterface = exampleProvider

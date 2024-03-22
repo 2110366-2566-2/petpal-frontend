@@ -1,28 +1,49 @@
 "use client"
 import React from "react";
-import { redirect } from 'next/navigation';
-import { usePathname } from 'next/navigation';
-import { useState, useEffect } from "react";
-import { LoginApi } from '@/app/libs/user/userBackend';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from "react";
+import { getCurrentEntity } from "@/app/libs/user/userBackend";
+import { getCurrentEntityType } from "@/app/libs/user/getCurrentEntityType";
 
 export default function Profile() {
-    var UserType: string
-    var SetUserType: (value: string) => void
-    [UserType, SetUserType] = useState("")
-    // useEffect(() => {
+    // const currentPagePath: string = usePathname();
+    const router = useRouter()
+    const [accType, setAccType] = useState<string>("waiting")
+    useEffect(() => {
+        getCurrentEntity().then((Response) => {
+            console.log(Response)
+            setAccType(getCurrentEntityType(Response))
+        })
+    }, [])
 
-    //     const fetchCurrentEntity = async () => {
-    //         const LogData = await LoginApi()
-    //         setCookie("token", LogData?.data.AccessToken);
-    //         console.log("logdata from login", LogData)
-    //         setUserType(LogData?.data.logintype)
-    //     };
-    //     fetchCurrentEntity();
-    //     const currentPage = usePathname();
-    //     redirect(currentPage + "/0")
-    // }, [])
-    const currentPage = usePathname();
-    redirect(currentPage + "/0")
-
+    useEffect(() => {
+        // console.log(accType)
+        switch (accType) {
+            case "waiting": {
+                console.log("waiting")
+                break
+            }
+            case "user": {
+                console.log("user")
+                router.push('/profile/user')
+                break
+            }
+            case "svcp": {
+                console.log("svcp")
+                router.push("/profile/serviceProvider")
+                break
+            }
+            case "undefined": {
+                console.log("undefined")
+                router.push('/login')
+                break
+            }
+            default: {
+                console.log("error")
+                break
+                // console.log(accType)
+            }
+        }
+    }, [accType]);
     return <div>Profile</div>;
 }

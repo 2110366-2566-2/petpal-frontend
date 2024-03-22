@@ -1,9 +1,17 @@
 export function getCurrentEntityType(json: object): string {
-    let entityType: string = "undefined"
-    if ("SVCPID" in json) {
+    let entityType: string
+
+    // switch (json) {
+    //     case ("SVCPID" in json): {
+    //         console.log("waiting")
+    //     } case
+    // }
+    if (json.hasOwnProperty("SVCPID")) {
         entityType = "svcp"
-    } else if ("id" in json) {
+    } else if (json.hasOwnProperty("id")) {
         entityType = "user"
+    } else {
+        entityType = "undefined"
     }
     return entityType
 }
