@@ -30,7 +30,7 @@ export default function Profile() {
             }
             case "svcp": {
                 console.log("svcp")
-                router.push('/profile/serviceProvider')
+                router.push("/profile/serviceProvider")
                 break
             }
             case "undefined": {

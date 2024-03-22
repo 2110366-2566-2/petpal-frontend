@@ -25,11 +25,9 @@ export default function UserProfile() {
             default: {
                 console.log("error")
                 break
-                // console.log(accType)
             }
         }
     }, [userId])
-    // redirect(currentPage+"/me")
     return (
         <h1>hello</h1>
     )
