@@ -1,11 +1,6 @@
 'use client'
-import React, { useState } from "react";
-import { redirect, useSearchParams } from 'next/navigation';
-import { usePathname } from 'next/navigation';
+import React from "react";
 import Searchbar from "@app/(routes)/listing/_components/Searchbar";
-import Searchresult from "@app/(routes)/listing/_components/Searchresult";
-import SearchIcon from '@mui/icons-material/Search';
-import { Box, Button, FormControl, Input, InputAdornment, InputLabel, MenuItem, TextField } from '@mui/material';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
 
 
@@ -78,51 +73,15 @@ interface Column {
     createData('serviceName22', 'Others', 69.69, 8.12),
   ];
 
-export default function ServiceListing(){
-    const category = [
-        {
-            value: 'All',
-            label: 'All',
-        },
-        {
-          value: 'Healthcare',
-          label: '🏥 Healthcare',
-        },
-        {
-          value: 'Grooming',
-          label: '✂️ Grooming',
-        },
-        {
-          value: 'Pet walking',
-          label: '🚶 Pet walking',
-        },
-        {
-          value: 'Others',
-          label: '🐾 Others',
-        },
-      ];
-      const sortby = [
-        {
-            value: 'serviceName',
-            label: 'Service Name',
-        },
-        {
-          value: 'priceMax',
-          label: 'Price MAX to MIN',
-        },
-        {
-          value: 'priceMin',
-          label: 'Price MIN to MAX',
-        },
-        {
-          value: 'ratingMax',
-          label: 'Rating MAX to MIN',
-        },
-        {
-          value: 'ratingMin',
-          label: 'Rating MIN to MAX',
-        },
-      ];
+export default function ServiceListing({
+  searchParams
+}:{
+  searchParams?: {
+    q?:string;
+    cat?:string;
+    sortBy?:string;
+  }
+}){
 
       const [page, setPage] = React.useState(0);
       const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -135,70 +94,12 @@ export default function ServiceListing(){
         setRowsPerPage(+event.target.value);
         setPage(0);
       };
-      
-      //const [search,setSearch] = useState('')
-      //const [cat,setCat] = useState('')
-      //const [sortBy, setSortBy] = useState('serviceName');
-      const [searchParams, setSearchParams] = useSearchParams({search: "", cat:"", sortBy:"serviceName"})
-      const search = searchParams.get("search")
-      const cat = searchParams.get("cat")
-      const sortBy = searchParams.get("sortBy")
-
-
+      const search = searchParams?.q || '';
+      const cat = searchParams?.cat || '';
+      const sortBy = searchParams?.sortBy || '';
     return (
         <main>
-            <main>
-                <div className="flex flex-row p-5 gap-2 justify-center"> 
-                    <Box sx={{ display: 'flex', alignItems: 'flex-start'}}>
-                        <TextField id="input-with-sx" label="Search services" variant="outlined" 
-                            className='bg-white'
-                            placeholder='Search services...'
-                            InputProps={{
-                                startAdornment: <InputAdornment position="start"><SearchIcon/></InputAdornment>,
-                            }}
-                            value={search}
-                            onChange={(e)=> setSearchParams((prev:any) => {
-                              prev.set("search",e.target.value)
-                              return prev
-                            })}
-                        />
-                    </Box>
-                    <TextField
-                        id="select-category"
-                        select
-                        label="Select category"
-                        defaultValue="All"
-                        className='bg-white min-w-[160px]'
-                        onChange={(e)=> setSearchParams((prev:any) => {
-                          prev.set("cat",e.target.value)
-                          return prev
-                        })}
-                    >
-                        {category.map((option) => (
-                            <MenuItem key={option.value} value={option.value}>
-                                {option.label}
-                            </MenuItem>
-                        ))}
-                    </TextField>
-                    <TextField
-                        id="sort-by"
-                        select
-                        label="Sort by"
-                        defaultValue="serviceName"
-                        className='bg-white min-w-[186px]'
-                        onChange={(e)=> setSearchParams((prev:any) => {
-                          prev.set("sortBy",e.target.value)
-                          return prev
-                        })}
-                    >
-                        {sortby.map((option) => (
-                            <MenuItem key={option.value} value={option.value}>
-                                {option.label}
-                            </MenuItem>
-                        ))}
-                    </TextField>
-                </div>
-            </main>      
+            <Searchbar/>
             <main className='flex flex-row p-5 justify-center'>
                 <Paper sx={{ width: '90%', overflow: 'hidden', maxWidth: 700 }}>
                     <TableContainer sx={{ maxHeight: 470 }}>
