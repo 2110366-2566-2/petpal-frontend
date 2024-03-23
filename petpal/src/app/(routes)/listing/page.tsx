@@ -1,8 +1,8 @@
 'use client'
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Searchbar from "@app/(routes)/listing/_components/Searchbar";
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
-
+import getServices from "@/app/libs/service/getServices";
 
 interface Column {
     id: 'serviceName' | 'serviceType' | 'price' | 'rating';
@@ -47,8 +47,8 @@ interface Column {
     return { serviceName, serviceType, price, rating };
   }
   
-  const rows = [
-    createData('serviceName0', 'Healthcare', 16.58, 21.90),
+  //const rows: any[] = [
+    /*createData('serviceName0', 'Healthcare', 16.58, 21.90),
     createData('serviceName1', 'Grooming', 51.26, 15.54),
     createData('serviceName2', 'Pet walking', 71.62, 67.07),
     createData('serviceName3', 'Healthcare', 16.99, 31.90),
@@ -70,8 +70,8 @@ interface Column {
     createData('serviceName19', 'Others', 18.13, 59.20),
     createData('serviceName20', 'Others', 58.93, 17.78),
     createData('serviceName21', 'Others', 26.89, 28.12),
-    createData('serviceName22', 'Others', 69.69, 8.12),
-  ];
+    createData('serviceName22', 'Others', 69.69, 8.12),*/
+  //];
 
 export default function ServiceListing({
   searchParams
@@ -82,10 +82,31 @@ export default function ServiceListing({
     sortBy?:string;
   }
 }){
-
       const [page, setPage] = React.useState(0);
       const [rowsPerPage, setRowsPerPage] = React.useState(10);
+      const [rows, setRows] = useState<any[]>([]); // Initialize rows state
+
+      useEffect(() => {
+        async function fetchData() {
+          try {
+            const data = await getServices();
+            console.log(data);
+            const newData = data.map((service: any) => createData(
+              service.services.serviceName,
+              service.services.serviceType,
+              service.services.price,
+              service.services.averageRating
+            ));
+            setRows(newData); // Set rows state with new data
+          } catch (error) {
+            console.error("Error fetching data:", error);
+            // Handle error
+          }
+        }
     
+        fetchData(); // Call fetchData when component mounts
+      }, []); // Empty dependency array to run effect only once on mount
+      
       const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
       };
@@ -120,17 +141,17 @@ export default function ServiceListing({
                         </TableHead>
                         <TableBody>
                         {rows
-                            .filter((row)=> {
+                            .filter((row: { serviceName: string; })=> {
                                 return search.toLowerCase() === ''
                                 ? row 
                                 : row.serviceName.toLowerCase().includes(search);
                             })
-                            .filter((row)=> {
+                            .filter((row: { serviceType: string | string[]; })=> {
                                 return cat === 'All'
                                 ? row 
                                 : row.serviceType.includes(cat);
                             })
-                            .sort((b, a) => {
+                            .sort((b: { price: any; rating: any; serviceName: number; }, a: { price: any; rating: any; serviceName: number; }) => {
                                 if (sortBy === 'priceMax') {
                                     return (a.price || 0) - (b.price || 0);
                                 } else if (sortBy === 'priceMin') {
@@ -147,7 +168,7 @@ export default function ServiceListing({
                                 return 0; // Default case
                             })
                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            .map((row) => {
+                            .map((row: { [x: string]: any; serviceName: React.Key | null | undefined; }) => {
                             return (
                                 <TableRow hover role="checkbox" tabIndex={-1} key={row.serviceName}
                                   className="hover:cursor-pointer">
@@ -181,3 +202,5 @@ export default function ServiceListing({
         </main>
     )
 }
+
+
