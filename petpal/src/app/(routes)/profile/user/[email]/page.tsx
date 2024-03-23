@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import UserInterface from '../../_interface/UserInterface'
 import PetInterface from '../../_interface/PetInterface'
 import ButtonPropsInterface from '../../_interface/ButtonPropsInterface'
+import { User } from "@/app/_interface/user/user";
 
 import ProfilePictureComponent from '../../_components/ProfilePictureComponent'
 import SmalllPetListComponent from '../../_components/SmalllPetListComponent'
@@ -16,12 +17,16 @@ import { editProfileButtonProps, chagnePasswordButtonProps } from '../../_interf
 
 import { getCurrentEntityUser } from '@/app/libs/currentEntiity/getCurrentEntityUser'
 
+import { getUserById } from '@/app/libs/user/getUserById'
+import { adaptorUserToUserInterface } from '../../_interface/UserInterface'
+
 export default function EmailUserProfile({ params }: { params: { email: string } }) {
     const [myUserId, setMyUserId] = useState<string>()
     // const targetUserId: string = params.email
     const [targetUserId, setTargetUserId] = useState<string>(params.email)
     const [targetUser, setTargetUser] = useState<UserInterface>(exampleUser)
     const [isShownButton, setIsShownButton] = useState<boolean>(false)
+    const [targetUserPetList, setTargetUserPetList] = useState<PetInterface[]>([])
     useEffect(() => {
         getCurrentEntityUser().then((Response) => {
             // console.log(Response.id)
@@ -34,9 +39,18 @@ export default function EmailUserProfile({ params }: { params: { email: string }
     }, [targetUserId, myUserId])
 
     useEffect(() => {
-
+        if (targetUserId !== undefined) {
+            getUserById(targetUserId).then((response) => {
+                const responeUser: User = response as User
+                const newSvcp: UserInterface = adaptorUserToUserInterface(responeUser)
+                setTargetUser(newSvcp)
+            })
+        }
     }, [targetUserId])
     // var targetUser: UserInterface = exampleUser
+    useEffect(() => {
+        setTargetUserPetList(targetUser.PetList)
+    }, [targetUser])
 
     const buttonPropsList: ButtonPropsInterface[] = [editProfileButtonProps, chagnePasswordButtonProps]
 

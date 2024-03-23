@@ -19,7 +19,7 @@ export const exampleProvider: ServiceProviderInterface = {
     Address: "61 Wireless Road , Lumpini, Pathumwan The Athenee Hotel, Bangkok 10330 Thailand",
     PhoneNumber: "0987654321",
     ServiceList: [
-        exampleServiceType1, exampleServiceType2, exampleServiceType1, exampleServiceType2
+        exampleServiceType1, exampleServiceType2
     ]
 }
 

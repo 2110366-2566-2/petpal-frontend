@@ -1,13 +1,13 @@
-export async function getUserById() {
-    try {
-        const response = await fetch('http://localhost:8080/current-entity', {
-            method: 'GET',
-            credentials: 'include',
-        });
-
-        return await response.json();
-
-    } catch (error) {
-        console.error('Error fetching current entity:', error);
+export async function getUserById(id: string) {
+    const response = await fetch(
+        `http://localhost:8080/user/${id}`,
+        {
+            method: "GET",
+        }
+    );
+    if (response.ok) {
+    } else {
+        console.log("get User failed");
     }
+    return await response.json();
 }
