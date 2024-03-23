@@ -52,9 +52,11 @@ export default function EmailServiceProviderProfile({ params }: { params: { emai
         }
     }, [targetSvcpId])
 
-    var thisEditProfileButton = editProfileButtonProps
-    thisEditProfileButton.Link = usePathname() + "/edit"
-    var buttonPropsList: ButtonPropsInterface[] = [editProfileButtonProps, chagnePasswordButtonProps]
+    let thisEditProfileButton: ButtonPropsInterface = editProfileButtonProps
+    thisEditProfileButton.Link = "/profile/serviceProvider/edit"
+    let thisChagnePasswordButtonProps: ButtonPropsInterface = chagnePasswordButtonProps
+    thisChagnePasswordButtonProps.Link = "/profile/serviceProvider/changepassword"
+    let buttonPropsList: ButtonPropsInterface[] = [thisEditProfileButton, thisChagnePasswordButtonProps]
 
     return (
         <div className='items-center'>

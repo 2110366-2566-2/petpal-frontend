@@ -28,8 +28,8 @@ export function adaptorSvcpToServiceProviderInterface(response: Svcp) {
     const name: string = response.SVCPUsername as string
     const Rating: number = 1.5 as number
     const Description: string = response.description as string
-    const Address: string = response.location as string
-    const PhoneNumber: string = "191" as string
+    const Address: string = response.address as string
+    const PhoneNumber: string = response.phoneNumber as string
     const serviceBeforeAdaptive: Service[] = response.services!
     const ServiceList: ServiceInterface[] = serviceBeforeAdaptive.map((service: Service) => adaptorServiceToServiceInterface(service))
 
