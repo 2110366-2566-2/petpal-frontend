@@ -8,7 +8,7 @@ export async function editSvcpProfile(
         method:'PUT',
         credentials:'include',
         body:JSON.stringify({
-            SVCPusername:SVCPusername,
+            SVCPUsername:SVCPusername,
             description:description,
             address:address,
             phoneNumber:phoneNumber
