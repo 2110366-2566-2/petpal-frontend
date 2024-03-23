@@ -1,3 +1,5 @@
+'user client'
+
 import React from 'react'
 import ProfilePictureComponent from "@app/(routes)/profile/_components/ProfilePictureComponent"
 import RatingComponent from "@app/(routes)/profile/_components/RatingComponent"
@@ -8,12 +10,10 @@ import PetInformation from "@app/(routes)/profile/_components/PetInformation"
 import FetchBankInformation from "@app/(routes)/profile/_components/FetchedBankInformation"
 import SmallButtonComponent from "@app/(routes)/profile/_components/SmallButtonComponent"
 import { editProfileButtonProps, saveEditButtonProps } from "@app/(routes)/profile/_interface/ButtonPropsInterface"
+import { useState,useEffect } from 'react'
 
-
-export default function Profile() {
-    
-
-  let isOpen = false;
+export default function EditProfile() {
+ 
   return (
     <div className='items-center'>
       <div className='md:flex m-[50px] items-center'>
