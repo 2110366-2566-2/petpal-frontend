@@ -2,7 +2,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { getCurrentEntitySvcp } from "@/app/libs/user/getCurrentEntitySvcp";
+import { getCurrentEntitySvcp } from "@/app/libs/currentEntiity/getCurrentEntitySvcp";
 
 export default function ServiceProviderprofile() {
     // const currentPage = usePathname();

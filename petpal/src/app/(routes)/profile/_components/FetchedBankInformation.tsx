@@ -26,6 +26,10 @@ export default function FetchBankInformation(){
             // console.log("logdata from login",LogData)
             // setUserType(LogData?.data.logintype)
             const entity =await getCurrentEntity()
+            setUserType(()=>{
+                if(!entity.id) return "serviceproviders"
+                else return "user"
+            })
             setUserInfo(entity)
             setHaveBank(entity.defaultAccountNumber != "" && entity.defaultBank != "")
             setAddAndDeleteReq(!(entity.defaultAccountNumber != "" && entity.defaultBank != ""))
@@ -36,27 +40,13 @@ export default function FetchBankInformation(){
         fetchCurrentEntity();
     } , [addAndDeleteReq])
 
+    
     // const LogData = await LoginApi()
     // setCookie("token",LogData?.data.AccessToken);
     // console.log("logdata from login",LogData)
     // const entity =await getCurrentEntity()
     // // const entity = {defaultAccountNumber:"1",defaultBank:"2"}
     // console.log("in", entity)
-
-    // const bankMap = new Map(Object.entries(entity))
-    // const haveBank =  bankMap.get('defaultAccountNumber') != '' && bankMap.get('defaultBank') != ''
-    // const defAccount = bankMap.get('defaultAccountNumber')
-    // const defBank = bankMap.get('defaultBank') 
-
-    // if(!userInfo){
-    //     return(<p>loading bank....</p>)
-    // }else{
-    //     const bankMap = new Map(Object.entries(userInfo))
-    //     setHaveBank(bankMap.get('defaultAccountNumber') != '' && bankMap.get('defaultBank') != '')
-    //     setDefAccount(String(bankMap.get('defaultAccountNumber')))
-    //     setDefBank(String(bankMap.get('defaultBank')))
-    // }
-
     let banks = [
         {id:0 , name : "None"},
         {id: 1 , name: "Kasikorn"},

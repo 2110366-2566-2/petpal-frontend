@@ -1,4 +1,6 @@
-import React from 'react'
+'use client'
+
+import React, { useState,useEffect } from 'react'
 import ProfilePictureComponent from '@app/(routes)/profile/_components/ProfilePictureComponent'
 import RatingComponent from '@app/(routes)/profile/_components/RatingComponent'
 import ServiceListComponent from '@app/(routes)/profile/_components/ServiceListComponent'
@@ -7,10 +9,41 @@ import ServiceInterface from '@app/(routes)/profile/_interface/ServiceInterface'
 import { saveEditButtonProps, editProfileButtonProps } from '@app/(routes)/profile/_interface/ButtonPropsInterface'
 import SmallButtonComponent from '@app/(routes)/profile/_components/SmallButtonComponent'
 import FetchBankInformation from '@app/(routes)/profile/_components/FetchedBankInformation'
+import { getCurrentEntity } from '@/app/libs/user/userBackend'
+import { editSvcpProfile } from '@/app/libs/serviceProvider/editSvcpProfile'
+
+export default function EditProfile() {
+
+  const [username , setUsername] = useState('')
+  const [description , setDescription] = useState('')
+  const [address , setAddress] = useState('')
+  const [phoneNumber , setPhoneNumber] = useState('')
+  const [id , setId] = useState('')
 
 
-export default function Profile() {
-   
+
+  useEffect(()=>{
+    const fetchData = async() =>{
+      const entity = await getCurrentEntity()
+      console.log(entity)
+      setUsername(entity.SVCPUsername || "")
+      setDescription(entity.description || "")
+      setAddress(entity.address || "")
+      setPhoneNumber(entity.phoneNumber || "")
+      setId(entity.SVCPID)
+    }
+    fetchData()
+  },[])
+
+  const handleSubmit = async() =>{
+    // console.log(id,username,description,address,phoneNumber)
+    return await editSvcpProfile(
+      username,
+      description,
+      address,
+      phoneNumber,
+    )
+  }
 
   return (
     <div className='items-center'>
@@ -19,7 +52,8 @@ export default function Profile() {
           <ProfilePictureComponent />
           <div className='hidden md:grid grid-cols-1 gap-[16px]'>
             <SmallButtonComponent ButtonProps={editProfileButtonProps} Working={false}></SmallButtonComponent>
-            <SmallButtonComponent ButtonProps={saveEditButtonProps}></SmallButtonComponent>
+            <SmallButtonComponent ButtonProps={saveEditButtonProps} onClick={async() =>{handleSubmit()}}></SmallButtonComponent>
+            {/* <button className='bg-gray' onClick={async()=>{handleSubmit()}}>save</button> */}
           </div>
         </div>
         <div className='w-[100%] md:max-w-[600px]   float-right m-auto space-y-[30px] mt-[0px] mb-[20px] md:ml-[10px]'>
@@ -28,12 +62,16 @@ export default function Profile() {
             <input type='username' className='mt-1 block w-[100%] h[45px] rounded-md shadow-sm
             focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 peer-focus:text-primary
             border-[#D9D9D9] border-[3px]'
-              placeholder='username' />
+            value={username}
+            onChange={(e)=>{setUsername(e.target.value)}}
+            placeholder='username' />
           </div>
           <div className="my-2 ">
             <span className='text-black font-bold text-[32px]'>Description</span>
             <textarea className='mt-1 block w-full rounded-md border-gray-300 shadow-sm border-[#D9D9D9] border-[3px]
             focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 h-[200px] p-2'
+            value={description}
+            onChange={(e) => {setDescription(e.target.value)}}
             />
           </div>
           <div className="my-2">
@@ -47,20 +85,24 @@ export default function Profile() {
             <input type='address' className='mt-1 block w-[100%] h[45px] rounded-md shadow-sm
             focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 peer-focus:text-primary
             border-[#D9D9D9] border-[3px]'
-              placeholder='123 Wangmai Pathumwan Bangkok' />
+            value={address}
+            onChange={(e) => {setAddress(e.target.value)}}
+            placeholder='123 Wangmai Pathumwan Bangkok' />
           </div>
           <div className="my-2 ">
             <span className='text-black font-bold text-[32px]'>Phone Number</span>
             <input type='phoneNumber' className='mt-1 block w-[100%] h[45px] rounded-md shadow-sm
             focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 peer-focus:text-primary
             border-[#D9D9D9] border-[3px]'
-              placeholder='099-xxx-xxxx' />
+            value={phoneNumber}
+            onChange={(e)=>setPhoneNumber(e.target.value)}
+            placeholder='099-xxx-xxxx' />
           </div>
           <div><FetchBankInformation/></div>
         </div>
         <div className='w-[100%] grid grid-cols-1 gap-[16px] md:hidden '>
           <SmallButtonComponent ButtonProps={editProfileButtonProps} Working={false}></SmallButtonComponent>
-          <SmallButtonComponent ButtonProps={saveEditButtonProps}></SmallButtonComponent>
+          <SmallButtonComponent ButtonProps={saveEditButtonProps} onClick={async() =>{handleSubmit()}}></SmallButtonComponent>
         </div>
       </div>
 

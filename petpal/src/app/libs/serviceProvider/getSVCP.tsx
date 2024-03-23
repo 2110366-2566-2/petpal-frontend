@@ -1,5 +1,7 @@
 // import { useRouter } from "next/router";
 
+import { Svcp } from "@/app/_interface/svcp/svcp";
+
 export default async function getSVCP(id: string) {
     // const router = useRouter();
     // Access dynamic segments from the query object
