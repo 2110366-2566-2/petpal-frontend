@@ -23,8 +23,9 @@ export interface Svcp {
     individualID?:          string;
     isVerified?:            boolean;
     license?:               string;
-    location?:              string;
+    address?:              string;
     services?:              Service[];
+    phoneNumber?:           string;
 }
 
 // Converts JSON strings to/from your types
@@ -207,7 +208,7 @@ const typeMap: any = {
         { json: "individualID", js: "individualID", typ: u(undefined, "") },
         { json: "isVerified", js: "isVerified", typ: u(undefined, true) },
         { json: "license", js: "license", typ: u(undefined, "") },
-        { json: "location", js: "location", typ: u(undefined, "") },
+        { json: "address", js: "address", typ: u(undefined, "") },
         { json: "services", js: "services", typ: u(undefined, a(r("Service"))) },
     ], false),
     "Service": o([
