@@ -14,7 +14,7 @@ import createButtonList from '../../_utils/createButtonList';
 import { exampleUser } from '../../_interface/UserInterface'
 import { editProfileButtonProps, chagnePasswordButtonProps } from '../../_interface/ButtonPropsInterface'
 
-import { getCurrentEntityUser } from '@/app/libs/user/getCurrentEntityUser'
+import { getCurrentEntityUser } from '@/app/libs/currentEntiity/getCurrentEntityUser'
 
 export default function EmailUserProfile({ params }: { params: { email: string } }) {
     const [myUserId, setMyUserId] = useState<string>()
@@ -39,9 +39,6 @@ export default function EmailUserProfile({ params }: { params: { email: string }
     // var targetUser: UserInterface = exampleUser
 
     const buttonPropsList: ButtonPropsInterface[] = [editProfileButtonProps, chagnePasswordButtonProps]
-
-    const MY_EMAIL: string = "me"
-    // var showButton: boolean = email === MY_EMAIL
 
     return (
         <div className='items-center'>

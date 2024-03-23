@@ -1,4 +1,4 @@
-import { getCurrentEntity } from "./userBackend";
+import { getCurrentEntity } from "../user/userBackend";
 import { User } from "@/app/_interface/user/user";
 
 export async function getCurrentEntityUser(): Promise<User> {

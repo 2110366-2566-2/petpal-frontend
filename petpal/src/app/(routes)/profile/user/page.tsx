@@ -3,7 +3,7 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 // import { getCurrentEntity } from "@/app/libs/user/userBackend";
-import { getCurrentEntityUser } from "@/app/libs/user/getCurrentEntityUser";
+import { getCurrentEntityUser } from "@/app/libs/currentEntiity/getCurrentEntityUser";
 
 
 export default function UserProfile() {
