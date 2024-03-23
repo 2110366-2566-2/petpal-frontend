@@ -3,7 +3,7 @@ import React from "react";
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from "react";
 import { getCurrentEntity } from "@/app/libs/user/userBackend";
-import { getCurrentEntityType } from "@/app/libs/user/getCurrentEntityType";
+import { getCurrentEntityType } from "@/app/libs/currentEntiity/getCurrentEntityType";
 
 export default function Profile() {
     // const currentPagePath: string = usePathname();

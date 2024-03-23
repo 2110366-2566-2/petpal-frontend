@@ -11,13 +11,15 @@ import AdditionalImageComponent from "@app/(routes)/profile/_components/Addition
 import createButtonList from "@app/(routes)/profile/_utils/createButtonList"
 
 import ServiceInterface from "@app/(routes)/profile/_interface/ServiceInterface"
-import ServiceProviderInterface from "@app/(routes)/profile/_interface/ServiceProviderInterface"
+import ServiceProviderInterface, { adaptorSvcpToServiceProviderInterface } from "@app/(routes)/profile/_interface/ServiceProviderInterface"
 import ButtonPropsInterface from "@app/(routes)/profile/_interface/ButtonPropsInterface"
 
 import { exampleProvider } from "@app/(routes)/profile/_interface/ServiceProviderInterface"
 import { editProfileButtonProps, chagnePasswordButtonProps } from "@app/(routes)/profile/_interface/ButtonPropsInterface"
 
-import { getCurrentEntitySvcp } from '@/app/libs/user/getCurrentEntitySvcp';
+import { getCurrentEntitySvcp } from '@/app/libs/currentEntiity/getCurrentEntitySvcp';
+import getSVCP from '@/app/libs/serviceProvider/getSVCP';
+import { Svcp } from '@/app/_interface/svcp/svcp';
 
 
 export default function EmailServiceProviderProfile({ params }: { params: { email: string } }) {
@@ -37,44 +39,49 @@ export default function EmailServiceProviderProfile({ params }: { params: { emai
     }, [])
 
     useEffect(() => {
-        setIsShownButton(targetUserId === myUserId)
-    }, [targetUserId, myUserId])
+        setIsShownButton(targetSvcpId === mySvcpId)
+    }, [targetSvcpId, mySvcpId])
 
     useEffect(() => {
-
-    }, [targetUserId])
+        if (mySvcpId !== undefined) {
+            getSVCP(mySvcpId).then((response) => {
+                const responeSvcp: Svcp = response as Svcp
+                const newSvcp: ServiceProviderInterface = adaptorSvcpToServiceProviderInterface(responeSvcp)
+                setTargetSvcp(newSvcp)
+            })
+        }
+    }, [mySvcpId])
 
     var thisEditProfileButton = editProfileButtonProps
-    thisEditProfileButton.Link = usePathname() + "edit"
+    thisEditProfileButton.Link = usePathname() + "/edit"
     var buttonPropsList: ButtonPropsInterface[] = [editProfileButtonProps, chagnePasswordButtonProps]
-    var showButton: boolean = CurrentUser == ProfileUserId
 
     return (
         <div className='items-center'>
             <div className='md:flex items-top p-[20px] m-auto md:max-w-[1100px]'>
                 <div className='max-w-[300px] m-auto space-y-[10px] md:float-left mt-[0px] md:mr-[10px]'>
                     <ProfilePictureComponent />
-                    <h1 className='text-[32px]' ><b>{serviceProvider.Name}</b></h1>
-                    <RatingComponent Rating={serviceProvider.Rating} />
-                    <p className='text-[18px]'>{serviceProvider.Description}</p>
+                    <h1 className='text-[32px]' ><b>{targetSvcp.Name}</b></h1>
+                    <RatingComponent Rating={targetSvcp.Rating} />
+                    <p className='text-[18px]'>{targetSvcp.Description}</p>
                     <div className='hidden md:block'>
-                        {createButtonList(showButton, buttonPropsList = buttonPropsList)}
+                        {createButtonList(isShownButton, buttonPropsList = buttonPropsList)}
                     </div>
                 </div>
                 <div className='max-w-[300px] md:max-w-[600px] m-[auto] md:mt-[0px] pt-[20px] md:float-right space-y-[30px] md:ml-[10px]'>
                     <AdditionalImageComponent></AdditionalImageComponent>
                     <div className="space-y-[10px] m-auto">
-                        <p><b>Address:</b> {serviceProvider.Address}</p>
-                        <p><b>Phone:</b> {serviceProvider.PhoneNumber}</p>
+                        <p><b>Address:</b> {targetSvcp.Address}</p>
+                        <p><b>Phone:</b> {targetSvcp.PhoneNumber}</p>
                     </div>
                     <div className='space-y-[15px]'>
                         <h1 className='text-[32px] '><b>Service Listing</b></h1>
                         <ul className='md:flex overflow-auto md:flex-auto'>
-                            {serviceProvider.ServiceList.map((Service: ServiceInterface) => <ServiceListComponent Service={Service} key={Service.Name}></ServiceListComponent>)}
+                            {targetSvcp.ServiceList.map((Service: ServiceInterface) => <ServiceListComponent Service={Service} key={Service.Name}></ServiceListComponent>)}
                         </ul>
                     </div>
                     <div className='md:hidden block'>
-                        {createButtonList(showButton, buttonPropsList = buttonPropsList)}
+                        {createButtonList(isShownButton, buttonPropsList = buttonPropsList)}
                     </div>
                 </div>
             </div>

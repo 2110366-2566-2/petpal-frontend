@@ -14,7 +14,7 @@ import createButtonList from '../../_utils/createButtonList';
 import { exampleUser } from '../../_interface/UserInterface'
 import { editProfileButtonProps, chagnePasswordButtonProps } from '../../_interface/ButtonPropsInterface'
 
-import { getCurrentEntityUser } from '@/app/libs/user/getCurrentEntityUser'
+import { getCurrentEntityUser } from '@/app/libs/currentEntiity/getCurrentEntityUser'
 
 export default function EmailUserProfile({ params }: { params: { email: string } }) {
     const [myUserId, setMyUserId] = useState<string>()
