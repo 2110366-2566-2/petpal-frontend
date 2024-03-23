@@ -1,11 +1,10 @@
 export async function editSvcpProfile(
-    id:string,
     SVCPusername?:string,
     description?:string,
     address?:string,
     phoneNumber?:string,
     ){
-    const response = await fetch(`http://localhost:8080/serviceproviders/${id}`,{
+    const response = await fetch(`http://localhost:8080/serviceproviders/`,{
         method:'PUT',
         credentials:'include',
         body:JSON.stringify({

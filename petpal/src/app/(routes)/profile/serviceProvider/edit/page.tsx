@@ -10,7 +10,7 @@ import { saveEditButtonProps, editProfileButtonProps } from '@app/(routes)/profi
 import SmallButtonComponent from '@app/(routes)/profile/_components/SmallButtonComponent'
 import FetchBankInformation from '@app/(routes)/profile/_components/FetchedBankInformation'
 import { getCurrentEntity } from '@/app/libs/user/userBackend'
-
+import { editSvcpProfile } from '@/app/libs/serviceProvider/editSvcpProfile'
 
 export default function EditProfile() {
 
@@ -18,23 +18,31 @@ export default function EditProfile() {
   const [description , setDescription] = useState('')
   const [address , setAddress] = useState('')
   const [phoneNumber , setPhoneNumber] = useState('')
+  const [id , setId] = useState('')
 
 
 
   useEffect(()=>{
     const fetchData = async() =>{
       const entity = await getCurrentEntity()
-      console.log('entity: ',entity)
+      console.log(entity)
       setUsername(entity.SVCPUsername || "")
       setDescription(entity.description || "")
       setAddress(entity.address || "")
       setPhoneNumber(entity.phoneNumber || "")
+      setId(entity.SVCPID)
     }
     fetchData()
   },[])
 
-  const handleSubmit = () =>{
-    return
+  const handleSubmit = async() =>{
+    // console.log(id,username,description,address,phoneNumber)
+    return await editSvcpProfile(
+      username,
+      description,
+      address,
+      phoneNumber,
+    )
   }
 
   return (
@@ -44,7 +52,8 @@ export default function EditProfile() {
           <ProfilePictureComponent />
           <div className='hidden md:grid grid-cols-1 gap-[16px]'>
             <SmallButtonComponent ButtonProps={editProfileButtonProps} Working={false}></SmallButtonComponent>
-            <SmallButtonComponent ButtonProps={saveEditButtonProps}></SmallButtonComponent>
+            <SmallButtonComponent ButtonProps={saveEditButtonProps} onClick={async() =>{handleSubmit()}}></SmallButtonComponent>
+            {/* <button className='bg-gray' onClick={async()=>{handleSubmit()}}>save</button> */}
           </div>
         </div>
         <div className='w-[100%] md:max-w-[600px]   float-right m-auto space-y-[30px] mt-[0px] mb-[20px] md:ml-[10px]'>
@@ -93,7 +102,7 @@ export default function EditProfile() {
         </div>
         <div className='w-[100%] grid grid-cols-1 gap-[16px] md:hidden '>
           <SmallButtonComponent ButtonProps={editProfileButtonProps} Working={false}></SmallButtonComponent>
-          <SmallButtonComponent ButtonProps={saveEditButtonProps} onClick={}></SmallButtonComponent>
+          <SmallButtonComponent ButtonProps={saveEditButtonProps} onClick={async() =>{handleSubmit()}}></SmallButtonComponent>
         </div>
       </div>
 
