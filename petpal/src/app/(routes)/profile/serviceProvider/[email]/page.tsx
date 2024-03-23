@@ -1,6 +1,5 @@
 'use client'
 import React from 'react'
-import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 // import {getServerSession} from "next-auth";
 
@@ -15,7 +14,7 @@ import ServiceProviderInterface, { adaptorSvcpToServiceProviderInterface } from 
 import ButtonPropsInterface from "@app/(routes)/profile/_interface/ButtonPropsInterface"
 
 import { exampleProvider } from "@app/(routes)/profile/_interface/ServiceProviderInterface"
-import { editProfileButtonProps, chagnePasswordButtonProps } from "@app/(routes)/profile/_interface/ButtonPropsInterface"
+import { editProfileButtonProps, chagnePasswordButtonProps, createServiceButton } from "@app/(routes)/profile/_interface/ButtonPropsInterface"
 
 import { getCurrentEntitySvcp } from '@/app/libs/currentEntiity/getCurrentEntitySvcp';
 import getSVCP from '@/app/libs/serviceProvider/getSVCP';
@@ -28,12 +27,12 @@ export default function EmailServiceProviderProfile({ params }: { params: { emai
     const [targetSvcpId, setTargetSvcpId] = useState<string>(params.email)
     const [targetSvcp, setTargetSvcp] = useState<ServiceProviderInterface>(exampleProvider)
     const [isShownButton, setIsShownButton] = useState<boolean>(false)
+    const [targetSvcpServiceList, setTargetSvcpServiceList] = useState<ServiceInterface[]>([])
     // var [CurrentUser, SetCurrentUser] = useState<number>(0)
     // var [ProfileUserId, SetProfileUserId] = useState<number>(params.id)
     // let serviceProvider: ServiceProviderInterface = exampleProvider
     useEffect(() => {
         getCurrentEntitySvcp().then((Response) => {
-            // console.log(Response.id)
             setMySvcpId(Response.SVCPID)
         })
     }, [])
@@ -52,11 +51,22 @@ export default function EmailServiceProviderProfile({ params }: { params: { emai
         }
     }, [targetSvcpId])
 
+    useEffect(() => {
+        setTargetSvcpServiceList(targetSvcp.ServiceList)
+    }, [targetSvcp])
+
     let thisEditProfileButton: ButtonPropsInterface = editProfileButtonProps
     thisEditProfileButton.Link = "/profile/serviceProvider/edit"
     let thisChagnePasswordButtonProps: ButtonPropsInterface = chagnePasswordButtonProps
-    thisChagnePasswordButtonProps.Link = "/profile/serviceProvider/changepassword"
-    let buttonPropsList: ButtonPropsInterface[] = [thisEditProfileButton, thisChagnePasswordButtonProps]
+    thisChagnePasswordButtonProps.Link = "/profile/serviceProvider/changePassword"
+    let thisCreateServiceButtonProps: ButtonPropsInterface = {
+        Name: "Create Service",
+        Width: "w-[180px]",
+        BgColor: "bg-[#FF0000]",
+        FontColor: "text-[#FFF]",
+        Link: `${targetSvcpId}/createService`,
+    }
+    let buttonPropsList: ButtonPropsInterface[] = [thisEditProfileButton, thisChagnePasswordButtonProps, thisCreateServiceButtonProps]
 
     return (
         <div className='items-center'>
@@ -79,7 +89,7 @@ export default function EmailServiceProviderProfile({ params }: { params: { emai
                     <div className='space-y-[15px]'>
                         <h1 className='text-[32px] '><b>Service Listing</b></h1>
                         <ul className='md:flex overflow-auto md:flex-auto'>
-                            {targetSvcp.ServiceList.map((Service: ServiceInterface) => <ServiceListComponent Service={Service} key={Service.Name}></ServiceListComponent>)}
+                            {targetSvcpServiceList.map((Service: ServiceInterface) => <ServiceListComponent Service={Service} key={Service.Name + Service.Type}></ServiceListComponent>)}
                         </ul>
                     </div>
                     <div className='md:hidden block'>
