@@ -43,14 +43,14 @@ export default function EmailServiceProviderProfile({ params }: { params: { emai
     }, [targetSvcpId, mySvcpId])
 
     useEffect(() => {
-        if (mySvcpId !== undefined) {
-            getSVCP(mySvcpId).then((response) => {
+        if (targetSvcpId !== undefined) {
+            getSVCP(targetSvcpId).then((response) => {
                 const responeSvcp: Svcp = response as Svcp
                 const newSvcp: ServiceProviderInterface = adaptorSvcpToServiceProviderInterface(responeSvcp)
                 setTargetSvcp(newSvcp)
             })
         }
-    }, [mySvcpId])
+    }, [targetSvcpId])
 
     var thisEditProfileButton = editProfileButtonProps
     thisEditProfileButton.Link = usePathname() + "/edit"
