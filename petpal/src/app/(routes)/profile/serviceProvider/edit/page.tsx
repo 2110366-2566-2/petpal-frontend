@@ -11,32 +11,33 @@ import SmallButtonComponent from '@app/(routes)/profile/_components/SmallButtonC
 import FetchBankInformation from '@app/(routes)/profile/_components/FetchedBankInformation'
 import { getCurrentEntity } from '@/app/libs/user/userBackend'
 import { editSvcpProfile } from '@/app/libs/serviceProvider/editSvcpProfile'
+import ButtonPropsInterface from '@app/(routes)/profile/_interface/ButtonPropsInterface'
+import { useRouter } from 'next/navigation'
 
 export default function EditProfile() {
 
-  const [username , setUsername] = useState('')
-  const [description , setDescription] = useState('')
-  const [address , setAddress] = useState('')
-  const [phoneNumber , setPhoneNumber] = useState('')
-  const [id , setId] = useState('')
+  const [username , setUsername] = useState<string>('')
+  const [description , setDescription] = useState<string>('')
+  const [address , setAddress] = useState<string>('')
+  const [phoneNumber , setPhoneNumber] = useState<string>('')
 
-
+  let thisSaveProfileButton: ButtonPropsInterface = saveEditButtonProps
+  thisSaveProfileButton.Link = "/profile/serviceProvider"
 
   useEffect(()=>{
     const fetchData = async() =>{
       const entity = await getCurrentEntity()
-      console.log(entity)
+      // console.log(entity)
       setUsername(entity.SVCPUsername || "")
       setDescription(entity.description || "")
       setAddress(entity.address || "")
       setPhoneNumber(entity.phoneNumber || "")
-      setId(entity.SVCPID)
     }
     fetchData()
   },[])
 
   const handleSubmit = async() =>{
-    // console.log(id,username,description,address,phoneNumber)
+    // console.log(username,description,address,phoneNumber)
     return await editSvcpProfile(
       username,
       description,
@@ -44,7 +45,7 @@ export default function EditProfile() {
       phoneNumber,
     )
   }
-
+  const router = useRouter()
   return (
     <div className='items-center'>
       <div className=' md:flex m-[50px] items-center '>
@@ -52,7 +53,7 @@ export default function EditProfile() {
           <ProfilePictureComponent />
           <div className='hidden md:grid grid-cols-1 gap-[16px]'>
             <SmallButtonComponent ButtonProps={editProfileButtonProps} Working={false}></SmallButtonComponent>
-            <SmallButtonComponent ButtonProps={saveEditButtonProps} onClick={async() =>{handleSubmit()}}></SmallButtonComponent>
+            <SmallButtonComponent ButtonProps={thisSaveProfileButton} onClick={async() =>{handleSubmit();router.push(thisSaveProfileButton.Link)}}></SmallButtonComponent>
             {/* <button className='bg-gray' onClick={async()=>{handleSubmit()}}>save</button> */}
           </div>
         </div>
@@ -102,7 +103,7 @@ export default function EditProfile() {
         </div>
         <div className='w-[100%] grid grid-cols-1 gap-[16px] md:hidden '>
           <SmallButtonComponent ButtonProps={editProfileButtonProps} Working={false}></SmallButtonComponent>
-          <SmallButtonComponent ButtonProps={saveEditButtonProps} onClick={async() =>{handleSubmit()}}></SmallButtonComponent>
+          <SmallButtonComponent ButtonProps={thisSaveProfileButton} onClick={async() =>{handleSubmit();router.push(thisSaveProfileButton.Link)}}></SmallButtonComponent>
         </div>
       </div>
 

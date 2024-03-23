@@ -3,9 +3,12 @@ import { useState , useEffect } from 'react'
 import createServiceImage from "@app/(routes)/profile/_components/createServiceImage.jpg"
 import Image from 'next/image'
 import SmallButtonComponent from "@app/(routes)/profile/_components/SmallButtonComponent"
+import ButtonPropsInterface from '@app/(routes)/profile/_interface/ButtonPropsInterface'
 import { createServiceButton , cancelServiceButton } from "@app/(routes)/profile/_interface/ButtonPropsInterface"
 import AppointmentTime from "@app/(routes)/profile/_components/AppointmentTime"
 import createServiceApi from '@/app/libs/service/createServiceApi'
+import { useRouter } from 'next/navigation'
+
 export default function CreateServiceForm(){
     const [countTimeslot , setCountTimeslot] = useState(1)
     const [deleteTime , setDeleteTime] = useState(false)
@@ -36,7 +39,7 @@ export default function CreateServiceForm(){
             setTimeslot(updatedComponents);
             
         };
-    }
+    } 
 
     const handleInputChange = (id:any, inputName:any, newValue:any) => {
             console.log(id,inputName,newValue)
@@ -75,6 +78,10 @@ export default function CreateServiceForm(){
         return allTime
     }
 
+    let thisCreateServiceButton: ButtonPropsInterface = createServiceButton
+    thisCreateServiceButton.Link = "../"
+    const router = useRouter()
+
     return(
         <div className='items-center'>
             <div className=' md:flex m-[50px] items-center '>
@@ -84,7 +91,7 @@ export default function CreateServiceForm(){
                         <Image className = 'w-[300px] h-[250px] mx-auto md:mx-0 object-crop rounded-[20px] justify-center' src = {createServiceImage} alt='default'/>
                     </div>
                     <div className='hidden md:grid grid-cols-1 gap-[16px]'>
-                    <SmallButtonComponent ButtonProps={createServiceButton} onClick={async() => {postService(price,serviceDes,serviceName,serviceType,convertTime())}}></SmallButtonComponent>
+                    <SmallButtonComponent ButtonProps={createServiceButton} onClick={async() => {postService(price,serviceDes,serviceName,serviceType,convertTime()); router.push(thisCreateServiceButton.Link)}}></SmallButtonComponent>
                     <SmallButtonComponent ButtonProps={cancelServiceButton}></SmallButtonComponent>
                     </div>
                 </div>
@@ -164,7 +171,7 @@ export default function CreateServiceForm(){
                         <button className="bg-[#D9D9D9] w-[158px] h-[45px] rounded-[10px] text-[18px] text-center p-[5px]" type='button'>Upload Image</button>
                     </div>*/}
                     <div className='mt-2 md:hidden grid grid-cols-1 gap-[16px]'>
-                    <SmallButtonComponent ButtonProps={createServiceButton} onClick={async() => {postService(price,serviceDes,serviceName,serviceType,convertTime())}}></SmallButtonComponent>
+                    <SmallButtonComponent ButtonProps={createServiceButton} onClick={async() => {postService(price,serviceDes,serviceName,serviceType,convertTime()); router.push(thisCreateServiceButton.Link)}}></SmallButtonComponent>
                     {/* <button className= 'bg-[#aad]'onClick={async() => {postService(price,serviceDes,serviceName,serviceType,convertTime())}}> submit </button> */}
                     <SmallButtonComponent ButtonProps={cancelServiceButton}></SmallButtonComponent>
                     </div>
