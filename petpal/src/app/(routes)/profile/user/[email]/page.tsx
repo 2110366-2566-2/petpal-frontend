@@ -40,9 +40,6 @@ export default function EmailUserProfile({ params }: { params: { email: string }
 
     const buttonPropsList: ButtonPropsInterface[] = [editProfileButtonProps, chagnePasswordButtonProps]
 
-    const MY_EMAIL: string = "me"
-    // var showButton: boolean = email === MY_EMAIL
-
     return (
         <div className='items-center'>
             <div className='md:flex items-top p-[20px] m-auto md:max-w-[1100px]'>

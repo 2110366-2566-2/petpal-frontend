@@ -1,4 +1,4 @@
-export async function getCurrentEntity() {
+export async function getUserById() {
     try {
         const response = await fetch('http://localhost:8080/current-entity', {
             method: 'GET',

@@ -17,11 +17,32 @@ import ButtonPropsInterface from "@app/(routes)/profile/_interface/ButtonPropsIn
 import { exampleProvider } from "@app/(routes)/profile/_interface/ServiceProviderInterface"
 import { editProfileButtonProps, chagnePasswordButtonProps } from "@app/(routes)/profile/_interface/ButtonPropsInterface"
 
+import { getCurrentEntitySvcp } from '@/app/libs/user/getCurrentEntitySvcp';
 
-export default function EmailServiceProviderProfile({ params }: { params: { email: number } }) {
-    var [CurrentUser, SetCurrentUser] = useState<number>(0)
-    var [ProfileUserId, SetProfileUserId] = useState<number>(params.id)
-    let serviceProvider: ServiceProviderInterface = exampleProvider
+
+export default function EmailServiceProviderProfile({ params }: { params: { email: string } }) {
+    const [mySvcpId, setMySvcpId] = useState<string>()
+    // const targetUserId: string = params.email
+    const [targetSvcpId, setTargetSvcpId] = useState<string>(params.email)
+    const [targetSvcp, setTargetSvcp] = useState<ServiceProviderInterface>(exampleProvider)
+    const [isShownButton, setIsShownButton] = useState<boolean>(false)
+    // var [CurrentUser, SetCurrentUser] = useState<number>(0)
+    // var [ProfileUserId, SetProfileUserId] = useState<number>(params.id)
+    // let serviceProvider: ServiceProviderInterface = exampleProvider
+    useEffect(() => {
+        getCurrentEntitySvcp().then((Response) => {
+            // console.log(Response.id)
+            setMySvcpId(Response.SVCPID)
+        })
+    }, [])
+
+    useEffect(() => {
+        setIsShownButton(targetUserId === myUserId)
+    }, [targetUserId, myUserId])
+
+    useEffect(() => {
+
+    }, [targetUserId])
 
     var thisEditProfileButton = editProfileButtonProps
     thisEditProfileButton.Link = usePathname() + "edit"
