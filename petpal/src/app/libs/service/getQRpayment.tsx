@@ -10,10 +10,7 @@ export default async function getQRpayment(
     if (response.ok) {
         console.log("Get QR successfully");
         const data = await response.json();
-
-        // Convert binary data to base64
         return data;
-
     } else {
         console.error("Get QR failed");
     }

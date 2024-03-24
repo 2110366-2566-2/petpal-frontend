@@ -3,10 +3,12 @@ import Image, { StaticImageData } from 'next/image'
 
 interface Props {
     onClose: () => void;
-	qrCode: string | null;
+    qrCode: string | null;
+    bookingID: string | null;
+    serviceName: string | null;
 }
 
-export default function Paymentcard({onClose, qrCode}:Props){ 
+export default function Paymentcard({onClose, qrCode, bookingID, serviceName}:Props){ 
     const qr : StaticImageData ={
 		src: `data:image/png;base64,${qrCode}`,
 		height: 256,
@@ -35,19 +37,22 @@ export default function Paymentcard({onClose, qrCode}:Props){
 					<div className="max-w-[375px] flex flex-col items-center">
 						<div className="aspect-square w-[90%] relative bg-white rounded-lg shadow-md">
 							<a
-                                //href={qr}
-                                download
-                            >
+                                href={`data:image/png;base64,${qrCode}`}
+                                download={`petpal_qrpayment_${bookingID}.png`}
+							>
                                 <Image
 								alt=" QR code "
 								className="object-cover w-full rounded-lg border-2 border-gray overflow-hidden"
-								fill={true}
 								placeholder="blur"
  								blurDataURL={'/cat.png'}
 								src={qr}
 							    />
                             </a>
 						</div>
+						<div className="flex flex-col justify-center text-gray-500 text-xs mt-1">
+                    		<span>Booking ID: {bookingID}</span>
+							<span>Service name: {serviceName} </span>
+                		</div>
 						<div className="flex flex-col gap-3 p-3 opacity-80">
 							<span className="inline-block bg-blue-200 text-blue-800 text-lg rounded-full font-medium tracking-wide">
                                 1. Click to save this QR

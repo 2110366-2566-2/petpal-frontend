@@ -71,7 +71,7 @@ export default function BookingHistory() {
 
     const [qrCode, setQRCode] = useState<string | null>(null); // State to hold the QR code
     const [selectedBookingID, setSelectedBookingID] = useState<string | null>(null); // State to hold the selected booking ID
-    
+    const [selectedServiceName ,setSelectedServiceName] = useState<string | null>(null);
 
     useEffect(() => {
         const handlePayNow = async () => {
@@ -79,7 +79,7 @@ export default function BookingHistory() {
                 try {
                     const qrCodeData = await getQRpayment(selectedBookingID); // Fetch QR code
                     if (qrCodeData !== undefined) {
-                        setQRCode(qrCodeData.qrImage[9]); // Set QR code in state if qrCodeData is defined
+                        setQRCode(qrCodeData.qrImage); // Set QR code in state if qrCodeData is defined
                     } else {
                         console.error("QR code data is undefined");
                     }
@@ -98,6 +98,8 @@ export default function BookingHistory() {
             {qrCode && <Paymentcard 
                 onClose={() => setQRCode(null)} // Reset QR code when closing Paymentcard
                 qrCode={qrCode} // Pass QR code to Paymentcard
+                bookingID={selectedBookingID} // Pass bookingID
+                serviceName={selectedServiceName} // Pass serviceName
             />}
             {bookings.map((booking, index) => (
                 <div
@@ -117,7 +119,10 @@ export default function BookingHistory() {
                                 {
                                     (getBookingStatus(booking)=='Pending') && 
                                         <button 
-                                            onClick={() => setSelectedBookingID(booking.bookingID)}
+                                        onClick={() => {
+                                            setSelectedBookingID(booking.bookingID);
+                                            setSelectedServiceName(booking.serviceName); 
+                                        }}
                                             className="max-w-[90px] text-blue border rounded-xl my-2 p-1 hover:bg-blue hover:text-white"
                                         >
                                             Pay now
