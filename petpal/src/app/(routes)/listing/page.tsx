@@ -47,31 +47,6 @@ interface Column {
     return { serviceName, serviceType, price, rating };
   }
   
-  //const rows: any[] = [
-    /*createData('serviceName0', 'Healthcare', 16.58, 21.90),
-    createData('serviceName1', 'Grooming', 51.26, 15.54),
-    createData('serviceName2', 'Pet walking', 71.62, 67.07),
-    createData('serviceName3', 'Healthcare', 16.99, 31.90),
-    createData('serviceName4', 'Grooming', 51.00, 15.44),
-    createData('serviceName5', 'Pet walking', 70.62, 77.07),
-    createData('serviceName6', 'Healthcare', 17.28, 21.99),
-    createData('serviceName7', 'Grooming', 45.76, 15.54),
-    createData('serviceName8', 'Pet walking', 81.62, 67.07),
-    createData('serviceName9', 'Healthcare', 46.58, 11.90),
-    createData('serviceName10', 'Grooming', 57.26, 15.59),
-    createData('serviceName11', 'Pet walking', 71.61, 67.07),
-    createData('serviceName12', 'Healthcare', 46.58, 21.90),
-    createData('serviceName13', 'Grooming', 91.86, 45.44),
-    createData('serviceName14', 'Pet walking', 81.12, 27.07),
-    createData('serviceName15', 'Healthcare', 11.07, 21.10),
-    createData('serviceName16', 'Grooming', 51.26, 15.54),
-    createData('serviceName17', 'Pet walking', 21.24, 78.23),
-    createData('serviceName18', 'Others', 88.23, 11.12),
-    createData('serviceName19', 'Others', 18.13, 59.20),
-    createData('serviceName20', 'Others', 58.93, 17.78),
-    createData('serviceName21', 'Others', 26.89, 28.12),
-    createData('serviceName22', 'Others', 69.69, 8.12),*/
-  //];
 
 export default function ServiceListing({
   searchParams
@@ -90,7 +65,6 @@ export default function ServiceListing({
         async function fetchData() {
           try {
             const data = await getServices();
-            console.log(data);
             const newData = data.map((service: any) => createData(
               service.services.serviceName,
               service.services.serviceType,
