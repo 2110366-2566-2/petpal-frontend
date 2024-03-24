@@ -2,6 +2,7 @@
 import React, { ChangeEvent, useState } from "react";
 import Button from "@/app/(routes)/register/_components/Button";
 import login from "@/app/libs/auth/login";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
     const [registrationType, setRegistrationType] = useState("user");
@@ -9,6 +10,8 @@ export default function Login() {
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
 
+    const router = useRouter()
+    
     const handleRegistrationTypeChange = (
         e: ChangeEvent<HTMLSelectElement>
     ) => {
@@ -20,9 +23,9 @@ export default function Login() {
             setErrorMessage("Email and password are required.");
             return;
         }
-
         try {
             login(email, registrationType, password);
+            router.push("/");
         } catch (error) {
             console.error("Error during login:", error);
         }
