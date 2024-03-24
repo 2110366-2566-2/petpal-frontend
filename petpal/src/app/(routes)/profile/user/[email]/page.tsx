@@ -55,7 +55,7 @@ export default function EmailUserProfile({ params }: { params: { email: string }
     let thisEditProfileButton: ButtonPropsInterface = editProfileButtonProps
     thisEditProfileButton.Link = "/profile/user/edit"
     let thisChagnePasswordButtonProps: ButtonPropsInterface = chagnePasswordButtonProps
-    thisChagnePasswordButtonProps.Link = "/profile/user/changePassword"
+    thisChagnePasswordButtonProps.Link = "/profile/changePassword"
 
     const buttonPropsList: ButtonPropsInterface[] = [thisEditProfileButton, thisChagnePasswordButtonProps]
 

@@ -11,8 +11,32 @@ import FetchBankInformation from "@app/(routes)/profile/_components/FetchedBankI
 import SmallButtonComponent from "@app/(routes)/profile/_components/SmallButtonComponent"
 import { editProfileButtonProps, saveEditButtonProps } from "@app/(routes)/profile/_interface/ButtonPropsInterface"
 import { useState, useEffect } from 'react'
+import { getCurrentEntity } from '@/app/libs/user/userBackend'
+import { editUserProfile } from '@/app/libs/user/editUserProfile'
+import { useRouter } from 'next/navigation'
+
+import ButtonPropsInterface from "@app/(routes)/profile/_interface/ButtonPropsInterface"
+
 
 export default function EditProfile() {
+
+  const [username , setUsername] = useState('')
+
+  useEffect(()=>{
+    const fetchData = async()=>{
+      const entity = await getCurrentEntity()
+      setUsername(entity.username)
+    }
+    fetchData()
+  },[])
+
+  const handleSubmit = async()=>{
+    return await editUserProfile(username)
+  }
+
+  const router = useRouter()
+  let thissaveEditButtonProps:ButtonPropsInterface = saveEditButtonProps
+  thissaveEditButtonProps.Link = '../'
 
   return (
     <div className='items-center'>
@@ -21,7 +45,7 @@ export default function EditProfile() {
           <ProfilePictureComponent />
           <div className='hidden md:grid grid-cols-1 gap-[16px]'>
             <SmallButtonComponent ButtonProps={editProfileButtonProps} Working={false}></SmallButtonComponent>
-            <SmallButtonComponent ButtonProps={saveEditButtonProps}></SmallButtonComponent>
+            <SmallButtonComponent ButtonProps={saveEditButtonProps} onClick={() => {handleSubmit(); router.push(thissaveEditButtonProps.Link)}}></SmallButtonComponent>
           </div>
         </div>
         <div className='w-[100%] md:max-w-[600px]  md:float-right m-auto space-y-[30px] mt-[0px] mb-[20px]'>
@@ -30,6 +54,8 @@ export default function EditProfile() {
             <input type='username' className='mt-1 block w-[100%] h[45px] rounded-md shadow-sm
             focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 peer-focus:text-primary
             border-gray border-[3px]'
+              value = {username}
+              onChange={(e)=>{setUsername(e.target.value)}}
               placeholder='username' />
           </div>
           <div className="my-2 ">
@@ -39,10 +65,11 @@ export default function EditProfile() {
         </div>
         <div className='w-[100%] grid grid-cols-1 gap-[16px] md:hidden '>
           <SmallButtonComponent ButtonProps={editProfileButtonProps} Working={false}></SmallButtonComponent>
-          <SmallButtonComponent ButtonProps={saveEditButtonProps}></SmallButtonComponent>
+          <SmallButtonComponent ButtonProps={saveEditButtonProps}  onClick={() => {handleSubmit(); router.push(thissaveEditButtonProps.Link)}}></SmallButtonComponent>
         </div>
       </div>
 
     </div>
   )
 }
+

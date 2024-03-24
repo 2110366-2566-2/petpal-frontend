@@ -58,7 +58,7 @@ export default function EmailServiceProviderProfile({ params }: { params: { emai
     let thisEditProfileButton: ButtonPropsInterface = editProfileButtonProps
     thisEditProfileButton.Link = "/profile/serviceProvider/edit"
     let thisChagnePasswordButtonProps: ButtonPropsInterface = chagnePasswordButtonProps
-    thisChagnePasswordButtonProps.Link = "/profile/serviceProvider/changePassword"
+    thisChagnePasswordButtonProps.Link = "/profile/changePassword"
     let thisCreateServiceButtonProps: ButtonPropsInterface = {
         Name: "Create Service",
         Width: "w-[180px]",

@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import ProfilePictureComponent from "@app/(routes)/profile/_components/ProfilePictureComponent"
 import SmallButtonComponent from "@app/(routes)/profile/_components/SmallButtonComponent"
