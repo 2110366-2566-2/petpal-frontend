@@ -6,6 +6,7 @@
         "chat",
         "homepage",
         "listing",
-        "bookingHistory"
+        "bookingHistory",
+        "service",
     ]
 }
