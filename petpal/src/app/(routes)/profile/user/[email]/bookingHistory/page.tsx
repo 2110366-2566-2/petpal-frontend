@@ -22,7 +22,7 @@ function formatDate(datetimeString: string) {
     // Corrected options with specific string literals for TypeScript
     const options: Intl.DateTimeFormatOptions = {
         year: "numeric",
-        month: "long",
+        month: "short",
         day: "numeric",
     };
     // Adjust 'en-US' to your preferred locale if needed
@@ -79,12 +79,12 @@ export default function BookingHistory() {
                             <div className="font-bold text-[24px] xl:hidden">
                                 {booking.serviceName} {/* Visible on Mobile */}
                             </div>
-                            <div className="font-medium text-[18px] text-[#12B837]">
+                            <div className="font-medium text-[18px] xl:min-w-[170px] text-[#12B837]">
                                 {getBookingStatus(booking)}
                             </div>
                         </div>
                         {/* Provider Name: Below on mobile, in a box on the right on desktop */}
-                        <div className="mt-2 xl:mt-0 xl:flex xl:items-center xl:justify-end xl:w-auto">
+                        <div className="mt-2 xl:mt-0 xl:flex xl:items-center xl:justify-start xl:w-auto">
                             <div className="text-left">
                                 <div className="font-bold text-[24px] hidden xl:block">
                                     {booking.serviceName}{" "}
@@ -107,7 +107,7 @@ export default function BookingHistory() {
                     </div>
                     <div className="flex justify-between items-center">
                         <div className="font-medium text-[32px]">
-                            {booking.totalBookingPrice}฿
+                            {booking.totalBookingPrice.toFixed(2)}฿
                         </div>
                         <div className="flex xl:hidden">
                             <div className="font-bold text-[16px] text-[#FFD600]">
