@@ -4,6 +4,7 @@ import getBookingHistory from "@app/libs/service/getBookingHistory";
 import React, { useState, useEffect } from "react";
 import Booking from "@app/(routes)/profile/_interface/Booking";
 import cancelBooking from "@app/libs/service/cancelBooking";
+import Paymentcard from "./_components/Paymentcard";
 
 function formatTimeToHourMinute(datetimeString: string) {
     const date = new Date(datetimeString);
@@ -139,6 +140,7 @@ export default function BookingHistory() {
                     </div>
                 </div>
             ))}
+            <Paymentcard/>
         </main>
     );
 }
