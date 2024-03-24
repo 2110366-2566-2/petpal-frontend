@@ -61,8 +61,8 @@ export default function EmailUserProfile({ params }: { params: { email: string }
 
     return (
         <div className='items-center'>
-            <div className='md:flex items-top p-[20px] m-auto md:max-w-[1100px]'>
-                <div className='max-w-[300px] m-auto space-y-[10px] md:float-left mt-[0px] md:mr-[10px]'>
+            <div className='md:flex items-top p-[20px] m-auto md:max-w-[1100px] md:mt-[30px]'>
+                <div className='max-w-[300px] m-auto space-y-[20px] md:ml-[80px] md:float-left mt-[0px] md:mr-[50px]'>
                     <ProfilePictureComponent />
                     <h1 className='text-[32px]' ><b>{targetUser.Name}</b></h1>
                     <div className='hidden md:block'>
