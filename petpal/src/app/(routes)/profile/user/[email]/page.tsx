@@ -63,7 +63,7 @@ export default function EmailUserProfile({ params }: { params: { email: string }
         <div className='items-center'>
             <div className='md:flex items-top p-[20px] m-auto md:max-w-[1100px] md:mt-[30px]'>
                 <div className='max-w-[300px] m-auto space-y-[20px] md:ml-[80px] md:float-left mt-[0px] md:mr-[50px]'>
-                    <ProfilePictureComponent />
+                    <ProfilePictureComponent src={targetUser.profilePictureSrc} />
                     <h1 className='text-[32px]' ><b>{targetUser.Name}</b></h1>
                     <div className='hidden md:block'>
                         {createButtonList(isShownButton, buttonPropsList)}
