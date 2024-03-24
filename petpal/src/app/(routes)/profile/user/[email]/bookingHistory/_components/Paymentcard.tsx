@@ -1,34 +1,33 @@
-import Link from 'next/link'
 import React from 'react'
 import Image from 'next/image'
-import BasicButton from '@/app/_component/BasicButton'
 
-export default function Paymentcard() {
-    const qr = '/cat.png';
+interface Props {
+    onClose: () => void;
+}
+
+export default function Paymentcard({onClose}:Props){ 
+    const qr = '/sampleqr.png';
+
+
   return (
     <main className="fixed inset-0 flex items-center justify-center z-50">
-			<Link
+			<div
 				className="fixed inset-0 bg-black opacity-75 cursor-default"
-				href="/"
-				scroll={false}
 			/>
-			<div className="relative w-[90%] max-w-[375px] max-h-[90%] bg-cream rounded-3xl px-6">
+			<div className="relative w-[90%] max-w-[375px] max-h-[90%] bg-gray rounded-3xl px-6">
 				<div className="flex justify-between items-start">
-					<Link
+					<button
 						className="absolute top-2.5 right-2.5 text-6xl h-6 w-6 text-black opacity-30 rounded justify-center items-center flex pb-0.5"
-						href="/"
-						scroll={false}
+						onClick={onClose}
 					>
 						&times;
 						<span className="sr-only">Close Modal</span>
-					</Link>
+					</button>
 				</div>
-                <div className="pt-7 pb-3 px-3">
-					<div className="flex justify-center text-2xl text-center w-full shadow-md rounded py-2 bg-[#0050AE] text-white font-semibold">
+				<div className="bg-white rounded-lg mx-2 my-3 mt-8 max-w-3xl space-y-4 overflow-auto z-20 shadow-md">
+					<div className="flex justify-center text-2xl text-center w-full shadow-md rounded-t-lg py-2 bg-[#0050AE] text-white font-semibold">
 						Thai QR Payment
 					</div>
-				</div>
-				<div className="bg-opacity-0 rounded-3xl max-w-3xl mx-auto p-3 space-y-4 overflow-auto z-20">
 					<div className="max-w-[375px] flex flex-col items-center">
 						<div className="aspect-square w-[90%] relative bg-white rounded-lg shadow-md">
 							<a
@@ -37,7 +36,7 @@ export default function Paymentcard() {
                             >
                                 <Image
 								alt='qr'
-								className="object-cover w-full rounded-lg overflow-hidden"
+								className="object-cover w-full rounded-lg border-2 border-gray overflow-hidden"
 								fill={true}
 								priority={true}
 								loading="eager"

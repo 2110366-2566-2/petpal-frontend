@@ -1,10 +1,10 @@
-
 "use client";
 import getBookingHistory from "@app/libs/service/getBookingHistory";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import Booking from "@app/(routes)/profile/_interface/Booking";
 import cancelBooking from "@app/libs/service/cancelBooking";
 import Paymentcard from "./_components/Paymentcard";
+import Link from "next/link";
 
 function formatTimeToHourMinute(datetimeString: string) {
     const date = new Date(datetimeString);
@@ -67,8 +67,23 @@ export default function BookingHistory() {
     const handleCancel = async (id: string, reason: string) => {
         cancelBooking(id, reason);
     };
+    const [showPaymentcard,setShowPaymentcard] = useState(true);
+
+    async function onClose() {
+        //"use server"
+        console.log("Modal has closed")
+    }
+
+    async function onOk() {
+        //"use server"
+        console.log("Ok was clicked")
+    }
+
+
+
     return (
         <main className="flex flex-col items-center pt-10">
+            {!showPaymentcard && <Paymentcard onClose={() => setShowPaymentcard(true)}/>}
             {bookings.map((booking, index) => (
                 <div
                     key={index}
@@ -80,8 +95,19 @@ export default function BookingHistory() {
                             <div className="font-bold text-[24px] xl:hidden">
                                 {booking.serviceName} {/* Visible on Mobile */}
                             </div>
-                            <div className="font-medium text-[18px] xl:min-w-[170px] text-[#12B837]">
+                            <div 
+                                className="flex flex-col font-medium text-[18px] xl:min-w-[170px] text-[#12B837]"
+                            >
                                 {getBookingStatus(booking)}
+                                {
+                                    (getBookingStatus(booking)=='Pending') && 
+                                        <button 
+                                            onClick={(e)=>setShowPaymentcard(false)}
+                                            className="max-w-[90px] text-blue border rounded-xl my-2 p-1 hover:bg-blue hover:text-white"
+                                        >
+                                            Pay now
+                                        </button>
+                                }
                             </div>
                         </div>
                         {/* Provider Name: Below on mobile, in a box on the right on desktop */}
@@ -140,7 +166,11 @@ export default function BookingHistory() {
                     </div>
                 </div>
             ))}
-            <Paymentcard/>
+            {
+                /*!showPaymentcard && (
+                    //<Paymentcard/>
+                )*/
+            }
         </main>
     );
 }
