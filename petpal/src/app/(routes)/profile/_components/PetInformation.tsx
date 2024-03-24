@@ -1,6 +1,7 @@
 'use client'
 
-import {useState} from "react"
+import { getPets } from "@/app/libs/user/petapi";
+import {useState,useEffect} from "react"
 import React from "react";
 
 
@@ -12,10 +13,21 @@ export default function PetInformation(){
       {Name:"Vaccination Records" , inputType:"box"},{Name:"Dietary Preference" , inputType:"box"},
       {Name:"Behavioral Note" , inputType:"box"},{Name:"Certificates" , inputType:"box"},
     ]
+
+    const [pets  , setPets] = useState<Array<Object>>()
+
+    useEffect(()=>{
+      const fetchData = async() =>{
+        const allpets = await getPets()
+        setPets(allpets)
+      }
+      fetchData()
+    },[])
+
     return(
       <div className = "my-2 ">
             <span className='text-black font-bold text-[20px]'>Pets</span>
-            {isOpen && (
+            {pets && (
               <div className='flex justify-between bg-gray w-[25%] rounded-[5px] pl-1'>
                 <span>pet name 1</span>
                 <button className='w-5 h-5 justify-center items-center flex 'onClick={() => setIsOpen(false)} >x</button>
