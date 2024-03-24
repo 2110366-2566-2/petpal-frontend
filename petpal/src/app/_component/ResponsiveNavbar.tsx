@@ -1,24 +1,37 @@
 "use client";
-import React, { useState } from 'react'
-import SearchIcon from '@mui/icons-material/Search';
+import React, {useState } from 'react'
 import Link from 'next/link';
 import Button from '../(routes)/register/_components/Button';
 import BasicButton from './BasicButton';
 import { AnimatePresence, motion } from 'framer-motion';
 import CloseIcon from '@mui/icons-material/Close';
+import { useRouter } from 'next/navigation';
+import { deleteCookie, hasCookie } from 'cookies-next';
 
 interface NavBarProps {
     brandName: string;
     navItems: {name : string , link:string}[];
 }
 
-export default function ReponsiveNavbar({ brandName, navItems }: NavBarProps) {
+export default function ResponsiveNavbar({ brandName, navItems }: NavBarProps) {
     const [isMobile, setIsMobile] = useState(false);
+    const [isLogin, setIslogin] = useState(false);
 
     const toggleMobileMenu = () => {
       setIsMobile(!isMobile);
     };
+    const router = useRouter()
 
+    const onClickButtonHandler = () =>{
+        const checkToken = hasCookie("token")
+        if(!checkToken){
+            router.push("/login");
+        }else{
+            // Logout by Clear a "token" cookie
+            deleteCookie('token');
+        }
+    };
+    
     const menuVars = {
         initial: {
           scaleY: 0,
@@ -40,10 +53,9 @@ export default function ReponsiveNavbar({ brandName, navItems }: NavBarProps) {
           },
         },
       };
-
      
     return (
-        <div className='sticky top-0'>
+        <div className='sticky top-0 z-50'>
         <nav className="w-full bg-[#D9D9D9] flex flex-row justify-between items-center px-2 md:py-0 py-2">
             <div className="md:px-10 justify-between items-center md:flex md:flex-row ">
                 <a className = "hidden min-[900px]:flex font-bold text-2xl" href="./">{brandName}</a>
@@ -75,7 +87,7 @@ export default function ReponsiveNavbar({ brandName, navItems }: NavBarProps) {
             </button>
             <a className = "flex min-[900px]:hidden font-bold text-2xl" href="./">{brandName}</a>
             <div className='flex flex-row justify-between items-center'>     
-                <Link href={"./login"} className="hidden min-[900px]:flex"><Button name={"LOGIN"}/></Link>
+                <Link href={"/login"} className="hidden min-[900px]:flex"><Button name={hasCookie("token") ? "LOGOUT" : "LOGIN"} onClick={onClickButtonHandler}/></Link>
             </div>
             <button className="min-[900px]:hidden text-white cursor-pointer" onClick={toggleMobileMenu}>
                { isMobile ? (<CloseIcon className='text-[#000000]'/>) : 
@@ -95,7 +107,7 @@ export default function ReponsiveNavbar({ brandName, navItems }: NavBarProps) {
                     />
                 </svg>
                 )
-                }
+            }
             </button>
             
         </nav>
@@ -120,7 +132,7 @@ export default function ReponsiveNavbar({ brandName, navItems }: NavBarProps) {
                             )
                         }
                     </ul>
-                    <Link href={"./login"} className="flex justify-center py-1" onClick={toggleMobileMenu}><BasicButton name={"LOGIN"}/></Link>
+                    <Link href={"/login"} className="flex justify-center py-1"><BasicButton name={hasCookie("token") ? "LOGOUT" : "LOGIN"} onClick={onClickButtonHandler}/></Link>
                 </div>
             </motion.div>
             )

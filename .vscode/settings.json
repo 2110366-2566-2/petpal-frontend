@@ -5,6 +5,8 @@
         "ResponsiveNavbar.tsx",
         "chat",
         "homepage",
-        "listing"
+        "listing",
+        "bookingHistory",
+        "service",
     ]
 }
