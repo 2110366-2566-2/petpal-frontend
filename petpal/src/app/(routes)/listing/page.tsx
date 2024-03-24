@@ -59,7 +59,7 @@ export default function ServiceListing({
 }){
       const [page, setPage] = React.useState(0);
       const [rowsPerPage, setRowsPerPage] = React.useState(10);
-      const [rows, setRows] = useState<any[]>([]); // Initialize rows state
+      const [rows, setRows] = useState<any[]>([]); 
 
       useEffect(() => {
         async function fetchData() {
@@ -71,15 +71,14 @@ export default function ServiceListing({
               service.services.price,
               service.services.averageRating
             ));
-            setRows(newData); // Set rows state with new data
+            setRows(newData); 
           } catch (error) {
             console.error("Error fetching data:", error);
-            // Handle error
           }
         }
     
-        fetchData(); // Call fetchData when component mounts
-      }, []); // Empty dependency array to run effect only once on mount
+        fetchData(); 
+      }, [searchParams]); 
       
       const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
