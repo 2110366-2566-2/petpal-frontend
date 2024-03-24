@@ -5,6 +5,7 @@ import Booking from "@app/(routes)/profile/_interface/Booking";
 import cancelBooking from "@app/libs/service/cancelBooking";
 import Paymentcard from "./_components/Paymentcard";
 import Link from "next/link";
+import getQRpayment from "@/app/libs/service/getQRpayment";
 
 function formatTimeToHourMinute(datetimeString: string) {
     const date = new Date(datetimeString);
@@ -67,23 +68,37 @@ export default function BookingHistory() {
     const handleCancel = async (id: string, reason: string) => {
         cancelBooking(id, reason);
     };
-    const [showPaymentcard,setShowPaymentcard] = useState(true);
 
-    async function onClose() {
-        //"use server"
-        console.log("Modal has closed")
-    }
+    const [qrCode, setQRCode] = useState<string | null>(null); // State to hold the QR code
+    const [selectedBookingID, setSelectedBookingID] = useState<string | null>(null); // State to hold the selected booking ID
+    
 
-    async function onOk() {
-        //"use server"
-        console.log("Ok was clicked")
-    }
+    useEffect(() => {
+        const handlePayNow = async () => {
+            if (selectedBookingID) {
+                try {
+                    const qrCodeData = await getQRpayment(selectedBookingID); // Fetch QR code
+                    if (qrCodeData !== undefined) {
+                        setQRCode(qrCodeData.qrImage[9]); // Set QR code in state if qrCodeData is defined
+                    } else {
+                        console.error("QR code data is undefined");
+                    }
+                    console.log(qrCodeData);
+                } catch (error) {
+                    console.error("Error fetching QR code:", error);
+                }
+            }
+        };
 
-
+        handlePayNow(); // Call handlePayNow when selectedBookingID changes
+    }, [selectedBookingID]);
 
     return (
         <main className="flex flex-col items-center pt-10">
-            {!showPaymentcard && <Paymentcard onClose={() => setShowPaymentcard(true)}/>}
+            {qrCode && <Paymentcard 
+                onClose={() => setQRCode(null)} // Reset QR code when closing Paymentcard
+                qrCode={qrCode} // Pass QR code to Paymentcard
+            />}
             {bookings.map((booking, index) => (
                 <div
                     key={index}
@@ -102,7 +117,7 @@ export default function BookingHistory() {
                                 {
                                     (getBookingStatus(booking)=='Pending') && 
                                         <button 
-                                            onClick={(e)=>setShowPaymentcard(false)}
+                                            onClick={() => setSelectedBookingID(booking.bookingID)}
                                             className="max-w-[90px] text-blue border rounded-xl my-2 p-1 hover:bg-blue hover:text-white"
                                         >
                                             Pay now
@@ -166,11 +181,6 @@ export default function BookingHistory() {
                     </div>
                 </div>
             ))}
-            {
-                /*!showPaymentcard && (
-                    //<Paymentcard/>
-                )*/
-            }
         </main>
     );
 }

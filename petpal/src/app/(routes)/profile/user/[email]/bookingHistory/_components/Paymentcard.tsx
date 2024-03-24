@@ -1,13 +1,17 @@
 import React from 'react'
-import Image from 'next/image'
+import Image, { StaticImageData } from 'next/image'
 
 interface Props {
     onClose: () => void;
+	qrCode: string | null;
 }
 
-export default function Paymentcard({onClose}:Props){ 
-    const qr = '/sampleqr.png';
-
+export default function Paymentcard({onClose, qrCode}:Props){ 
+    const qr : StaticImageData ={
+		src: `data:image/png;base64,${qrCode}`,
+		height: 256,
+		width: 256
+	}
 
   return (
     <main className="fixed inset-0 flex items-center justify-center z-50">
@@ -31,15 +35,15 @@ export default function Paymentcard({onClose}:Props){
 					<div className="max-w-[375px] flex flex-col items-center">
 						<div className="aspect-square w-[90%] relative bg-white rounded-lg shadow-md">
 							<a
-                                href={qr}
+                                //href={qr}
                                 download
                             >
                                 <Image
-								alt='qr'
+								alt=" QR code "
 								className="object-cover w-full rounded-lg border-2 border-gray overflow-hidden"
 								fill={true}
-								priority={true}
-								loading="eager"
+								placeholder="blur"
+ 								blurDataURL={'/cat.png'}
 								src={qr}
 							    />
                             </a>
