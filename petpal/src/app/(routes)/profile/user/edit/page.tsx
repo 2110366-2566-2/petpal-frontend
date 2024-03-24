@@ -1,4 +1,4 @@
-'use client'
+'user client'
 
 import React from 'react'
 import ProfilePictureComponent from "@app/(routes)/profile/_components/ProfilePictureComponent"
@@ -17,7 +17,7 @@ export default function EditProfile() {
   return (
     <div className='items-center'>
       <div className='md:flex m-[50px] items-center'>
-        <div className='max-w-[300px] md:w-[500px] space-y-[10px] md:float-left m-auto mt-[0px] md:ml-[20px] md:mr-3 items-top'>
+        <div className='max-w-[300px] space-y-[10px] md:float-left m-auto mt-[0px] md:mr-3 items-top'>
           <ProfilePictureComponent />
           <div className='hidden md:grid grid-cols-1 gap-[16px]'>
             <SmallButtonComponent ButtonProps={editProfileButtonProps} Working={false}></SmallButtonComponent>
