@@ -13,6 +13,7 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.15.10",
     "@mui/material": "^5.15.10",
+    "@mui/x-date-pickers": "^7.0.0",
     "cookies-next": "^4.1.1",
     "framer-motion": "^11.0.12",
     "fs": "^0.0.1-security",
