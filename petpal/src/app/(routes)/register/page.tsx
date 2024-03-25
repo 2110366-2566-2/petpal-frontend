@@ -3,6 +3,7 @@ import React, { ChangeEvent, useState } from "react";
 import Button from "@app/(routes)/register/_components/Button"
 import registerUser from "@app/libs/auth/registerUser";
 import registerSVCP from "@app/libs/auth/registerSVCP";
+import { useRouter } from "next/navigation";
 
 export default function Register() {
     const [address, setAddress] = useState("");
@@ -18,6 +19,7 @@ export default function Register() {
     const [registrationType, setRegistrationType] = useState("User");
     const [errorMessage, setErrorMessage] = useState("");
 
+    const router = useRouter()
     const handleRegistrationTypeChange = (
         e: ChangeEvent<HTMLSelectElement>
     ) => {
@@ -56,7 +58,7 @@ export default function Register() {
         // console.log(dateOfBirth);
         if (registrationType === "User") {
             try {
-                registerUser(
+                const newUser = await registerUser(
                     address,
                     dateOfBirth,
                     email,
@@ -65,12 +67,18 @@ export default function Register() {
                     phoneNumber,
                     username
                 );
+                if(newUser){
+                    router.push("/login");
+                }
             } catch (error) {
                 console.error("Error during register:", error);
             }
         } else if (registrationType === "Service Provider") {
             try {
-                registerSVCP(email, password, serviceType, username);
+                const newSVCP = await registerSVCP(email, password, serviceType, username);
+                if(newSVCP){
+                    router.push("/login");
+                }
             } catch (error) {
                 console.error("Error during register:", error);
             }
