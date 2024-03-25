@@ -10,5 +10,6 @@
         "AuthContext.tsx"
         "bookingHistory",
         "service",
+        "payment card"
     ]
 }
