@@ -29,6 +29,6 @@ export default function UserProfile() {
         }
     }, [userId])
     return (
-        <h1>hello</h1>
+        <h1 className='flex justify-center text-5xl pt-60'>Profile loading...</h1>
     )
 }
