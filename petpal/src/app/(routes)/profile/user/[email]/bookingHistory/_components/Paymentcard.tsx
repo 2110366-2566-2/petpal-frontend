@@ -1,5 +1,6 @@
 import React from 'react'
 import Image, { StaticImageData } from 'next/image'
+import toast from 'react-hot-toast';
 
 interface Props {
     onClose: () => void;
@@ -14,6 +15,36 @@ export default function Paymentcard({onClose, qrCode, bookingID, serviceName}:Pr
 		height: 256,
 		width: 256
 	}
+
+	const handleConfirmPayment = async () => {
+		try {
+			const response = await fetch('http://localhost:8080/service/booking/payment/authorize', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ bookingID: bookingID }) // Correct body format
+			});
+			const data = await response.json();
+			// Check payment status in the response data
+			if (data.status && data.status.paymentStatus) {
+				toast.success('Payment confirmed!');
+				console.log('Payment successful');
+				// Additional handling if payment is successful
+			} else {
+				console.log('Payment failed');
+				// Additional handling if payment fails
+			}
+			// Close the Paymentcard modal after payment confirmation
+			onClose();
+		} catch (error) {
+			toast.error('Error confirming payment')
+			console.error('Error confirming payment:', error);
+		}
+	};
+	
+	
+
 
   return (
     <main className="fixed inset-0 flex items-center justify-center z-50">
@@ -81,10 +112,22 @@ export default function Paymentcard({onClose, qrCode, bookingID, serviceName}:Pr
 					</div>
 				</div>
 				<div className="pb-3 px-3 flex justify-center">
-					<button className="py-2 px-5 bg-[#FF872F] text-white hover:bg-white hover:text-orange font-semibold rounded-full shadow-md hover:bg-orange-500 
-                                 focus:outline-none focus:ring focus:ring-orange-400 focus:ring-opacity-75">
-						Confirm payment
-					</button>
+					{(qrCode!='/loadingcar.jpg' && bookingID) ? (
+							<button 
+								className="py-2 px-5 bg-[#FF872F] text-white hover:bg-white hover:text-orange font-semibold rounded-full shadow-md hover:bg-orange-500 
+										focus:outline-none focus:ring focus:ring-orange-400 focus:ring-opacity-75"
+								onClick={handleConfirmPayment} // Pass bookingID to onConfirm function
+							>
+								Confirm payment
+							</button>
+							) : (
+							<button 
+								className="py-2 px-5 bg-white text-gray font-semibold rounded-full shadow-md"
+								onClick={() => toast.error('QR is undefined')}
+							>
+								Confirm payment
+							</button>
+						)}
 				</div>
 			</div>
 		</main>
