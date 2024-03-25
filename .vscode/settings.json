@@ -6,6 +6,8 @@
         "chat",
         "homepage",
         "listing",
+        "service",
+        "AuthContext.tsx"
         "bookingHistory",
         "service",
     ]

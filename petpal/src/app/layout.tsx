@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Prompt } from "next/font/google";
 import "./globals.css";
 import ResponsiveNavbar from "./_component/ResponsiveNavbar";
+import { AuthProvider } from "./_contexts/AuthContext";
 
 
 const prompt = Prompt({
@@ -34,8 +35,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={prompt.className}>
-        <ResponsiveNavbar brandName={"PETPAL"} navItems={navitems}/>
-        {children}
+        <AuthProvider>
+          <ResponsiveNavbar brandName={"PETPAL"} navItems={navitems}/>
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );
