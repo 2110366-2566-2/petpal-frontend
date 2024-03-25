@@ -36,18 +36,28 @@ export default function Paymentcard({onClose, qrCode, bookingID, serviceName}:Pr
 					</div>
 					<div className="max-w-[375px] flex flex-col items-center">
 						<div className="aspect-square w-[90%] relative bg-white rounded-lg shadow-md">
+						{qrCode!='/loadingcar.jpg' ? (
 							<a
-                                href={`data:image/png;base64,${qrCode}`}
-                                download={`petpal_qrpayment_${bookingID}.png`}
+								href={`data:image/png;base64,${qrCode}`}
+								download={`petpal_qrpayment_${bookingID}.png`}
 							>
-                                <Image
-								alt=" QR code "
+								<Image
+									alt="QR code"
+									className="object-cover w-full rounded-lg border-2 border-gray overflow-hidden"
+									placeholder="blur"
+									blurDataURL={'/loadingcar.jpg'}
+									src={qr}
+								/>
+							</a>
+							) : (
+							<Image
+								alt="Placeholder image"
 								className="object-cover w-full rounded-lg border-2 border-gray overflow-hidden"
-								placeholder="blur"
- 								blurDataURL={'/cat.png'}
-								src={qr}
-							    />
-                            </a>
+								src="/loadingcar.jpg" // Replace 'placeholder.png' with your specific PNG file
+								width={256}
+								height={256}
+							/>
+						)}
 						</div>
 						<div className="flex flex-col justify-center text-gray-500 text-xs mt-1">
                     		<span>Booking ID: {bookingID}</span>

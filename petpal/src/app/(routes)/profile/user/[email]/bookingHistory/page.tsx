@@ -81,6 +81,7 @@ export default function BookingHistory() {
                     if (qrCodeData !== undefined) {
                         setQRCode(qrCodeData.qrImage); // Set QR code in state if qrCodeData is defined
                     } else {
+                        setQRCode('/loadingcar.jpg')
                         console.error("QR code data is undefined");
                     }
                     console.log(qrCodeData);
