@@ -45,5 +45,5 @@ export default function Profile() {
             }
         }
     }, [accType]);
-    return <div>Profile</div>;
+    return <div className='flex justify-center text-5xl pt-60'>Profile loading...</div>;
 }

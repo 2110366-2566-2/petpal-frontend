@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Inter, Prompt } from "next/font/google";
 import "./globals.css";
-import NavBar from "./_component/navbar";
-import ReponsiveNavbar from "./_component/ReponsiveNavbar";
+import ResponsiveNavbar from "./_component/ResponsiveNavbar";
+import { AuthProvider } from "./_contexts/AuthContext";
+import { Toaster } from "react-hot-toast";
 
 
 const prompt = Prompt({
@@ -12,7 +13,7 @@ const prompt = Prompt({
 
 const navitems = [
   {name : "Listing" , link : "/listing"},
-  {name : "Booking" , link : "/booking"},
+  {name : "Booking" , link : "/bookingLoading"},
   {name : "Profile" , link : "/profile"}
 ]
 
@@ -35,8 +36,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={prompt.className}>
-        <ReponsiveNavbar brandName={"PETPAL"} navItems={navitems}/>
-        {children}
+        <AuthProvider>
+          <ResponsiveNavbar brandName={"PETPAL"} navItems={navitems}/>
+          {children}
+          <Toaster position="top-center"/>
+        </AuthProvider>
       </body>
     </html>
   );

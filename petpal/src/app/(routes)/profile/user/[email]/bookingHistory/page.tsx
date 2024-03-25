@@ -1,9 +1,11 @@
-
 "use client";
 import getBookingHistory from "@app/libs/service/getBookingHistory";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import Booking from "@app/(routes)/profile/_interface/Booking";
 import cancelBooking from "@app/libs/service/cancelBooking";
+import Paymentcard from "./_components/Paymentcard";
+import Link from "next/link";
+import getQRpayment from "@/app/libs/service/getQRpayment";
 
 function formatTimeToHourMinute(datetimeString: string) {
     const date = new Date(datetimeString);
@@ -22,7 +24,7 @@ function formatDate(datetimeString: string) {
     // Corrected options with specific string literals for TypeScript
     const options: Intl.DateTimeFormatOptions = {
         year: "numeric",
-        month: "long",
+        month: "short",
         day: "numeric",
     };
     // Adjust 'en-US' to your preferred locale if needed
@@ -66,8 +68,41 @@ export default function BookingHistory() {
     const handleCancel = async (id: string, reason: string) => {
         cancelBooking(id, reason);
     };
+
+    const [qrCode, setQRCode] = useState<string | null>(null); // State to hold the QR code
+    const [selectedBookingID, setSelectedBookingID] = useState<string | null>(null); // State to hold the selected booking ID
+    const [selectedServiceName ,setSelectedServiceName] = useState<string | null>(null);
+
+    useEffect(() => {
+        const handlePayNow = async () => {
+            if (selectedBookingID) {
+                try {
+                    const qrCodeData = await getQRpayment(selectedBookingID); // Fetch QR code
+                    if (qrCodeData !== undefined) {
+                        setQRCode(qrCodeData.qrImage); // Set QR code in state if qrCodeData is defined
+                    } else {
+                        setQRCode('/loadingcar.jpg')
+                        console.error("QR code data is undefined");
+                    }
+                    console.log(qrCodeData);
+                } catch (error) {
+                    console.error("Error fetching QR code:", error);
+                }
+            }
+        };
+
+        handlePayNow(); // Call handlePayNow when selectedBookingID changes
+    }, [selectedBookingID]);
+
     return (
         <main className="flex flex-col items-center pt-10">
+            {qrCode && 
+                <Paymentcard 
+                    onClose={() => {setQRCode(null); setSelectedBookingID(null)}} // Reset QR code when closing Paymentcard
+                    qrCode={qrCode} // Pass QR code to Paymentcard
+                    bookingID={selectedBookingID} // Pass bookingID
+                    serviceName={selectedServiceName} // Pass serviceName
+                />}
             {bookings.map((booking, index) => (
                 <div
                     key={index}
@@ -79,12 +114,26 @@ export default function BookingHistory() {
                             <div className="font-bold text-[24px] xl:hidden">
                                 {booking.serviceName} {/* Visible on Mobile */}
                             </div>
-                            <div className="font-medium text-[18px] text-[#12B837]">
+                            <div 
+                                className="flex flex-col font-medium text-[18px] xl:min-w-[170px] text-[#12B837]"
+                            >
                                 {getBookingStatus(booking)}
+                                {
+                                    (getBookingStatus(booking)=='Pending') && 
+                                        <button 
+                                        onClick={() => {
+                                            setSelectedBookingID(booking.bookingID);
+                                            setSelectedServiceName(booking.serviceName); 
+                                        }}
+                                            className="max-w-[90px] text-blue border rounded-xl my-2 p-1 hover:bg-blue hover:text-white"
+                                        >
+                                            Pay now
+                                        </button>
+                                }
                             </div>
                         </div>
                         {/* Provider Name: Below on mobile, in a box on the right on desktop */}
-                        <div className="mt-2 xl:mt-0 xl:flex xl:items-center xl:justify-end xl:w-auto">
+                        <div className="mt-2 xl:mt-0 xl:flex xl:items-center xl:justify-start xl:w-auto">
                             <div className="text-left">
                                 <div className="font-bold text-[24px] hidden xl:block">
                                     {booking.serviceName}{" "}
@@ -107,7 +156,7 @@ export default function BookingHistory() {
                     </div>
                     <div className="flex justify-between items-center">
                         <div className="font-medium text-[32px]">
-                            {booking.totalBookingPrice}฿
+                            {booking.totalBookingPrice.toFixed(2)}฿
                         </div>
                         <div className="flex xl:hidden">
                             <div className="font-bold text-[16px] text-[#FFD600]">
