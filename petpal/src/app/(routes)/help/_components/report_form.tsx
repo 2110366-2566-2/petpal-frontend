@@ -1,4 +1,4 @@
-import { TextField } from '@mui/material';
+import { TextField,Select,MenuItem,FormControl } from '@mui/material';
 import React, { useState } from 'react';
 
 export interface FormReport {
@@ -34,11 +34,23 @@ export default function ReportForm({ formData, handleChange }: ReportFormProps) 
     };
 
     return (
-        <form>
+        <FormControl  variant="outlined">
+
+            <Select
+                // labelId="demo-simple-select-label"
+                // id="demo-simple-select"
+                // value={age}
+                label="Agdadadae"
+                // onChange={handleChange}
+                style={{ width: '100px', marginBottom: '5px' }}
+                
+            >
+                <MenuItem value={10}>Ten</MenuItem>
+                <MenuItem value={20}>Twenty</MenuItem>
+            </Select>
             <TextField
                 label="Description"
                 value={description}
-                variant="outlined"
                 fullWidth
                 className="mb-4"
                 multiline
@@ -49,6 +61,6 @@ export default function ReportForm({ formData, handleChange }: ReportFormProps) 
             <h6 className="pl-1">Photo Optional</h6>
 
             <input type="file" onChange={handleFileChange} />
-        </form>
+        </FormControl >
     );
 }

@@ -11,9 +11,11 @@ import ReportForm, { FormReport } from '@app/(routes)/help/_components/report_fo
 
 
 export default function ReportBug() {
-  const [bugTitle, setBugTitle] = useState('');
-  const [bugDescription, setBugDescription] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  // const [bugTitle, setBugTitle] = useState('');
+  // const [bugDescription, setBugDescription] = useState('');
+  // const [errorMessage, setErrorMessage] = useState('');
+
+
 
   const [formData, setFormData] = useState<FormReport>({
     description: '',
