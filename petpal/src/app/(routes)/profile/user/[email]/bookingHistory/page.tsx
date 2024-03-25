@@ -97,7 +97,7 @@ export default function BookingHistory() {
     return (
         <main className="flex flex-col items-center pt-10">
             {qrCode && <Paymentcard 
-                onClose={() => setQRCode(null)} // Reset QR code when closing Paymentcard
+                onClose={() => {setQRCode(null); setSelectedBookingID(null)}} // Reset QR code when closing Paymentcard
                 qrCode={qrCode} // Pass QR code to Paymentcard
                 bookingID={selectedBookingID} // Pass bookingID
                 serviceName={selectedServiceName} // Pass serviceName
