@@ -64,7 +64,7 @@ export default function ResponsiveNavbar({ brandName, navItems }: NavBarProps) {
         <div className='sticky top-0 z-50'>
         <nav className="w-full bg-[#D9D9D9] flex flex-row justify-between items-center px-2 md:py-0 py-2">
             <div className="md:px-10 justify-between items-center md:flex md:flex-row ">
-                <a className = "hidden min-[900px]:flex font-bold text-2xl" href="./">{brandName}</a>
+                <a className = "hidden min-[900px]:flex font-bold text-2xl" href="/">{brandName}</a>
                 <ul className="hidden min-[900px]:flex pl-9 md:pl-0">
                     {
                         navItems.map((link) => 
