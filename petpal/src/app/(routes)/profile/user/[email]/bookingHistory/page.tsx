@@ -6,6 +6,7 @@ import cancelBooking from "@app/libs/service/cancelBooking";
 import Paymentcard from "./_components/Paymentcard";
 import Link from "next/link";
 import getQRpayment from "@/app/libs/service/getQRpayment";
+import SkeletonList from "./_components/SkeletonList";
 
 function formatTimeToHourMinute(datetimeString: string) {
   const date = new Date(datetimeString);
@@ -51,6 +52,7 @@ function getBookingStatus(booking: Booking): string {
 
 export default function BookingHistory() {
   const [bookings, setBookings] = useState<Booking[]>([]);
+  const [isLoading, setIsLoading] = useState(true); // State to track loading status
 
   // useEffect hook to fetch bookings when component mounts
   useEffect(() => {
@@ -60,11 +62,25 @@ export default function BookingHistory() {
         setBookings(response.result);
       } catch (error) {
         console.error("Error fetching bookings:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchBookings();
   }, []);
+
+    // This will hide the loading spinner after 2 seconds if bookings are still null
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        if (isLoading && bookings === null) {
+          setIsLoading(false);
+        }
+      }, 2000);
+  
+      return () => clearTimeout(timer);
+    }, [isLoading, bookings]);
+  
   const handleCancel = async (id: string, reason: string) => {
     cancelBooking(id, reason);
   };
@@ -191,8 +207,21 @@ export default function BookingHistory() {
           </div>
         ))
       ) : (
-        <div className="text-center text-black text-3xl font-normal">
-          No bookings yet
+        <div className='flex flex-col'>
+          {isLoading && 
+            <div> 
+              <SkeletonList/>
+              <SkeletonList/>
+              <SkeletonList/>
+              <SkeletonList/>
+              <SkeletonList/>
+            </div>
+          }
+          {!isLoading && 
+            <div className='flex flex-col justify-center items-center text-3xl pt-48 gap-9'>
+              <span>No Bookings yet</span>
+            </div>
+          }
         </div>
       )}
     </main>
