@@ -1,6 +1,7 @@
 'use client'
 
 import { addPet, deletePet, editPetInfo, getPets } from "@/app/libs/user/petapi";
+import { AnimatePresence,motion } from "framer-motion";
 import { opendir } from "fs";
 import {useState,useEffect} from "react"
 import React from "react";
@@ -150,6 +151,31 @@ export default function PetInformation(){
       }
     }
 
+    const petinfoVar = {
+      initial: {
+        y: -10,
+        opacity:0,
+        scaleY:0
+      },
+      animate: {
+        y: 1,
+        opacity:1,
+        scaleY:1,
+        transition: {
+          duration: 2,
+          ease: [0.12, 0, 0.39, 0],
+        },
+      },
+      exit: {
+        y: -10,
+        opacity:0,
+        transition: {
+          duration: 0.5,
+          ease: [0.22, 1, 0.36, 1],
+        },
+      },
+    };
+
     return(
       <div className = "my-2 ">
           <span className='text-black font-bold text-[20px]'>Pets</span>
@@ -167,10 +193,16 @@ export default function PetInformation(){
             )
           }
           <div className='flex justify-between bg-gray w-fit rounded-[5px] pl-1 mb-1'>
-            <button className='w-5 h-5 justify-center items-center flex 'onClick={() => {setOpenedDetail(0)}} >+</button>
+            <button className='w-5 h-5 justify-center items-center flex 'onClick={() => {setOpenedDetail(0);handleOpenDetail(EmptyPetInfo)}} >+</button>
           </div>
+        <AnimatePresence>
         {openedDetail !== -1 &&
-        <div className='h-[476px] border-[3px] rounded-md border-gray overflow-y-scroll my-2 pl-2'>
+        <motion.div 
+        variants={petinfoVar}
+        initial="inital"
+        animate="animate"
+        exit="exit"
+        className='h-[476px] border-[3px] rounded-md border-gray overflow-y-scroll my-2 pl-2'>
           {
             petInfo.map((info,index) => 
               <div data-twe-animation="[drop-in_2s]" className = "my-2 w-[75%]">
@@ -197,7 +229,8 @@ export default function PetInformation(){
           <div className='flex justify-end m-2'>
                 <button type = 'submit' className='bg-[#D9D9D9] w-[102px] rounded-[10px] text-[18px] text-center p-[5px]' onClick={(e)=>{handleAdd(e)}}>add</button>
           </div>
-        </div> }
+        </motion.div> }
+        </AnimatePresence>
       </div>
     )
 }
