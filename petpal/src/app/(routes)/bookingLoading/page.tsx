@@ -2,16 +2,13 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-// import { getCurrentEntity } from "@/app/libs/user/userBackend";
 import { getCurrentEntityUser } from "@/app/libs/currentEntiity/getCurrentEntityUser";
 
-
-export default function UserProfile() {
-    const router = useRouter()
+export default function BookingLoading() {
+  const router = useRouter()
     const [userId, setUserId] = useState<string>()
     useEffect(() => {
         getCurrentEntityUser().then((Response) => {
-            // console.log(Response.id)
             setUserId(Response.id)
         })
     }, [])
@@ -19,7 +16,7 @@ export default function UserProfile() {
         console.log(userId)
         switch (userId === undefined) {
             case false: {
-                router.push('/profile/user/' + userId)
+                router.push('/profile/user/' + userId + '/bookingHistory')
                 break
             }
             default: {
@@ -28,7 +25,7 @@ export default function UserProfile() {
             }
         }
     }, [userId])
-    return (
-        <h1 className='flex justify-center text-5xl pt-60'>Profile loading...</h1>
-    )
+  return (
+    <div className='flex justify-center text-5xl pt-60'>BookingLoading...</div>
+  )
 }

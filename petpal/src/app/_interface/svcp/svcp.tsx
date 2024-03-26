@@ -9,23 +9,23 @@
 import { Service } from "@/app/_interface/service/service";
 
 export interface Svcp {
-    SVCPAdditionalImg?:     number[];
-    SVCPEmail?:             string;
-    SVCPID?:                string;
-    SVCPImg?:               number[];
-    SVCPPassword?:          string;
+    SVCPAdditionalImg?: string;
+    SVCPEmail?: string;
+    SVCPID?: string;
+    SVCPImg?: string;
+    SVCPPassword?: string;
     SVCPResponsiblePerson?: string;
-    SVCPServiceType?:       string;
-    SVCPUsername?:          string;
-    defaultAccountNumber?:  string;
-    defaultBank?:           string;
-    description?:           string;
-    individualID?:          string;
-    isVerified?:            boolean;
-    license?:               string;
-    address?:              string;
-    services?:              Service[];
-    phoneNumber?:           string;
+    SVCPServiceType?: string;
+    SVCPUsername?: string;
+    defaultAccountNumber?: string;
+    defaultBank?: string;
+    description?: string;
+    individualID?: string;
+    isVerified?: boolean;
+    license?: string;
+    address?: string;
+    services?: Service[];
+    phoneNumber?: string;
 }
 
 // Converts JSON strings to/from your types
@@ -92,7 +92,7 @@ function transform(val: any, typ: any, getProps: any, key: any = '', parent: any
             const typ = typs[i];
             try {
                 return transform(val, typ, getProps);
-            } catch (_) {}
+            } catch (_) { }
         }
         return invalidValue(typs, val, key, parent);
     }
@@ -151,9 +151,9 @@ function transform(val: any, typ: any, getProps: any, key: any = '', parent: any
     if (Array.isArray(typ)) return transformEnum(typ, val);
     if (typeof typ === "object") {
         return typ.hasOwnProperty("unionMembers") ? transformUnion(typ.unionMembers, val)
-            : typ.hasOwnProperty("arrayItems")    ? transformArray(typ.arrayItems, val)
-            : typ.hasOwnProperty("props")         ? transformObject(getProps(typ), typ.additional, val)
-            : invalidValue(typ, val, key, parent);
+            : typ.hasOwnProperty("arrayItems") ? transformArray(typ.arrayItems, val)
+                : typ.hasOwnProperty("props") ? transformObject(getProps(typ), typ.additional, val)
+                    : invalidValue(typ, val, key, parent);
     }
     // Numbers can be parsed by Date but shouldn't be.
     if (typ === Date && typeof val !== "number") return transformDate(val);

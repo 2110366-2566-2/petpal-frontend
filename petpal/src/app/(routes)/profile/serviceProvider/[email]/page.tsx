@@ -72,7 +72,7 @@ export default function EmailServiceProviderProfile({ params }: { params: { emai
         <div className='items-center'>
             <div className='md:flex items-top p-[20px] m-auto md:max-w-[1100px] md:mt-[30px]'>
                 <div className='max-w-[300px] m-auto space-y-[20px] md:ml-[80px] md:float-left mt-[0px] md:mr-[50px]'>
-                    <ProfilePictureComponent />
+                    <ProfilePictureComponent src={targetSvcp.profileImage} />
                     <h1 className='text-[32px]' ><b>{targetSvcp.Name}</b></h1>
                     <RatingComponent Rating={targetSvcp.Rating} />
                     <p className='text-[18px]'>{targetSvcp.Description}</p>
@@ -81,7 +81,7 @@ export default function EmailServiceProviderProfile({ params }: { params: { emai
                     </div>
                 </div>
                 <div className='max-w-[300px] md:max-w-[600px] m-[auto] md:mt-[0px] pt-[20px] md:pt-[0px] md:float-right space-y-[30px] md:ml-[10px]'>
-                    <AdditionalImageComponent></AdditionalImageComponent>
+                    <AdditionalImageComponent src={targetSvcp.additionalImage}></AdditionalImageComponent>
                     <div className="space-y-[10px] m-auto">
                         <p><b>Address:</b> {targetSvcp.Address}</p>
                         <p><b>Phone:</b> {targetSvcp.PhoneNumber}</p>

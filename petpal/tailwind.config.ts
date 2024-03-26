@@ -20,6 +20,7 @@ const config: Config = {
       "white" : "#FFFFFF",
       "gray" : "#D9D9D9",
       "cream" : "#FAF8ED",
+      "black" : "#000000",
     },
   },
   plugins: [],
