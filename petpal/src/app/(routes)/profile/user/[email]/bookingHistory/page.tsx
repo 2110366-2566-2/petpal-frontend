@@ -24,102 +24,95 @@ const style = {
 
 
 function formatTimeToHourMinute(datetimeString: string) {
-    const date = new Date(datetimeString);
-    // Use 'getHours' and 'getMinutes' to extract time parts
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-    // Pad single digits with leading zero
-    const formattedHours = hours.toString().padStart(2, "0");
-    const formattedMinutes = minutes.toString().padStart(2, "0");
-    // Combine hours and minutes in HH:mm format
-    return `${formattedHours}:${formattedMinutes}`;
+  const date = new Date(datetimeString);
+  // Use 'getHours' and 'getMinutes' to extract time parts
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  // Pad single digits with leading zero
+  const formattedHours = hours.toString().padStart(2, "0");
+  const formattedMinutes = minutes.toString().padStart(2, "0");
+  // Combine hours and minutes in HH:mm format
+  return `${formattedHours}:${formattedMinutes}`;
 }
 
 function formatDate(datetimeString: string) {
-    const date = new Date(datetimeString);
-    // Corrected options with specific string literals for TypeScript
-    const options: Intl.DateTimeFormatOptions = {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-    };
-    // Adjust 'en-US' to your preferred locale if needed
-    return date.toLocaleDateString("en-US", options);
+  const date = new Date(datetimeString);
+  // Corrected options with specific string literals for TypeScript
+  const options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  };
+  // Adjust 'en-US' to your preferred locale if needed
+  return date.toLocaleDateString("en-US", options);
 }
 
 function getBookingStatus(booking: Booking): string {
-    if (booking.status.userCompleted) {
-        return "Completed";
-    } else if (booking.status.svcpCompleted) {
-        return "Service Completed";
-    } else if (booking.status.paymentStatus) {
-        return "Paid";
-    } else if (booking.status.svcpConfirmed) {
-        return "Confirmed";
-    } else if (!booking.status.svcpConfirmed) {
-        return "Pending";
-    } else if (booking.cancel.cancelStatus) {
-        return "Cancel";
-    } else {
-        return "";
-    }
+  if (booking.status.userCompleted) {
+    return "Completed";
+  } else if (booking.status.svcpCompleted) {
+    return "Service Completed";
+  } else if (booking.status.paymentStatus) {
+    return "Paid";
+  } else if (booking.status.svcpConfirmed) {
+    return "Confirmed";
+  } else if (!booking.status.svcpConfirmed) {
+    return "Pending";
+  } else if (booking.cancel.cancelStatus) {
+    return "Cancel";
+  } else {
+    return "";
+  }
 }
 
 export default function BookingHistory() {
-    const [bookings, setBookings] = useState<Booking[]>([]);
+  const [bookings, setBookings] = useState<Booking[]>([]);
 
-    // useEffect hook to fetch bookings when component mounts
-    useEffect(() => {
-        const fetchBookings = async () => {
-            try {
-                const response = await getBookingHistory();
-                setBookings(response.result);
-            } catch (error) {
-                console.error("Error fetching bookings:", error);
-            }
-        };
-
-        fetchBookings();
-    }, []);
-    const handleCancel = async (id: string, reason: string) => {
-        cancelBooking(id, reason);
+  // useEffect hook to fetch bookings when component mounts
+  useEffect(() => {
+    const fetchBookings = async () => {
+      try {
+        const response = await getBookingHistory();
+        setBookings(response.result);
+      } catch (error) {
+        console.error("Error fetching bookings:", error);
+      }
     };
 
-    const [qrCode, setQRCode] = useState<string | null>(null); // State to hold the QR code
-    const [selectedBookingID, setSelectedBookingID] = useState<string | null>(null); // State to hold the selected booking ID
-    const [selectedServiceName ,setSelectedServiceName] = useState<string | null>(null);
+    fetchBookings();
+  }, []);
+  const handleCancel = async (id: string, reason: string) => {
+    cancelBooking(id, reason);
+  };
 
-    useEffect(() => {
-        const handlePayNow = async () => {
-            if (selectedBookingID) {
-                try {
-                    const qrCodeData = await getQRpayment(selectedBookingID); // Fetch QR code
-                    if (qrCodeData !== undefined) {
-                        setQRCode(qrCodeData.qrImage); // Set QR code in state if qrCodeData is defined
-                    } else {
-                        setQRCode('/loadingcar.jpg')
-                        console.error("QR code data is undefined");
-                    }
-                    console.log(qrCodeData);
-                } catch (error) {
-                    console.error("Error fetching QR code:", error);
-                }
-            }
-        };
+  const [qrCode, setQRCode] = useState<string | null>(null); // State to hold the QR code
+  const [selectedBookingID, setSelectedBookingID] = useState<string | null>(
+    null
+  ); // State to hold the selected booking ID
+  const [selectedServiceName, setSelectedServiceName] = useState<string | null>(
+    null
+  );
+
+  useEffect(() => {
+    const handlePayNow = async () => {
+      if (selectedBookingID) {
+        try {
+          const qrCodeData = await getQRpayment(selectedBookingID); // Fetch QR code
+          if (qrCodeData !== undefined) {
+            setQRCode(qrCodeData.qrImage); // Set QR code in state if qrCodeData is defined
+          } else {
+            setQRCode("/loadingcar.jpg");
+            console.error("QR code data is undefined");
+          }
+          console.log(qrCodeData);
+        } catch (error) {
+          console.error("Error fetching QR code:", error);
+        }
+      }
+    };
 
         handlePayNow(); // Call handlePayNow when selectedBookingID changes
     }, [selectedBookingID]);
-
-    const [openReschedule, setRescheduleOpen] = useState(false); // State to manage modal open/close
-
-    const handleOpenReschedule = () => {
-      setRescheduleOpen(true);
-    };
-  
-    const handleCloseReschedule = () => {
-      setRescheduleOpen(false);
-    };
-
 
     return (
         <main className="flex flex-col items-center pt-10">
@@ -130,30 +123,6 @@ export default function BookingHistory() {
                     bookingID={selectedBookingID} // Pass bookingID
                     serviceName={selectedServiceName} // Pass serviceName
                 />}
-
-
-                 <Modal
-                    open={openReschedule}
-                    onClose={handleCloseReschedule}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                >
-                 <Box  sx={style} >
-                <RescheduleForm />
-
-                
-                 {/* <Typography id="modal-modal-title" variant="h6" component="h2">
-      Text in a modal
-    </Typography>
-    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-      Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-    </Typography> */}
-
-                 </Box>       
-
-                </Modal>
-
-
             {bookings.map((booking, index) => (
                 <div
                     key={index}
@@ -220,14 +189,9 @@ export default function BookingHistory() {
                     </div>
                     <div>
                         <div className="hidden xl:flex">
-                            <button className="font-bold text-[16px] text-[#FFD600]"
-                            onClick={() => {
-                                handleOpenReschedule();
-
-                            }}
-                            >
+                            <div className="font-bold text-[16px] text-[#FFD600]">
                                 Reschedule
-                            </button>
+                            </div>
                             <button
                                 onClick={() =>
                                     handleCancel(booking.bookingID, "")
@@ -247,4 +211,3 @@ export default function BookingHistory() {
         </main>
     );
 }
-

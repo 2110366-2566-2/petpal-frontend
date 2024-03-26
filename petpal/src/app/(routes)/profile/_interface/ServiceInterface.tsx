@@ -6,7 +6,8 @@ export default interface ServiceInterface {
   Type: string,
   StartDate: Date,
   EndDate: Date,
-  Price: number
+  Price: number,
+  ServiceID: string
 }
 
 export var exampleServiceType1: ServiceInterface = {
@@ -15,6 +16,7 @@ export var exampleServiceType1: ServiceInterface = {
   StartDate: new Date(),
   EndDate: new Date(),
   Price: 500,
+  ServiceID: "66023ef2b7f4d2ad422538b4"
 }
 
 export var exampleServiceType2: ServiceInterface = {
@@ -23,6 +25,7 @@ export var exampleServiceType2: ServiceInterface = {
   StartDate: new Date(),
   EndDate: new Date(),
   Price: 5000,
+  ServiceID: "66023ef2b7f4d2ad422538b5"
 }
 
 
@@ -39,6 +42,7 @@ export function adaptorServiceToServiceInterface(service: Service): ServiceInter
   const StartDate: Date = new Date(selectedTimeSlot.startTime as string)
   const EndDate: Date = new Date(selectedTimeSlot.endTime as string)
   const Price: number = service.price as number
+  const ServiceID = service.serviceID as string
 
   const result: ServiceInterface = {
     Name: Name,
@@ -46,6 +50,7 @@ export function adaptorServiceToServiceInterface(service: Service): ServiceInter
     StartDate: StartDate,
     EndDate: EndDate,
     Price: Price,
+    ServiceID: ServiceID
   }
   return result
 }
