@@ -8,6 +8,7 @@ import get_service_by_id from '@app/libs/service/service'
 import  {ServiceInterface, TimeslotInterface}  from '@app/(routes)/profile/serviceProvider/[email]/service/_interface/service'
 import updateServiceAPI from '@/app/libs/service/updateServiceApi'
 import { editServiceButton, cancelServiceButton } from '@app/(routes)/profile/_interface/ButtonPropsInterface'
+import { useRouter } from 'next/navigation'
 
 
 export default function editService({params}:{params:{email:string, serviceId:string}}){
@@ -20,7 +21,10 @@ export default function editService({params}:{params:{email:string, serviceId:st
     const [service_type, setServiceType] = useState('')
     const [service_description, setServiceDescription] = useState('')
     const [price, setPrice] = useState(0)
-    console.log('param id', params.serviceId)
+
+    // get routher
+    const router = useRouter()
+
     useEffect(() => {
         get_service_by_id(params.serviceId).then((service : ServiceInterface) => {
             console.log('service', service)
@@ -92,8 +96,14 @@ export default function editService({params}:{params:{email:string, serviceId:st
     }
 
     const navigateBack = () => {
-        window.history.back()
+        router.back()
     }
+
+    const submitHandler = async() => {
+        updateService(params.serviceId, service_name, service_type, service_description, price, timeslot)
+        navigateBack()
+    }
+    const cancelHandler = () => {navigateBack()}
 
     return(
         <div className='items-center'>
@@ -171,8 +181,8 @@ export default function editService({params}:{params:{email:string, serviceId:st
                         />
                     </div>
                     <div className='hidden md:grid grid-cols-2 gap-[16px]'>
-                        <SmallButtonComponent ButtonProps={editServiceButton} onClick={async() => {updateService(params.serviceId, service_name, service_type, service_description, price, timeslot)}}></SmallButtonComponent>
-                        <SmallButtonComponent ButtonProps={cancelServiceButton}></SmallButtonComponent>
+                        <SmallButtonComponent ButtonProps={editServiceButton} onClick={submitHandler}></SmallButtonComponent>
+                        <SmallButtonComponent ButtonProps={cancelServiceButton} onClick={cancelHandler}></SmallButtonComponent>
                     </div>
                 </div>
             </div>
