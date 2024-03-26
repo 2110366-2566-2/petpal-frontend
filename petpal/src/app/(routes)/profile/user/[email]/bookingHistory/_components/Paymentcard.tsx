@@ -20,9 +20,7 @@ export default function Paymentcard({onClose, qrCode, bookingID, serviceName}:Pr
 		try {
 			const response = await fetch('http://localhost:8080/service/booking/payment/authorize', {
 				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
+				credentials:'include',
 				body: JSON.stringify({ bookingID: bookingID }) // Correct body format
 			});
 			const data = await response.json();
@@ -32,6 +30,7 @@ export default function Paymentcard({onClose, qrCode, bookingID, serviceName}:Pr
 				console.log('Payment successful');
 				// Additional handling if payment is successful
 			} else {
+				toast.error(data.error);
 				console.log('Payment failed');
 				// Additional handling if payment fails
 			}
