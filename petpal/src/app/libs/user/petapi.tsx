@@ -1,3 +1,5 @@
+import PetInfoInterface from "@/app/(routes)/profile/_interface/PetInfoInterface"
+
 export async function getPets() {
 
     const response = await fetch(`http://localhost:8080/user/pets/me`,{
@@ -11,23 +13,12 @@ export async function getPets() {
     }
     
 }
-
-export async function addPet() {
-    const response = await fetch(`http://localhost:8080/user/pets`,{
+ 
+export async function addPet(pet:PetInfoInterface) {
+    const response = await fetch("http://localhost:8080/user/pets/",{
         method:'POST',
         credentials:'include',
-        body: JSON.stringify({
-                age: 0,
-                behaviouralNotes: "string",
-                breed: "string",
-                certificate: "string",
-                dietyPreferences: "string",
-                gender: "string",
-                healthInformation: "string",
-                name: "string",
-                type: "string",
-                vaccinations: "string"
-        })
+        body: JSON.stringify(pet)
     })
     if(response.ok){
         return response.json()
@@ -37,23 +28,13 @@ export async function addPet() {
 }
 
 export async function editPetInfo(
-    idx:string
+    idx:Number,
+    pet:PetInfoInterface
 ) {
     const response = await fetch(`http://localhost:8080/user/pets/${idx}`,{
         method:'PUT',
         credentials:'include',
-        body: JSON.stringify({
-                age: 0,
-                behaviouralNotes: "string",
-                breed: "string",
-                certificate: "string",
-                dietyPreferences: "string",
-                gender: "string",
-                healthInformation: "string",
-                name: "string",
-                type: "string",
-                vaccinations: "string"
-        })
+        body: JSON.stringify(pet)
     })
     if(response.ok){
         return response.json()
@@ -63,7 +44,7 @@ export async function editPetInfo(
 }
 
 export async function deletePet(
-    idx:string
+    idx:Number
 ) {
     const response = await fetch(`http://localhost:8080/user/pets/${idx}`,{
         method:'DELETE',
