@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 
 import ButtonPropsInterface from "@app/(routes)/profile/_interface/ButtonPropsInterface"
