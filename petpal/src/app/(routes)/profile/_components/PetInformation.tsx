@@ -158,7 +158,7 @@ export default function PetInformation(){
             pets.map((pet,index)=>
               <div>
               {index!=0&&
-                <button className='flex justify-between bg-gray w-[25%] rounded-[5px] pl-1 mb-1' onClick={()=>{setOpenedDetail(index)}}>
+                <button className='flex justify-between bg-gray w-fit rounded-[5px] pl-1 mb-1' onClick={()=>{setOpenedDetail(index)}}>
                   <span onClick={()=>handleOpenDetail(pet)}>{pet.name} , {index}</span>
                   <button className='w-5 h-5 justify-center items-center flex 'onClick={(e) =>{handleDelete(e,index-1)}} >x</button>
                 </button>
