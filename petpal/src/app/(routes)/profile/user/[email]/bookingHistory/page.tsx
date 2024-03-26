@@ -6,6 +6,22 @@ import cancelBooking from "@app/libs/service/cancelBooking";
 import Paymentcard from "./_components/Paymentcard";
 import Link from "next/link";
 import getQRpayment from "@/app/libs/service/getQRpayment";
+import RescheduleForm from "./_components//Reschedule";
+import {Modal,Box,Typography} from '@mui/material';
+
+
+const style = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
+
 
 function formatTimeToHourMinute(datetimeString: string) {
     const date = new Date(datetimeString);
@@ -94,6 +110,17 @@ export default function BookingHistory() {
         handlePayNow(); // Call handlePayNow when selectedBookingID changes
     }, [selectedBookingID]);
 
+    const [openReschedule, setRescheduleOpen] = useState(false); // State to manage modal open/close
+
+    const handleOpenReschedule = () => {
+      setRescheduleOpen(true);
+    };
+  
+    const handleCloseReschedule = () => {
+      setRescheduleOpen(false);
+    };
+
+
     return (
         <main className="flex flex-col items-center pt-10">
             {qrCode && 
@@ -103,6 +130,30 @@ export default function BookingHistory() {
                     bookingID={selectedBookingID} // Pass bookingID
                     serviceName={selectedServiceName} // Pass serviceName
                 />}
+
+
+                 <Modal
+                    open={openReschedule}
+                    onClose={handleCloseReschedule}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                >
+                 <Box  sx={style} >
+                <RescheduleForm />
+
+                
+                 {/* <Typography id="modal-modal-title" variant="h6" component="h2">
+      Text in a modal
+    </Typography>
+    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+      Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+    </Typography> */}
+
+                 </Box>       
+
+                </Modal>
+
+
             {bookings.map((booking, index) => (
                 <div
                     key={index}
@@ -169,9 +220,14 @@ export default function BookingHistory() {
                     </div>
                     <div>
                         <div className="hidden xl:flex">
-                            <div className="font-bold text-[16px] text-[#FFD600]">
+                            <button className="font-bold text-[16px] text-[#FFD600]"
+                            onClick={() => {
+                                handleOpenReschedule();
+
+                            }}
+                            >
                                 Reschedule
-                            </div>
+                            </button>
                             <button
                                 onClick={() =>
                                     handleCancel(booking.bookingID, "")
