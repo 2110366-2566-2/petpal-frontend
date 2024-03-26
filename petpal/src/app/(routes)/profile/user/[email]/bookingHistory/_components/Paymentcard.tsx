@@ -35,7 +35,10 @@ export default function Paymentcard({onClose, qrCode, bookingID, serviceName}:Pr
 				// Additional handling if payment fails
 			}
 			// Close the Paymentcard modal after payment confirmation
-			onClose();
+			setTimeout(() => {
+				onClose();
+				window.location.reload();
+			}, 2000);
 		} catch (error) {
 			toast.error('Error confirming payment')
 			console.error('Error confirming payment:', error);
@@ -54,7 +57,7 @@ export default function Paymentcard({onClose, qrCode, bookingID, serviceName}:Pr
 				<div className="flex justify-between items-start">
 					<button
 						className="absolute top-2.5 right-2.5 text-6xl h-6 w-6 text-black opacity-30 rounded justify-center items-center flex pb-0.5"
-						onClick={onClose}
+						onClick={()=>{onClose; window.location.reload();}}
 					>
 						&times;
 						<span className="sr-only">Close Modal</span>
