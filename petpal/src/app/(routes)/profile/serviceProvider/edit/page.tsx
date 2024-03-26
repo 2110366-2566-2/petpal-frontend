@@ -20,6 +20,10 @@ export default function EditProfile() {
   const [description , setDescription] = useState<string>('')
   const [address , setAddress] = useState<string>('')
   const [phoneNumber , setPhoneNumber] = useState<string>('')
+  const [profileImg , setProfileImg] = useState<string>('')
+  const [addiImg , setAddiImg] = useState<string>('')
+
+  const [file , setFile] = useState<File>()
 
   let thisSaveProfileButton: ButtonPropsInterface = saveEditButtonProps
   thisSaveProfileButton.Link = "/profile/serviceProvider"
@@ -32,6 +36,7 @@ export default function EditProfile() {
       setDescription(entity.description || "")
       setAddress(entity.address || "")
       setPhoneNumber(entity.phoneNumber || "")
+      setProfileImg(entity.SVCPImg)
     }
     fetchData()
   },[])
@@ -50,7 +55,13 @@ export default function EditProfile() {
     <div className='items-center'>
       <div className=' md:flex m-[50px] items-center '>
         <div className='max-w-[300px] space-y-[10px] md:float-left m-auto mt-[0px] items-top md:mr-[10px]'>
-          <ProfilePictureComponent />
+          <div>
+            <ProfilePictureComponent src={profileImg} />
+            <p >upload profile</p>
+            <input type='file' className="mt-2 bg-[#D9D9D9] w-[200px] h-[35px] rounded-[10px] text-[14px] text-center p-[5px]"
+            onChange={(e)=>{setFile(e.target.files?.[0]);console.log(file)}}
+            />
+          </div>
           <div className='hidden md:grid grid-cols-1 gap-[16px]'>
             <SmallButtonComponent ButtonProps={editProfileButtonProps} Working={false}></SmallButtonComponent>
             <SmallButtonComponent ButtonProps={thisSaveProfileButton} onClick={async() =>{handleSubmit();router.push(thisSaveProfileButton.Link)}}></SmallButtonComponent>
