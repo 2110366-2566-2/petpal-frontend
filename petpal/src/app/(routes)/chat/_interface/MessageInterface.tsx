@@ -1,5 +1,6 @@
 import CreateDateFromNow from "@app/(routes)/chat/_utils/CreateDateFromNow";
 import { MessageResponse } from "@/app/_interface/chat/MessageResponse";
+import { ChatResponse } from "@/app/_interface/chat/ChatResponse";
 
 export default interface MessageInterface {
     SenderID: string;
@@ -50,8 +51,8 @@ export var ExampleMessage0And2_5: MessageInterface = {
     TimeSend: new Date('2024-02-11T19:25:00Z'),
 }
 
-export function adapteerMessageResponseToMessageInterface(messageResponse: MessageResponse): MessageInterface {
-    const sender: string = String(messageResponse.sender) as string
+export function adapteerMessageResponseToMessageInterface(messageResponse: MessageResponse, chatResponse: ChatResponse): MessageInterface {
+    const sender: string = (messageResponse.sender === 0) ? chatResponse.user0ID as string : chatResponse.user1ID as string
     const content = messageResponse.content as string
     const timesend: Date = new Date(messageResponse.timestamp as string)
     const result: MessageInterface = {

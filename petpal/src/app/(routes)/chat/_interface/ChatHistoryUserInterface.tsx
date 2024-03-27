@@ -7,6 +7,12 @@ import ChatPageinterface from "./ChatPageInterface";
 import { adapteerMessageResponseToMessageInterface } from "./MessageInterface";
 import { getChatHistorySvcp } from "@/app/libs/chat/getChatHistorySvcp";
 import { getChatHistoryUser } from "@/app/libs/chat/getChatHistoryUser";
+import { MessageResponse } from "@/app/_interface/chat/MessageResponse";
+import { getChatHistoryByRoomId } from "@/app/libs/chat/getChatHistoryByRoomId";
+import { getUserById } from "@/app/libs/user/getUserById";
+import { User } from "@/app/_interface/user/user";
+import getSVCP from "@/app/libs/serviceProvider/getSVCP";
+import { Svcp } from "@/app/_interface/svcp/svcp";
 
 export default interface ChatHistoryUserInterface {
     Id: string;
@@ -44,37 +50,79 @@ export var ExampleChatHistoryUser3: ChatHistoryUserInterface = {
     LastSee: CreateDateFromNow({}),
 };
 
-export function adapterChatResponseToChatHistoryUserInterface(currentUser: ChatPageinterface, chatResponse: ChatResponse): ChatHistoryUserInterface {
+export function adapterChatResponseToChatHistoryUserInterface(currentUser: ChatPageinterface, chatResponse: ChatResponse): Promise<ChatHistoryUserInterface> {
     // console.log("compareID", chatResponse.user0ID, currentUser.id)
     const isCurrentUserIsUser0 = chatResponse.user0ID === currentUser.id
     const Id = isCurrentUserIsUser0 ? chatResponse.user1ID as string : chatResponse.user0ID as string
-    const Name = isCurrentUserIsUser0 ? chatResponse.user1ID as string : chatResponse.user0ID as string
+    const userType = isCurrentUserIsUser0 ? chatResponse.user1Type as string : chatResponse.user0Type as string
     const RoomId = chatResponse.roomID as string
-    const targetType: string = isCurrentUserIsUser0 ? chatResponse.user0Type as string : chatResponse.user1Type as string
     let MessageHistory: MessageInterface[] = []
-    // switch (targetType) {
-    //     case "user": {
-    //         const chatHistoryuser = getChatHistoryUser()
-    //         break
-    //     }
-    //     case "svcp": {
-    //         break
-    //     }
-    //     default: {
-    //         console.log("invalid type")
-    //         console.log(targetType)
-    //         break
-    //     }
-    // }
-    const Picture: string = MockImage.src
-    const LastSee: Date = CreateDateFromNow({})
-    const result: ChatHistoryUserInterface = {
-        Id: Id,
-        Name: Name,
-        RoomId: RoomId,
-        MessageHistory: MessageHistory,
-        Picture: Picture,
-        LastSee: LastSee,
-    }
-    return result
+    let g = true
+    return getChatHistoryByRoomId(RoomId).then((respone: ChatResponse) => {
+        const messageList: MessageResponse[] = respone.messages!
+        const newMassage: MessageInterface[] = messageList.map((message: MessageResponse) => adapteerMessageResponseToMessageInterface(message, chatResponse))
+        MessageHistory = newMassage
+        g = false
+        // const Name = isCurrentUserIsUser0 ? chatResponse.user1ID as string : chatResponse.user0ID as string
+
+        // const Picture: string = MockImage.src
+        const LastSee: Date = CreateDateFromNow({})
+        switch (userType) {
+            case "user": {
+                return getUserById(Id).then((respone: User) => {
+                    const name = respone.username as string
+                    const pic = respone.profilePicture as string
+                    const result: ChatHistoryUserInterface = {
+                        Id: Id,
+                        Name: name,
+                        RoomId: RoomId,
+                        MessageHistory: MessageHistory,
+                        Picture: pic,
+                        LastSee: LastSee,
+                    }
+                    return result
+                })
+            } case "svcp": {
+                return getSVCP(Id).then((respone: Svcp) => {
+                    const name = respone.SVCPUsername as string
+                    const pic = respone.SVCPImg as string
+                    const result: ChatHistoryUserInterface = {
+                        Id: Id,
+                        Name: name,
+                        RoomId: RoomId,
+                        MessageHistory: MessageHistory,
+                        Picture: pic,
+                        LastSee: LastSee,
+                    }
+                    return result
+                })
+            } default: {
+                console.log("wrong Type", userType)
+                return getUserById(Id).then((respone: User) => {
+                    const name = respone.username as string
+                    const pic = respone.profilePicture as string
+                    const result: ChatHistoryUserInterface = {
+                        Id: Id,
+                        Name: name,
+                        RoomId: RoomId,
+                        MessageHistory: MessageHistory,
+                        Picture: pic,
+                        LastSee: LastSee,
+                    }
+                    return result
+                })
+                break
+            }
+        }
+
+        // const result: ChatHistoryUserInterface = {
+        //     Id: Id,
+        //     Name: Name,
+        //     RoomId: RoomId,
+        //     MessageHistory: MessageHistory,
+        //     Picture: Picture,
+        //     LastSee: LastSee,
+        // }
+        // return result
+    })
 }

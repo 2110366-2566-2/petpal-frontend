@@ -28,13 +28,23 @@ import { MessageResponse } from "@/app/_interface/chat/MessageResponse";
 import { adapterChatResponseToChatHistoryUserInterface } from "../_interface/ChatHistoryUserInterface";
 import { AuthContext } from "@/app/_contexts/AuthContext";
 
+// type Message = {
+//     content: string
+//     client_id: string
+//     username: string
+//     room_id: string
+//     timestamp: Date
+//     type: 'recv' | 'self'
+// }
+
 type Message = {
-    content: string
-    client_id: string
-    username: string
-    room_id: string
-    timestamp: Date
-    type: 'recv' | 'self'
+    content: string,
+    roomId: string,
+    userId: string,
+    username: string,
+    role: string,
+    MessageType: string,
+    TimeStamp: string,
 }
 
 type Conn = WebSocket | null
@@ -42,6 +52,7 @@ type ConnWithName = {
     id: string,
     conn: Conn
 }
+
 
 export default function ChatHistory({ params }: { params: { id: string } }) {
     const { currentEntity, setCurrentEntity } = useContext(AuthContext)
@@ -55,6 +66,17 @@ export default function ChatHistory({ params }: { params: { id: string } }) {
     const [ShownChatHistoryUserList, SetShownChatHistoryUserList] = useState<ChatHistoryUserInterface[]>()
     const [connWithNameList, setConnWithNameList] = useState<ConnWithName[]>([])
     const [currentMessage, setCurrentMessage] = useState<string>("");
+
+    const [lastestReceivedMessage, setLastestReceivedMessage] = useState<MessageInterface>()
+    const connRecivedHandle = (message: string, senderId: string,) => {
+        const MessageText: string = message;
+        const NewMessage: MessageInterface = {
+            SenderID: senderId,
+            Content: MessageText,
+            TimeSend: new Date()
+        }
+        setLastestReceivedMessage(NewMessage)
+    };
     useEffect(() => {
         // if (currentEntity !== null) {
         //     console.log("it me mario", currentEntity)
@@ -85,17 +107,34 @@ export default function ChatHistory({ params }: { params: { id: string } }) {
             console.log("chatPageUser 5434", chatPageUser)
             switch (chatPageUser.type) {
                 case "user": {
-                    getChatHistoryUser().then((reponse) => {
+                    getChatHistoryUser().then((reponse: ChatResponse[]) => {
                         console.log("ChatHistoryReponse User", reponse)
-                        const newAllChatHistory = reponse.map((message: ChatResponse) => adapterChatResponseToChatHistoryUserInterface(chatPageUser, message))
-                        console.log("newAllChatHistory", newAllChatHistory)
-                        setAllChatHistory(newAllChatHistory)
+                        let newAllChatHistory: ChatHistoryUserInterface[] = []
+                        reponse.map((message: ChatResponse) => {
+                            adapterChatResponseToChatHistoryUserInterface(chatPageUser, message).then((result: ChatHistoryUserInterface) => {
+                                newAllChatHistory.push(result)
+                                setAllChatHistory(newAllChatHistory)
+                            }
+                            )
+                        })
+                        // console.log("newAllChatHistory", newAllChatHistory)
+                        // setAllChatHistory(newAllChatHistory)
                     })
                     break
                 } case "svcp": {
-                    getChatHistorySvcp().then((reponse) => {
-                        console.log("ChatHistoryReponse SVCP", reponse)
-                        const newAllChatHistory = reponse.map((message: ChatResponse) => adapterChatResponseToChatHistoryUserInterface(chatPageUser, message))
+                    getChatHistorySvcp().then((reponse: ChatResponse[]) => {
+                        // console.log("ChatHistoryReponse SVCP", reponse)
+                        // const newAllChatHistory: ChatHistoryUserInterface[] = reponse.map((message: ChatResponse) => adapterChatResponseToChatHistoryUserInterface(chatPageUser, message))
+                        // console.log("newAllChatHistory", newAllChatHistory)
+                        // setAllChatHistory(newAllChatHistory)
+                        console.log("ChatHistoryReponse User", reponse)
+                        let newAllChatHistory: ChatHistoryUserInterface[] = []
+                        reponse.map((message: ChatResponse) => {
+                            adapterChatResponseToChatHistoryUserInterface(chatPageUser, message).then((result: ChatHistoryUserInterface) => {
+                                newAllChatHistory.push(result)
+                            }
+                            )
+                        })
                         setAllChatHistory(newAllChatHistory)
                     })
                     break
@@ -132,9 +171,10 @@ export default function ChatHistory({ params }: { params: { id: string } }) {
                 }
                 ws.onmessage = (message) => {
                     const m: Message = JSON.parse(message.data);
-                    if (m.content !== "A new user has joined the room" && m.content !== "user left the chat") {
-                        HandleOnSubmitText(m.content, chatPageUser.id, chat.Id, shownMessageHistory, SetShownMessageHistory)
+                    if (m.content !== "A new user has joined the room" && m.content !== "user left the chat" && m.userId !== chatPageUser.id) {
+                        connRecivedHandle(m.content, m.userId)
                     }
+                    console.log("get", m)
                 };
                 // When socket is close 
                 ws.onclose = () => {
@@ -174,10 +214,33 @@ export default function ChatHistory({ params }: { params: { id: string } }) {
         console.log("ShownChatHistoryUserList", ShownChatHistoryUserList)
     }, [ShownChatHistoryUserList])
 
+    useEffect(() => {
+        console.log("shownMessageHistoryChange", shownMessageHistory)
+    }, [shownMessageHistory])
+
+    useEffect(() => {
+        if (lastestReceivedMessage !== undefined) {
+            const senderId: string = lastestReceivedMessage.SenderID
+            if (targetUserId === senderId) {
+                const NewShownMessageHistory: MessageInterface[] = [...shownMessageHistory, lastestReceivedMessage]
+                SetShownMessageHistory(NewShownMessageHistory)
+            }
+            // var chatHistory: ChatHistoryUserInterface
+            // for (let i = 0; i < allChatHistory.length; i++) {
+            //     const chatHistory = allChatHistory[i]
+            //     if (chatHistory.Id === senderId) {
+            //         let allChatHistory = 
+            //         let newChatHistory = chatHistory
+            //     }
+            // }
+        }
+        // allChatHistory:ChatHistoryUserInterface[]
+    }, [lastestReceivedMessage])
+
     const sendMessage = () => {
         if (currentMessage === '') return;
         if (chatPageUser === undefined) return;
-        HandleOnSubmitText(currentMessage, chatPageUser.id, targetUserId, shownMessageHistory, SetShownMessageHistory)
+        HandleOnSubmitText(currentMessage, chatPageUser.id, shownMessageHistory, SetShownMessageHistory)
         let selectedConn: Conn = null
         for (var connWithName of connWithNameList) {
             if (connWithName.id == targetUserId) {
