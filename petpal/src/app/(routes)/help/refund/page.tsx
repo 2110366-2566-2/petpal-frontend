@@ -1,9 +1,7 @@
 'use client'
 import React, { useState } from 'react';
 import BasicButton from '@/app/_component/BasicButton';
-import ReportForm, { FormReport } from '@app/(routes)/help/_components/report_form';
-
-
+import RefundForm, { RefundReport } from '@app/(routes)/help/refund/_components/refund_form';
 
 
 export default function ReportBug() {
@@ -13,13 +11,12 @@ export default function ReportBug() {
 
 
 
-  const [formData, setFormData] = useState<FormReport>({
+  const [formData, setFormData] = useState<RefundReport>({
     description: '',
     photo: undefined,
-    type: '',
   });
 
-  const handleFormChange = (newFormData: FormReport) => {
+  const handleFormChange = (newFormData: RefundReport) => {
     setFormData(newFormData);
   };
 
@@ -35,16 +32,16 @@ export default function ReportBug() {
 
       <div className='rounded-t-2xl bg-gray pt-5 pb-3 pl-10 mb-5'>
 
-        <h1 className=" text-3xl font-medium pl-1">Report an issue in the usage website or service</h1>
+        <h1 className=" text-3xl font-medium pl-1">Request a refund from petpal service</h1>
       </div>
 
       <div className='px-5'>
-        <h6 className="text-base text-gray-500 mt-2 mb-4 pl-1">If you're having trouble with your usage website or service, you've come to the right place. Please use this form to tell us about the issue that you're experiencing.</h6>
-        <ReportForm formData={formData} handleChange={handleFormChange}>
-        </ReportForm>
+        <h6 className="text-base text-gray-500 mt-2 mb-4 pl-1">We understand that sometimes things don't go as planned, and you may need to request a refund for the service you've purchased from us. Please take a moment to tell us about your Reason for requesting a refund to consideration of refund.</h6>
+        <RefundForm  formData={formData} handleChange={handleFormChange}>
+        </RefundForm>
 
 
-        <h6 className="text-base text-gray-500 mt-4 mb-4 pl-1">Thanks for taking the time to submit a report. While we don't reply to every report, we'll let you know if we need more details.</h6>
+        <h6 className="text-base text-gray-500 mt-4 mb-4 pl-1">Thanks for taking the time to submit a report.</h6>
 
       </div>
 

@@ -3,30 +3,19 @@ import React, { useState } from 'react';
 
 
 
-export interface FormReport {
-    type: string;
+export interface RefundReport {
     description: string;
     photo: File | undefined;
 }
 
-interface ReportFormProps {
-    formData: FormReport;
-    handleChange: (formData: FormReport) => void;
+interface RefundFormProps {
+    formData: RefundReport;
+    handleChange: (formData: RefundReport) => void;
 }
 
-export default function ReportForm({ formData, handleChange }: ReportFormProps) {
+export default function RefundForm({ formData, handleChange }: RefundFormProps) {
     const [description, setDescription] = useState(formData.description);
     const [selectedFile, setSelectedFile] = useState<File | undefined>(formData.photo);
-    const [selectedType, setSelectedType] = useState(formData.type);
-
-    const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { value } = event.target;
-        setSelectedType(value);
-        handleChange({
-            ...formData,
-            type: value,
-        });
-    }
 
 
     const handleTextFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,18 +39,6 @@ export default function ReportForm({ formData, handleChange }: ReportFormProps) 
     return (
         <FormControl  variant="outlined" style={{ maxWidth: '800px',width:'70%' }}>
 
-    <RadioGroup
-        row
-        aria-labelledby="demo-row-radio-buttons-group-label"
-        name="row-radio-buttons-group"
-        value={selectedType}
-        onChange={handleRadioChange}
-        defaultValue="website"
-      >
-         <FormControlLabel value="website" control={<Radio />} label="website" />
-        <FormControlLabel value="service" control={<Radio />} label="service" />
-       
-      </RadioGroup>
 
             <TextField
                 label="Description"
