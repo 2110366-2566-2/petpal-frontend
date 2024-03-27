@@ -1,7 +1,8 @@
 "use client";
 import Image from "next/image";
-import { useParams } from "next/navigation";
+import { useParams, useRouter} from "next/navigation";
 import React, { useState, useEffect } from "react";
+import toast from 'react-hot-toast';
 import getSVCP from "@/app/libs/serviceProvider/getSVCP";
 import { Service } from "@/app/_interface/service/service";
 import { Convert, Svcp } from "@/app/_interface/svcp/svcp";
@@ -19,7 +20,8 @@ export default function BookAppointment() {
     const [selectedTimeslotId, setSelectedTimeslotId] = useState("");
     const [SVCPUsername, setSVCPUsername] = useState("Provider Name");
     const [service, setService] = useState<Service | null>(null);
-
+    const router = useRouter();
+    
     useEffect(() => {
         const fetchServices = async () => {
             try {
@@ -70,6 +72,8 @@ export default function BookAppointment() {
                 selectedTimeslotId
             );
             console.log("Booking created successfully:", bookingResponse);
+            toast.success('Booking created successfully !');
+            router.push("/bookingLoading");
             // Handle success (e.g., display a success message or redirect)
         } catch (error) {
             console.error("Error creating booking:", error);

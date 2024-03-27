@@ -15,6 +15,7 @@ export async function getPets() {
 }
  
 export async function addPet(pet:PetInfoInterface) {
+    pet.age = Number(pet.age)
     const response = await fetch("http://localhost:8080/user/pets/",{
         method:'POST',
         credentials:'include',
