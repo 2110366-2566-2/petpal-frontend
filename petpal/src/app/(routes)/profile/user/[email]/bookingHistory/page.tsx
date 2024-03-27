@@ -174,7 +174,7 @@ export default function BookingHistory() {
                                 </div>
                                 <div className="flex flex-col font-medium text-[18px] xl:min-w-[170px] text-[#12B837]">
                                     {getBookingStatus(booking)}
-                                    {getBookingStatus(booking) == "Pending" && (
+                                    {getBookingStatus(booking) == "Pending Payment" && (
                                         <button
                                             onClick={() => {
                                                 setSelectedBookingID(
