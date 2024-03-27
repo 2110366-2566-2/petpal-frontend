@@ -15,7 +15,7 @@ import {
 
 export default function BookAppointment() {
     const params = useParams();
-    console.log(params.email, params.serviceId);
+    console.log(params.email, params.ServiceId);
     const [selectedTimeslotId, setSelectedTimeslotId] = useState("");
     const [SVCPUsername, setSVCPUsername] = useState("Provider Name");
     const [service, setService] = useState<Service | null>(null);
@@ -25,7 +25,7 @@ export default function BookAppointment() {
             try {
                 if (
                     typeof params.email === "string" &&
-                    typeof params.serviceId === "string"
+                    typeof params.ServiceId === "string"
                 ) {
                     const jsonResponse = await getSVCP(params.email);
                     const jsonString = JSON.stringify(jsonResponse);
@@ -36,7 +36,7 @@ export default function BookAppointment() {
                     }
                     console.log("Data fetched", data);
                     const specificService = data.services?.find(
-                        (s) => s.serviceID === params.serviceId
+                        (s) => s.serviceID === params.ServiceId
                     );
                     if (specificService) {
                         setService(specificService);
@@ -51,22 +51,22 @@ export default function BookAppointment() {
             }
         };
         fetchServices();
-    }, [params.email, params.serviceId]);
+    }, [params.email, params.ServiceId]);
 
     const handleCreateBooking = async () => {
-        const serviceId =
-            typeof params.serviceId === "string"
-                ? params.serviceId
-                : params.serviceId?.[0];
+        const ServiceId =
+            typeof params.ServiceId === "string"
+                ? params.ServiceId
+                : params.ServiceId?.[0];
 
-        if (!params.serviceId || !selectedTimeslotId) {
+        if (!params.ServiceId || !selectedTimeslotId) {
             alert("Please select a timeslot.");
             return;
         }
 
         try {
             const bookingResponse = await createBooking(
-                serviceId,
+                ServiceId,
                 selectedTimeslotId
             );
             console.log("Booking created successfully:", bookingResponse);
