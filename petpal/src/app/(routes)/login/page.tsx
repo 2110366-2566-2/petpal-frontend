@@ -10,9 +10,9 @@ export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
-    const {setIsLogin} = useContext(AuthContext);
-    const router = useRouter()
-    
+    const { setIsLogin } = useContext(AuthContext);
+    const router = useRouter();
+
     const handleRegistrationTypeChange = (
         e: ChangeEvent<HTMLSelectElement>
     ) => {
@@ -26,7 +26,7 @@ export default function Login() {
         }
         try {
             const loginUser = await login(email, registrationType, password);
-            if(loginUser){
+            if (loginUser) {
                 setIsLogin(true);
                 router.push("/");
             }

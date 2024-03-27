@@ -30,12 +30,37 @@ interface Service {
 
 export default async function get_service_by_id(id : string){
     // get current entity and wait for the response
-    const current_entity = await getCurrentEntity()
-    console.log('current entity', current_entity)
-    console.log('services', current_entity.services)
-    console.log('id', id)
-  
-    const service = current_entity.services.find((service : Service) => service.serviceID === id)
 
-    return service
+    let current_entity;
+
+    try {
+        current_entity = await getCurrentEntity();
+      //  console.log('Current entity:', current_entity);
+        if (current_entity.services !== undefined ) {
+            //console.log('Services:', current_entity.services);
+           // console.log('ID:', id);
+            const service = current_entity.services.find((service : Service) => service.serviceID === id);
+            return service;
+        }
+        else {
+            // Fetch service from http://localhost:8080/service/id
+            const response = await fetch(`http://localhost:8080/service/${id}`);
+            if(response.ok){
+                return await response.json();
+            }else{
+                console.error("Failed to Fetch Service Listing");
+                try {
+                    const errorMessage = await response.text();
+                    console.error("Error message:", errorMessage);
+                } catch (error) {
+                    console.error("Failed to parse error message:", error);
+                }
+            }
+             // Assuming response contains the service data
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        // Handle error appropriately
+        throw error;
+    }
 }
