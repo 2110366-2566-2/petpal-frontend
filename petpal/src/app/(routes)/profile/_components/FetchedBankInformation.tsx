@@ -106,7 +106,7 @@ export default function FetchBankInformation(){
                     <span>{String(defBank)}</span>
                     </div>
                 </div>
-                <button className='bg-[#D9D9D9] w-[102px] rounded-[10px] text-[18px] text-center p-[5px] mt-4' onClick={async (e) => {handleClickDelete(e)}}>
+                <button className='bg-[#D9D9D9] hover:bg-[#FF0000] hover:text-white w-[102px] rounded-[10px] text-[18px] text-center p-[5px] mt-4' onClick={async (e) => {handleClickDelete(e)}}>
                     Delete
                 </button>
             </div>
@@ -118,7 +118,7 @@ export default function FetchBankInformation(){
                 </div>
                 <div className='accountNumber'>
                 <span className='text-black font-bold text-[16px]'>Accout Number</span>
-                    <input type="text" className='mt-1 block w-full rounded-md shadow-sm
+                    <input type="text" className='p-1 mt-1 block w-full rounded-md shadow-sm
                     focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 peer-focus:text-primary border-[#D9D9D9] border-[3px]'
                     placeholder='x-xxx-x-xxxx' 
                     value={defAccount}
@@ -126,7 +126,8 @@ export default function FetchBankInformation(){
                 </div>
                 <div className='flex flex-col'>
                     <span className='text-black font-bold text-[16px]'>Bank Name</span>
-                    <select value={defBank} onChange={(e)=>{setDefBank(e.target.value)}}>
+                    <select value={defBank} onChange={(e)=>{setDefBank(e.target.value)}}
+                        className='p-1 border-[#D9D9D9] border-[3px] rounded-md'>
                         {
                         banks.map((bank) => 
                             <option value={bank.name} > 
@@ -136,7 +137,7 @@ export default function FetchBankInformation(){
                         }
                     </select>
                 </div>
-                <button className='bg-[#D9D9D9] w-[102px] rounded-[10px] text-[18px] text-center p-[5px] mt-4' onClick={async (e) => {handleClickAdd(e)}}>
+                <button className='bg-[#D9D9D9] hover:bg-blue hover:text-white w-[102px] rounded-[10px] text-[18px] text-center p-[5px] mt-4' onClick={async (e) => {handleClickAdd(e)}}>
                     Add
                 </button>
                 {

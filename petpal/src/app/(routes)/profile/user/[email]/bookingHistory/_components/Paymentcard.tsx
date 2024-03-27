@@ -18,20 +18,26 @@ export default function Paymentcard({onClose, qrCode, bookingID, serviceName}:Pr
 
 	const handleConfirmPayment = async () => {
 		try {
-			const response = await fetch('http://localhost:8080/service/booking/payment/authorize', {
-				method: 'POST',
-				credentials:'include',
-				body: JSON.stringify({ bookingID: bookingID }) // Correct body format
-			});
+			const response = await toast.promise(
+				fetch("http://localhost:8080/service/booking/payment/authorize", {
+					method: "POST",
+					credentials: "include",
+					body: JSON.stringify({ bookingID: bookingID }) // Correct body format
+				}),
+				{
+					loading: "Confirming payment...",
+					success: "Payment confirmed!",
+					error: "Error confirming payment"
+				}
+			);
+	
 			const data = await response.json();
 			// Check payment status in the response data
 			if (data.status && data.status.paymentStatus) {
-				toast.success('Payment confirmed!');
-				console.log('Payment successful');
+				console.log("Payment successful");
 				// Additional handling if payment is successful
 			} else {
-				toast.error(data.error);
-				console.log('Payment failed');
+				console.log("Payment failed");
 				// Additional handling if payment fails
 			}
 			// Close the Paymentcard modal after payment confirmation
@@ -40,8 +46,7 @@ export default function Paymentcard({onClose, qrCode, bookingID, serviceName}:Pr
 				window.location.reload();
 			}, 2000);
 		} catch (error) {
-			toast.error('Error confirming payment')
-			console.error('Error confirming payment:', error);
+			console.error("Error confirming payment:", error);
 		}
 	};
 	

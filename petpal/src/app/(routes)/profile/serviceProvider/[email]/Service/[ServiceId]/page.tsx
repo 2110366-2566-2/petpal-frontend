@@ -60,19 +60,22 @@ export default function BookAppointment() {
             typeof params.ServiceId === "string"
                 ? params.ServiceId
                 : params.ServiceId?.[0];
-
+    
         if (!params.ServiceId || !selectedTimeslotId) {
-            alert("Please select a timeslot.");
+            toast.error("Please select a timeslot.");
             return;
         }
-
+    
         try {
-            const bookingResponse = await createBooking(
-                ServiceId,
-                selectedTimeslotId
+            const bookingResponse = await toast.promise(
+                createBooking(ServiceId, selectedTimeslotId),
+                {
+                    loading: "Creating booking...",
+                    success: <b>Booking created successfully!</b>,
+                    error: <b>Error creating booking</b>
+                }
             );
             console.log("Booking created successfully:", bookingResponse);
-            toast.success('Booking created successfully !');
             router.push("/bookingLoading");
             // Handle success (e.g., display a success message or redirect)
         } catch (error) {
@@ -87,8 +90,8 @@ export default function BookAppointment() {
 
     return (
         <main className="flex justify-center md:p-[20px]">
-            <div className="w-full max-w-[1024px]">
-                <div className="flex flex-col md:flex-row md:mt-[100px]">
+            <div className="w-full max-w-[1024px] bg-[#f3f3f3] rounded-2xl shadow-lg p-5">
+                <div className="flex flex-col md:flex-row md:mt-[40px]">
                     <div className="w-full md:w-[550px] mr-[50px]">
                         {service.serviceImg ? (
                             <Image
@@ -96,7 +99,7 @@ export default function BookAppointment() {
                                 alt="service image"
                                 width="800"
                                 height={0}
-                                className=""
+                                className="rounded-lg shadow-xl"
                             />
                         ) : (
                             ""
@@ -114,21 +117,26 @@ export default function BookAppointment() {
                         <div className="text-[#FF872F] font-black text-[24px] whitespace-nowrap">
                             {service.averageRating} ★
                         </div>
+                        <div className="hidden xl:flex">
+                            <p className="font-medium text-[18px] md:max-w-[550px] md:mr-[20px]">
+                                {service.serviceDescription}
+                            </p>
+                        </div>
                     </div>
                 </div>
                 <div className="flex flex-col md:flex-row p-5 ">
-                    <div>
-                        <p className="font-medium text-[18px] md:max-w-[550px] md:mr-[20px]">
-                            {service.serviceDescription}
-                        </p>
-                    </div>
+                    <div className="xl:hidden">
+                            <p className="font-medium text-[18px] md:max-w-[550px] md:mr-[20px]">
+                                {service.serviceDescription}
+                            </p>
+                        </div>
                     <div className="mt-[150px] md:mt-[0px]">
                         <select
                             value={selectedTimeslotId}
                             onChange={(e) =>
                                 setSelectedTimeslotId(e.target.value)
                             }
-                            className="form-select block w-full mt-1"
+                            className="form-select block w-full mt-1 rounded-lg shadow-xl"
                         >
                             <option value="">Select a timeslot</option>
                             {service.timeslots?.map((timeslot) => (
