@@ -105,7 +105,7 @@ export default function EditProfile() {
         <div className='w-[100%] md:max-w-[600px]   float-right m-auto space-y-[30px] mt-[0px] mb-[20px] md:ml-[10px]'>
           <div className="my-2 ">
             <span className='text-black font-bold text-[32px]'>Username</span>
-            <input type='username' className='mt-1 block w-[100%] h[45px] rounded-md shadow-sm
+            <input type='username' className='p-1 mt-1 block w-[100%] h[45px] rounded-md shadow-sm
             focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 peer-focus:text-primary
             border-[#D9D9D9] border-[3px]'
             value={username}
@@ -130,7 +130,7 @@ export default function EditProfile() {
           </div>
           <div className="my-2 ">
             <span className='text-black font-bold text-[32px]'>Address</span>
-            <input type='address' className='mt-1 block w-[100%] h[45px] rounded-md shadow-sm
+            <input type='address' className='p-1 mt-1 block w-[100%] h[45px] rounded-md shadow-sm
             focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 peer-focus:text-primary
             border-[#D9D9D9] border-[3px]'
             value={address}
@@ -139,7 +139,7 @@ export default function EditProfile() {
           </div>
           <div className="my-2 ">
             <span className='text-black font-bold text-[32px]'>Phone Number</span>
-            <input type='phoneNumber' className='mt-1 block w-[100%] h[45px] rounded-md shadow-sm
+            <input type='phoneNumber' className='p-1 mt-1 block w-[100%] h[45px] rounded-md shadow-sm
             focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 peer-focus:text-primary
             border-[#D9D9D9] border-[3px]'
             value={phoneNumber}
