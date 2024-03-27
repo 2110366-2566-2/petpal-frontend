@@ -45,7 +45,7 @@ export var ExampleChatHistoryUser3: ChatHistoryUserInterface = {
 };
 
 export function adapterChatResponseToChatHistoryUserInterface(currentUser: ChatPageinterface, chatResponse: ChatResponse): ChatHistoryUserInterface {
-    console.log("compareID", chatResponse.user0ID, currentUser.id)
+    // console.log("compareID", chatResponse.user0ID, currentUser.id)
     const isCurrentUserIsUser0 = chatResponse.user0ID === currentUser.id
     const Id = isCurrentUserIsUser0 ? chatResponse.user1ID as string : chatResponse.user0ID as string
     const Name = isCurrentUserIsUser0 ? chatResponse.user1ID as string : chatResponse.user0ID as string

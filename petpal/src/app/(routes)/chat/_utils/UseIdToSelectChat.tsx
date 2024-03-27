@@ -8,11 +8,12 @@ export default function UserIdToSelectChat(AllChatHistory: ChatHistoryUserInterf
         ChatHistory = AllChatHistory[index]
         if (ChatHistory.Id == UserId) return ChatHistory
     }
-    if (DefaultSelectChat == undefined) {
-        console.log("DefaultSelectChat is ", DefaultSelectChat)
-        return ExampleChatHistoryUser1
-    }
-    else {
-        return DefaultSelectChat
-    }
+    // if (DefaultSelectChat == undefined) {
+    //     console.log("DefaultSelectChat is ", DefaultSelectChat)
+    //     return ExampleChatHistoryUser1
+    // }
+    // else {
+    //     return DefaultSelectChat
+    // }
+    return DefaultSelectChat
 }

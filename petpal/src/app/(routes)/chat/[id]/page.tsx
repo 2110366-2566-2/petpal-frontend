@@ -1,6 +1,6 @@
 "use client"
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import HeaderChatHistory from "../_components/HeaderChatHistory";
 import HeaderChatComponent from "../_components/HeaderChatComponent";
 import ChatPreview from "../_components/ChatPreview";
@@ -26,6 +26,7 @@ import { setChatHistoryByRoomId } from "@/app/libs/chat/setChatHistoryByRoomId";
 import { ChatResponse } from "@/app/_interface/chat/ChatResponse";
 import { MessageResponse } from "@/app/_interface/chat/MessageResponse";
 import { adapterChatResponseToChatHistoryUserInterface } from "../_interface/ChatHistoryUserInterface";
+import { AuthContext } from "@/app/_contexts/AuthContext";
 
 type Message = {
     content: string
@@ -43,6 +44,7 @@ type ConnWithName = {
 }
 
 export default function ChatHistory({ params }: { params: { id: string } }) {
+    const { currentEntity, setCurrentEntity } = useContext(AuthContext)
     const [targetUserId, setTargetUserId] = useState<string>(params.id);
     const [IsShowChatPreview, SetIsShowChatPreview] = useState<boolean>(false)
     const [chatPageUser, setChatPageUser] = useState<ChatPageinterface>()
@@ -54,6 +56,9 @@ export default function ChatHistory({ params }: { params: { id: string } }) {
     const [connWithNameList, setConnWithNameList] = useState<ConnWithName[]>([])
     const [currentMessage, setCurrentMessage] = useState<string>("");
     useEffect(() => {
+        // if (currentEntity !== null) {
+        //     console.log("it me mario", currentEntity)
+        // }
         getCurrentEntity().then((res) => {
             let newChatPageUser: ChatPageinterface = {
                 id: "",
@@ -73,14 +78,15 @@ export default function ChatHistory({ params }: { params: { id: string } }) {
             console.log("newChatPageUser", newChatPageUser)
             setChatPageUser(newChatPageUser)
         })
-    }, [])
+    }, [currentEntity])
 
     useEffect(() => {
         if (chatPageUser !== undefined) {
+            console.log("chatPageUser 5434", chatPageUser)
             switch (chatPageUser.type) {
                 case "user": {
                     getChatHistoryUser().then((reponse) => {
-                        console.log("ChatHistoryReponse", reponse)
+                        console.log("ChatHistoryReponse User", reponse)
                         const newAllChatHistory = reponse.map((message: ChatResponse) => adapterChatResponseToChatHistoryUserInterface(chatPageUser, message))
                         console.log("newAllChatHistory", newAllChatHistory)
                         setAllChatHistory(newAllChatHistory)
@@ -88,9 +94,8 @@ export default function ChatHistory({ params }: { params: { id: string } }) {
                     break
                 } case "svcp": {
                     getChatHistorySvcp().then((reponse) => {
-                        console.log("ChatHistoryReponse", reponse)
+                        console.log("ChatHistoryReponse SVCP", reponse)
                         const newAllChatHistory = reponse.map((message: ChatResponse) => adapterChatResponseToChatHistoryUserInterface(chatPageUser, message))
-                        console.log("newAllChatHistory", newAllChatHistory)
                         setAllChatHistory(newAllChatHistory)
                     })
                     break
@@ -102,9 +107,10 @@ export default function ChatHistory({ params }: { params: { id: string } }) {
         }
     }, [chatPageUser])
     useEffect(() => {
-        if (chatPageUser !== undefined) {
+        if (chatPageUser !== undefined && allChatHistory !== undefined) {
             let newConnWithNameList: ConnWithName[] = []
-            for (var chat of allChatHistory) {
+            let chat: ChatHistoryUserInterface
+            for (chat of allChatHistory) {
                 const ws = WebsocketJoinRoom(chat.RoomId, { Id: chatPageUser.id, Username: chatPageUser.name, Role: chatPageUser.type });
                 if (ws == null) {
                     console.log("Connection is not established. Skipping event handler setup.");
@@ -140,8 +146,10 @@ export default function ChatHistory({ params }: { params: { id: string } }) {
                     id: chat.Id,
                     conn: ws
                 }
+                console.log(`CONN WITH Romm:${chat.RoomId}`)
                 newConnWithNameList.push(newConnWithName)
             }
+            console.log("setupConn", newConnWithNameList)
             setConnWithNameList(newConnWithNameList)
 
             SetShownChatHistoryUserList(allChatHistory)
@@ -149,8 +157,10 @@ export default function ChatHistory({ params }: { params: { id: string } }) {
     }, [allChatHistory])
 
     useEffect(() => {
-        const newSelectedChat: ChatHistoryUserInterface = UserIdToSelectChat(allChatHistory, targetUserId)
-        setSelectedChatHistory(newSelectedChat)
+        if (chatPageUser !== undefined) {
+            const newSelectedChat: ChatHistoryUserInterface = UserIdToSelectChat(allChatHistory, targetUserId)
+            setSelectedChatHistory(newSelectedChat)
+        }
     }, [targetUserId])
 
     useEffect(() => {
