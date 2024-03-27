@@ -60,8 +60,8 @@ var getNumReadNotification = (MessageHistory: MessageInterface[], LastSee: Date)
 
 
 
-export default function ChatPreview({ ChatHistoryUser, setUserId }: { ChatHistoryUser: ChatHistoryUserInterface, setUserId: (value: number) => void }): JSX.Element {
-    var Id: number = ChatHistoryUser.Id
+export default function ChatPreview({ ChatHistoryUser, setUserId }: { ChatHistoryUser: ChatHistoryUserInterface, setUserId: (value: string) => void }): JSX.Element {
+    var Id: string = ChatHistoryUser.Id
     var Name: string = ChatHistoryUser.Name
     var MessageHistory: MessageInterface[] = ChatHistoryUser.MessageHistory
     var Picture: string = ChatHistoryUser.Picture
