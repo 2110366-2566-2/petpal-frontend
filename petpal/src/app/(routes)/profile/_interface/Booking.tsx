@@ -27,6 +27,7 @@ export default interface Booking {
         userCompleted: boolean;
         userCompletedTimestamp: string;
     };
+    statusString: string;
     feedback: {
         feedbackID: string;
         rating: number;
