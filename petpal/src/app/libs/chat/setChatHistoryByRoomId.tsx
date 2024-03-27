@@ -11,7 +11,6 @@ export async function setChatHistoryByRoomId(sendChatResponse: ChatResponse) {
             console.log("updateChat")
             return response.json()
         }
-        console.log("set caht")
 
     } catch (error) {
         console.error('Error fetching HistoryUser:', error);

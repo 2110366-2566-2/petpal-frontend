@@ -69,7 +69,7 @@ export default function ChatPreview({ ChatHistoryUser, setUserId }: { ChatHistor
 
     return (
         <div onClick={() => { setUserId(Id) }} className="bg-white flex felx-row px-[20px] py-[12px] space-x-[20px] hover:bg-[#D9D9D9A1] focus:bg-[#000000]">
-            <img src={Picture} alt="" className="w-[60px] h-[60px] rounded-full select-none" />
+            <img src={`data:image/png;base64, ${Picture}`} alt="" className="w-[60px] h-[60px] rounded-full select-none" />
             <div className="m-auto block grow">
                 <div className="m-auto flex felx-row space-x-[10px]">
                     <p className="text-left mr-auto">{Name}</p>

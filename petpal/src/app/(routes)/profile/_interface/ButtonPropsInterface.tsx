@@ -62,3 +62,11 @@ export var cancelServiceButton: ButtonPropsInterface = {
     FontColor: "text-[#000]",
     Link: "./",
 }
+
+export const chatButtonProps: ButtonPropsInterface = {
+    Name: "Chat",
+    Width: "w-[102px]",
+    BgColor: "bg-blue",
+    FontColor: "text-[#FFFF]",
+    Link: "/chat",
+}

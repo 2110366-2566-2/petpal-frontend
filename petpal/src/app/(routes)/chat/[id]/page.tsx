@@ -27,6 +27,7 @@ import { ChatResponse } from "@/app/_interface/chat/ChatResponse";
 import { MessageResponse } from "@/app/_interface/chat/MessageResponse";
 import { adapterChatResponseToChatHistoryUserInterface } from "../_interface/ChatHistoryUserInterface";
 import { AuthContext } from "@/app/_contexts/AuthContext";
+import { getChatHistoryByRoomId } from "@/app/libs/chat/getChatHistoryByRoomId";
 
 // type Message = {
 //     content: string
@@ -56,8 +57,8 @@ type ConnWithName = {
 
 export default function ChatHistory({ params }: { params: { id: string } }) {
     const { currentEntity, setCurrentEntity } = useContext(AuthContext)
-    const [targetUserId, setTargetUserId] = useState<string>(params.id);
-    const [IsShowChatPreview, SetIsShowChatPreview] = useState<boolean>(false)
+    const [targetUserId, setTargetUserId] = useState<string>(params.id)
+    const [IsShowChatPreview, SetIsShowChatPreview] = useState<boolean>(true)
     const [chatPageUser, setChatPageUser] = useState<ChatPageinterface>()
     const [allChatHistory, setAllChatHistory] = useState<ChatHistoryUserInterface[]>([])
     const [selectedChatHistory, setSelectedChatHistory] = useState<ChatHistoryUserInterface>()
@@ -109,14 +110,16 @@ export default function ChatHistory({ params }: { params: { id: string } }) {
                 case "user": {
                     getChatHistoryUser().then((reponse: ChatResponse[]) => {
                         console.log("ChatHistoryReponse User", reponse)
-                        let newAllChatHistory: ChatHistoryUserInterface[] = []
-                        reponse.map((message: ChatResponse) => {
-                            adapterChatResponseToChatHistoryUserInterface(chatPageUser, message).then((result: ChatHistoryUserInterface) => {
-                                newAllChatHistory.push(result)
-                                setAllChatHistory(newAllChatHistory)
-                            }
-                            )
-                        })
+                        if (reponse !== undefined) {
+                            let newAllChatHistory: ChatHistoryUserInterface[] = []
+                            reponse.map((message: ChatResponse) => {
+                                adapterChatResponseToChatHistoryUserInterface(chatPageUser, message).then((result: ChatHistoryUserInterface) => {
+                                    newAllChatHistory.push(result)
+                                    setAllChatHistory(newAllChatHistory)
+                                }
+                                )
+                            })
+                        }
                         // console.log("newAllChatHistory", newAllChatHistory)
                         // setAllChatHistory(newAllChatHistory)
                     })
@@ -207,6 +210,7 @@ export default function ChatHistory({ params }: { params: { id: string } }) {
         if (selectedChatHistory !== undefined) {
             const newShownMessageHistory: MessageInterface[] = selectedChatHistory.MessageHistory
             SetShownMessageHistory(newShownMessageHistory)
+            SetIsShowChatPreview(false)
         }
     }, [selectedChatHistory])
 
@@ -221,6 +225,7 @@ export default function ChatHistory({ params }: { params: { id: string } }) {
     useEffect(() => {
         if (lastestReceivedMessage !== undefined) {
             const senderId: string = lastestReceivedMessage.SenderID
+            console.log("teadf", targetUserId, senderId)
             if (targetUserId === senderId) {
                 const NewShownMessageHistory: MessageInterface[] = [...shownMessageHistory, lastestReceivedMessage]
                 SetShownMessageHistory(NewShownMessageHistory)
@@ -249,6 +254,39 @@ export default function ChatHistory({ params }: { params: { id: string } }) {
             }
         }
         selectedConn?.send(currentMessage)
+        if (selectedChatHistory !== undefined) {
+            getChatHistoryByRoomId(selectedChatHistory.RoomId).then((response: ChatResponse) => {
+                let newMessageList: MessageResponse[] = response.messages!
+                const now: Date = new Date()
+                const year = String(10000 + now.getFullYear()).substring(5 - 4)
+                const month = String(100 + now.getMonth()).substring(3 - 2)
+                const day = String(100 + now.getDate()).substring(3 - 2)
+                const hours = String(100 + now.getHours()).substring(3 - 2)
+                const minutes = String(100 + now.getMinutes()).substring(3 - 2)
+                const second = String(100 + now.getSeconds()).substring(3 - 2)
+                const newMessage: MessageResponse = {
+                    content: currentMessage,
+                    messageType: "text",
+                    sender: (chatPageUser.id === response.user0ID) ? 0 : 1,
+                    timestamp: `${year}-${month}-${day}T${hours}:${minutes}:${second}Z`
+                    // timestamp: `${now.getFullYear()}-${now.getMonth()}-${now.getDate()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`
+                }
+                newMessageList.push(newMessage)
+                const updateChatResponse: ChatResponse = {
+                    dateCreated: response.dateCreated,
+                    messages: newMessageList,
+                    roomID: response.roomID,
+                    user0ID: response.user0ID,
+                    user0Type: response.user0Type,
+                    user1ID: response.user1ID,
+                    user1Type: response.user1Type
+                }
+                console.log("updateChatResponse", updateChatResponse)
+                setChatHistoryByRoomId(updateChatResponse)
+            }
+
+            )
+        }
         setCurrentMessage("");
     }
 
@@ -276,7 +314,7 @@ export default function ChatHistory({ params }: { params: { id: string } }) {
                         }
                     </div>
                 </div>
-                <div className={`${IsShowChatPreview ? "hidden md:flex" : "flex-row md:flex"} items-top md:flex-col md:float-right flex-grow   my-[0px] md:p-[10px] space-y-[10px]`}>
+                <div className={`${IsShowChatPreview ? "hidden md:flex" : "flex-col flex"} items-top md:flex-col md:float-right flex-grow   my-[0px] md:p-[10px] space-y-[10px]`}>
                     {(selectedChatHistory !== undefined) ? (
                         <>
                             <div className="border-solid border-b-2 border-[#D9D9D9a1]">

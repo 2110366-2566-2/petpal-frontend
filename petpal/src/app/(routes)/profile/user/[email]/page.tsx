@@ -1,16 +1,20 @@
 'use client'
 import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 import UserInterface from '../../_interface/UserInterface'
 import PetInterface from '../../_interface/PetInterface'
 import ButtonPropsInterface from '../../_interface/ButtonPropsInterface'
 import { User } from "@/app/_interface/user/user";
+import { EntityType } from '@/app/_enum/currentEntity/EntityType'
 
 import ProfilePictureComponent from '../../_components/ProfilePictureComponent'
 import SmalllPetListComponent from '../../_components/SmalllPetListComponent'
 import SmallButtonComponent from '../../_components/SmallButtonComponent'
 
 import createButtonList from '../../_utils/createButtonList';
+import { checkIfRoomExist } from '@/app/libs/chat/checkIfRoomExist'
+import { generateRoomId } from '@/app/_utils/chat/generateRoomId'
 
 import { exampleUser } from '../../_interface/UserInterface'
 import { editProfileButtonProps, chagnePasswordButtonProps } from '../../_interface/ButtonPropsInterface'
@@ -19,23 +23,78 @@ import { getCurrentEntityUser } from '@/app/libs/currentEntiity/getCurrentEntity
 
 import { getUserById } from '@/app/libs/user/getUserById'
 import { adaptorUserToUserInterface } from '../../_interface/UserInterface'
+import { craeteNewRoom } from '@/app/libs/chat/createNewRoom'
+import { ChatResponse } from '@/app/_interface/chat/ChatResponse'
+import { getCurrentEntityType } from '@/app/libs/currentEntiity/getCurrentEntityType'
+import { getCurrentEntitySvcp } from '@/app/libs/currentEntiity/getCurrentEntitySvcp'
+import { getCurrentEntity } from '@/app/libs/user/userBackend'
 
 export default function EmailUserProfile({ params }: { params: { email: string } }) {
+    const router = useRouter()
     const [myUserId, setMyUserId] = useState<string>()
+    const [myType, setMyType] = useState<EntityType>()
     // const targetUserId: string = params.email
     const [targetUserId, setTargetUserId] = useState<string>(params.email)
     const [targetUser, setTargetUser] = useState<UserInterface>(exampleUser)
     const [isShownButton, setIsShownButton] = useState<boolean>(false)
     const [targetUserPetList, setTargetUserPetList] = useState<PetInterface[]>([])
+    const [chatOnClick, setChatOnClick] = useState<() => void>()
     useEffect(() => {
-        getCurrentEntityUser().then((Response) => {
-            // console.log(Response.id)
-            setMyUserId(Response.id)
+        getCurrentEntity().then((response) => {
+            switch (getCurrentEntityType(response)) {
+                case EntityType.USER: {
+                    setMyUserId(response.id)
+                    setMyType(EntityType.USER)
+                    break
+                } case EntityType.SERVICE_PROVIDER: {
+                    setMyUserId(response.SVCPID)
+                    setMyType(EntityType.SERVICE_PROVIDER)
+                    break
+                } default: {
+                    console.log("error")
+                    break
+                }
+            }
         })
     }, [])
 
     useEffect(() => {
         setIsShownButton(targetUserId === myUserId)
+        // if (myUserId !== undefined) {
+        //     const newChatOnClick = () => {
+        //         const roomId0: string = generateRoomId(myUserId, targetUserId)
+        //         const roomId1: string = generateRoomId(myUserId, targetUserId)
+        //         checkIfRoomExist(roomId0).then((response) => {
+        //             if (!response) {
+        //                 checkIfRoomExist(roomId1).then((response) => {
+        //                     if (!response) {
+        //                         const newChatResponse: ChatResponse = {
+        //                             dateCreated: "",
+        //                             messages: [],
+        //                             roomID: roomId0,
+        //                             user0ID: myUserId,
+        //                             user0Type: myType,
+        //                             user1ID: targetUserId,
+        //                             user1Type: "user"
+        //                         }
+        //                         craeteNewRoom(newChatResponse).then((response) => {
+        //                             console.log(response)
+        //                             router.push("/chat")
+        //                         })
+        //                     } else {
+        //                         console.log(2)
+        //                         router.push("/chat")
+        //                     }
+        //                 })
+        //             } else {
+        //                 console.log(3)
+        //                 router.push("/chat")
+        //             }
+        //         }
+        //         )
+        //     }
+        //     setChatOnClick(newChatOnClick)
+        // }
     }, [targetUserId, myUserId])
 
     useEffect(() => {
@@ -66,7 +125,7 @@ export default function EmailUserProfile({ params }: { params: { email: string }
                     <ProfilePictureComponent src={targetUser.profilePictureSrc} />
                     <h1 className='text-[32px]' ><b>{targetUser.Name}</b></h1>
                     <div className='hidden md:block'>
-                        {createButtonList(isShownButton, buttonPropsList)}
+                        {createButtonList(isShownButton, buttonPropsList, chatOnClick)}
                     </div>
                 </div>
                 <div className='max-w-[300px] md:max-w-[600px] mx-[auto] md:mt-[0px] pt-[20px] md:float-right space-y-[30px] md:ml-[10px]'>
@@ -75,7 +134,7 @@ export default function EmailUserProfile({ params }: { params: { email: string }
                         {targetUserPetList.map((pet: PetInterface) => <SmalllPetListComponent pet={pet} key={pet.name}></SmalllPetListComponent>)}
                     </div>
                     <div className='md:hidden block'>
-                        {createButtonList(isShownButton, buttonPropsList)}
+                        {createButtonList(isShownButton, buttonPropsList, chatOnClick)}
                     </div>
                 </div>
             </div>
