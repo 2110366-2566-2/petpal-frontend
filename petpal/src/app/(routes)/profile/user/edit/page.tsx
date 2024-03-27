@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react'
 import ProfilePictureComponent from "@app/(routes)/profile/_components/ProfilePictureComponent"
 import RatingComponent from "@app/(routes)/profile/_components/RatingComponent"
@@ -8,41 +10,66 @@ import PetInformation from "@app/(routes)/profile/_components/PetInformation"
 import FetchBankInformation from "@app/(routes)/profile/_components/FetchedBankInformation"
 import SmallButtonComponent from "@app/(routes)/profile/_components/SmallButtonComponent"
 import { editProfileButtonProps, saveEditButtonProps } from "@app/(routes)/profile/_interface/ButtonPropsInterface"
+import { useState, useEffect } from 'react'
+import { getCurrentEntity } from '@/app/libs/user/userBackend'
+import { editUserProfile } from '@/app/libs/user/editUserProfile'
+import { useRouter } from 'next/navigation'
+
+import ButtonPropsInterface from "@app/(routes)/profile/_interface/ButtonPropsInterface"
 
 
-export default function Profile() {
-    
+export default function EditProfile() {
 
-  let isOpen = false;
+  const [username , setUsername] = useState('')
+
+  useEffect(()=>{
+    const fetchData = async()=>{
+      const entity = await getCurrentEntity()
+      setUsername(entity.username)
+    }
+    fetchData()
+  },[])
+
+  const handleSubmit = async()=>{
+    return await editUserProfile(username)
+  }
+
+  const router = useRouter()
+  let thissaveEditButtonProps:ButtonPropsInterface = saveEditButtonProps
+  thissaveEditButtonProps.Link = '../'
+
   return (
     <div className='items-center'>
       <div className='md:flex m-[50px] items-center'>
-        <div className='max-w-[300px] space-y-[10px] md:float-left m-auto mt-[0px] items-top'>
-          <ProfilePictureComponent/>
+        <div className='max-w-[300px] space-y-[10px] md:float-left m-auto mt-[0px] md:mr-3 items-top'>
+          <ProfilePictureComponent />
           <div className='hidden md:grid grid-cols-1 gap-[16px]'>
-            <SmallButtonComponent ButtonProps={editProfileButtonProps} Working = {false}></SmallButtonComponent>
-            <SmallButtonComponent ButtonProps={saveEditButtonProps}></SmallButtonComponent>
+            <SmallButtonComponent ButtonProps={editProfileButtonProps} Working={false}></SmallButtonComponent>
+            <SmallButtonComponent ButtonProps={saveEditButtonProps} onClick={() => {handleSubmit(); router.push(thissaveEditButtonProps.Link)}}></SmallButtonComponent>
           </div>
         </div>
         <div className='w-[100%] md:max-w-[600px]  md:float-right m-auto space-y-[30px] mt-[0px] mb-[20px]'>
-          <div className = "my-2 ">
+          <div className="my-2 ">
             <span className='text-black font-bold text-[20px]'>Username</span>
             <input type='username' className='mt-1 block w-[100%] h[45px] rounded-md shadow-sm
             focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 peer-focus:text-primary
             border-gray border-[3px]'
-            placeholder='username' />
+              value = {username}
+              onChange={(e)=>{setUsername(e.target.value)}}
+              placeholder='username' />
           </div>
-          <div className = "my-2 ">
-            <PetInformation/>
+          <div className="my-2 ">
+            <PetInformation />
           </div>
-          <FetchBankInformation/>
+          <FetchBankInformation />
         </div>
         <div className='w-[100%] grid grid-cols-1 gap-[16px] md:hidden '>
-            <SmallButtonComponent ButtonProps={editProfileButtonProps} Working = {false}></SmallButtonComponent>
-            <SmallButtonComponent ButtonProps={saveEditButtonProps}></SmallButtonComponent>
+          <SmallButtonComponent ButtonProps={editProfileButtonProps} Working={false}></SmallButtonComponent>
+          <SmallButtonComponent ButtonProps={saveEditButtonProps}  onClick={() => {handleSubmit(); router.push(thissaveEditButtonProps.Link)}}></SmallButtonComponent>
         </div>
       </div>
 
     </div>
   )
 }
+

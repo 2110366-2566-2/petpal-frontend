@@ -51,7 +51,7 @@ export var editServiceButton: ButtonPropsInterface = {
     Width: "w-[102px]",
     BgColor: "bg-orange",
     FontColor: "text-[#FFF]",
-    Link: "./edit",
+    Link: "../..",
 }
 
 

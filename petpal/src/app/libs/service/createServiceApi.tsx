@@ -18,14 +18,10 @@ export default async function createServiceApi(
         }),
     })
     if (response.ok){
-
-
+        return response.json();
     }else {
         // Login failed
         console.error("Create service failed");
     }
 
-    return await response.json();
-
-    return;
 }

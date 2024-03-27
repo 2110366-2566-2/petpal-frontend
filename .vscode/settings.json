@@ -5,6 +5,11 @@
         "ResponsiveNavbar.tsx",
         "chat",
         "homepage",
-        "listing"
+        "listing",
+        "service",
+        "AuthContext.tsx"
+        "bookingHistory",
+        "service",
+        "payment card"
     ]
 }

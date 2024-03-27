@@ -1,7 +1,6 @@
-import Link from "next/link";
 import Button from "../(routes)/register/_components/Button";
 import SearchIcon from '@mui/icons-material/Search';
-import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface NavBarProps {
     brandName: string;
@@ -9,7 +8,10 @@ interface NavBarProps {
 }
   
 function NavBar({ brandName, navItems }: NavBarProps) {
-    
+    const router = useRouter()
+    const onClickLoginButtonHandler = () =>{
+        router.push("/login");
+    };
     return (
         <nav className="bg-[#D9D9D9]">
             <div className="md:px-10 justify-center items-center md:flex">
@@ -39,7 +41,7 @@ function NavBar({ brandName, navItems }: NavBarProps) {
                      <SearchIcon/>
                     </button>
                 </form>
-                <Link href={"/login"} className="hidden md:flex"><Button name={"LOGIN"}/></Link>
+                <Button name={"LOGIN"} onClick={onClickLoginButtonHandler}/>
             </div>
         
         </nav>
