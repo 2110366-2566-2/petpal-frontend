@@ -3,14 +3,9 @@
 import React, { useState, useEffect } from 'react'
 
 import dayjs, { Dayjs } from 'dayjs';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { NativeSelect, InputLabel, Container, FormControl, List, ListItem, ListItemText, ListItemButton } from '@mui/material';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import Select from '@mui/material/Select';
-import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
+import { List, ListItem, ListItemText, ListItemButton } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import get_service_by_id from '@app/libs/service/service'
