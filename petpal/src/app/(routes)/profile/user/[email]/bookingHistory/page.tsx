@@ -26,20 +26,26 @@ const modalBoxStyle = {
 };
 
 function getBookingStatus(booking: Booking): string {
-    if (booking.status.userCompleted) {
-        return "Completed";
-    } else if (booking.status.svcpCompleted) {
-        return "Service Completed";
-    } else if (booking.status.paymentStatus) {
-        return "Paid";
-    } else if (booking.status.svcpConfirmed) {
-        return "Confirmed";
-    } else if (!booking.status.svcpConfirmed) {
-        return "Pending";
-    } else if (booking.cancel.cancelStatus) {
-        return "Cancel";
+    // if (booking.status.userCompleted) {
+    //     return "Completed";
+    // } else if (booking.status.svcpCompleted) {
+    //     return "Service Completed";
+    // } else if (booking.status.paymentStatus) {
+    //     return "Paid";
+    // } else if (booking.status.svcpConfirmed) {
+    //     return "Confirmed";
+    // } else if (!booking.status.svcpConfirmed) {
+    //     return "Pending";
+    // } else if (booking.cancel.cancelStatus) {
+    //     return "Cancel";
+    // } else {
+    //     return "";
+    // }
+
+    if (booking.cancel.cancelStatus) {
+        return "Cancelled";
     } else {
-        return "";
+        return booking.statusString;
     }
 }
 
