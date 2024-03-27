@@ -14,7 +14,7 @@ export interface Service {
     requireCert?: boolean;
     serviceDescription?: string;
     serviceID?: string;
-    serviceImg?: number[];
+    serviceImg?: string;
     serviceName?: string;
     serviceType?: string;
     timeslots?: Timeslot[];
