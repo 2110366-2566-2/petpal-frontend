@@ -14,6 +14,7 @@ import { useState, useEffect } from 'react'
 import { getCurrentEntity } from '@/app/libs/user/userBackend'
 import { editUserProfile } from '@/app/libs/user/editUserProfile'
 import { useRouter } from 'next/navigation'
+import uploadImgApi from '@/app/libs/user/uploadImgApi'
 
 import ButtonPropsInterface from "@app/(routes)/profile/_interface/ButtonPropsInterface"
 
@@ -21,18 +22,38 @@ import ButtonPropsInterface from "@app/(routes)/profile/_interface/ButtonPropsIn
 export default function EditProfile() {
 
   const [username , setUsername] = useState('')
+  const [profileImg , setProfileImg] = useState('')
+  const [fileProImg ,setFileProImg] = useState<File>()
 
   useEffect(()=>{
     const fetchData = async()=>{
       const entity = await getCurrentEntity()
       setUsername(entity.username)
+      setProfileImg(entity.profilePicture)
     }
     fetchData()
   },[])
 
   const handleSubmit = async()=>{
-    return await editUserProfile(username)
+    if(fileProImg) await uploadImgApi(fileProImg)
+    await editUserProfile(username)
   }
+
+  const toBase64 = (file: File) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+  
+      fileReader.readAsDataURL(file);
+  
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+  
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
 
   const router = useRouter()
   let thissaveEditButtonProps:ButtonPropsInterface = saveEditButtonProps
@@ -42,7 +63,13 @@ export default function EditProfile() {
     <div className='items-center'>
       <div className='md:flex m-[50px] items-center'>
         <div className='max-w-[300px] space-y-[10px] md:float-left m-auto mt-[0px] md:mr-3 items-top'>
-          <ProfilePictureComponent />
+          <div>
+            <ProfilePictureComponent src={profileImg} />
+            <p >upload profile</p>
+            <input type='file' className="mt-2 bg-[#D9D9D9] w-[200px] h-[35px] rounded-[10px] text-[14px] text-center p-[5px]"
+            onChange={(e)=>{setFileProImg(e.target.files?.[0])}}
+            />
+          </div>
           <div className='hidden md:grid grid-cols-1 gap-[16px]'>
             <SmallButtonComponent ButtonProps={editProfileButtonProps} Working={false}></SmallButtonComponent>
             <SmallButtonComponent ButtonProps={saveEditButtonProps} onClick={() => {handleSubmit(); router.push(thissaveEditButtonProps.Link)}}></SmallButtonComponent>

@@ -13,6 +13,7 @@ import { getCurrentEntity } from '@/app/libs/user/userBackend'
 import { editSvcpProfile } from '@/app/libs/serviceProvider/editSvcpProfile'
 import ButtonPropsInterface from '@app/(routes)/profile/_interface/ButtonPropsInterface'
 import { useRouter } from 'next/navigation'
+import uploadImgApi from '@/app/libs/user/uploadImgApi'
 
 export default function EditProfile() {
 
@@ -20,6 +21,11 @@ export default function EditProfile() {
   const [description , setDescription] = useState<string>('')
   const [address , setAddress] = useState<string>('')
   const [phoneNumber , setPhoneNumber] = useState<string>('')
+  const [profileImg , setProfileImg] = useState<string>('')
+  const [addiImg , setAddiImg] = useState<string>('')
+
+  const [fileProImg , setFileProImg] = useState<File>()
+  const [fileAddiImg , setFilAddiImg] = useState<File>()
 
   let thisSaveProfileButton: ButtonPropsInterface = saveEditButtonProps
   thisSaveProfileButton.Link = "/profile/serviceProvider"
@@ -32,25 +38,64 @@ export default function EditProfile() {
       setDescription(entity.description || "")
       setAddress(entity.address || "")
       setPhoneNumber(entity.phoneNumber || "")
+
+      setProfileImg(entity.SVCPImg)
+      setAddiImg(entity.SVCPAdditionalImg)
+
     }
     fetchData()
   },[])
 
-  const handleSubmit = async() =>{
+
+  const toBase64 = (file: File) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      
+      if(file){
+        fileReader.readAsDataURL(file);
+      }
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+  
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
+
+  const handleSubmit = async() => {
     // console.log(username,description,address,phoneNumber)
-    return await editSvcpProfile(
+    if(fileProImg) await uploadImgApi(fileProImg)
+    await editSvcpProfile(
       username,
       description,
       address,
       phoneNumber,
     )
   }
+
+  const handleAddImg = async (e:React.ChangeEvent<HTMLInputElement>) =>{
+    if(e.target.files){
+      console.log("Recieve")
+      let imgfile = e.target.files?.[0]
+      setFileProImg(imgfile)
+      // setProfileImg(await toBase64(imgfile) as string)
+    }
+  }
   const router = useRouter()
   return (
     <div className='items-center'>
       <div className=' md:flex m-[50px] items-center '>
         <div className='max-w-[300px] space-y-[10px] md:float-left m-auto mt-[0px] items-top md:mr-[10px]'>
-          <ProfilePictureComponent />
+          <div>
+            <ProfilePictureComponent src={profileImg} />
+            <p >upload profile</p>
+            <input type='file' className="mt-2 bg-[#D9D9D9] w-[200px] h-[35px] rounded-[10px] text-[14px] text-center p-[5px]"
+            
+            onChange={(e)=>{handleAddImg(e)}}
+            />
+          </div>
           <div className='hidden md:grid grid-cols-1 gap-[16px]'>
             <SmallButtonComponent ButtonProps={editProfileButtonProps} Working={false}></SmallButtonComponent>
             <SmallButtonComponent ButtonProps={thisSaveProfileButton} onClick={async() =>{handleSubmit();router.push(thisSaveProfileButton.Link)}}></SmallButtonComponent>
@@ -78,7 +123,9 @@ export default function EditProfile() {
           <div className="my-2">
             <span className='text-black font-bold text-[32px]'>Additional Image</span>
             <form className="md:flex md:pl-0 ">
-              <button className="bg-[#D9D9D9] w-[158px] h-[45px] rounded-[10px] text-[18px] text-center p-[5px]" type='button'>Upload Image</button>
+            <input type='file' className="mt-2 bg-[#D9D9D9] w-[200px] h-[35px] rounded-[10px] text-[14px] text-center p-[5px]"
+            onChange={(e)=>{handleAddImg(e)}}
+            />
             </form>
           </div>
           <div className="my-2 ">

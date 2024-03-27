@@ -3,10 +3,11 @@ import React from 'react'
 import ProfilePictureComponent from "@app/(routes)/profile/_components/ProfilePictureComponent"
 import SmallButtonComponent from "@app/(routes)/profile/_components/SmallButtonComponent"
 import ButtonPropsInterface, { editProfileButtonProps,saveEditButtonProps } from "@app/(routes)/profile/_interface/ButtonPropsInterface"
-import { useState,useEffect } from 'react'
+import { useState,useEffect,useContext } from 'react'
 import { getCurrentEntity } from '@/app/libs/user/userBackend'
 import { changePasswordApi } from '@/app/libs/auth/changePassword'
 import { useRouter } from 'next/navigation'
+import { AuthContext } from '@/app/_contexts/AuthContext'
 
 export default function changePassword() {
   
@@ -14,6 +15,8 @@ export default function changePassword() {
   const [confirmPassword , setConfirmPassword] = useState('')
   const [usertype , setUsertype] = useState('')
   const [email , setEmail] = useState('')
+  const [profileImg , setProfileImg] = useState('')
+  const {currentEntity , setCurrentEntity , isLogin , setIsLogin} = useContext(AuthContext)
 
 
   useEffect(()=>{
@@ -23,6 +26,11 @@ export default function changePassword() {
         if(!entity.SVCPID) return 'user'
         else return 'serviceProvider'
       })
+      setProfileImg(()=>{
+        if(!entity.SVCPID) return entity.SVCPImg
+        else return entity.profilePicture
+      })
+
       setEmail(()=>{
         if(entity.SVCPEmail) return entity.SVCPEmail
         else return entity.email
@@ -44,7 +52,7 @@ export default function changePassword() {
     <div className='items-center'>
       <div className='md:flex m-[50px] items-center'>
         <div className='max-w-[300px] space-y-[10px] md:float-left m-auto mt-[0px] items-top'>
-          <ProfilePictureComponent/>
+          <ProfilePictureComponent src = {`data:image/jpg;base64, ${profileImg}`}/>
           <div className='hidden md:grid grid-cols-1 gap-[16px]'>
             <SmallButtonComponent ButtonProps={editProfileButtonProps} Working = {false}></SmallButtonComponent>
             <SmallButtonComponent ButtonProps={saveEditButtonProps} onClick={()=>{handleSubmit();route.push(thissaveEditButtonProps.Link)}}></SmallButtonComponent>
