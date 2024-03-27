@@ -131,7 +131,7 @@ export default function PetInformation(){
           setGender(input)
           break
         case "Age":
-          setAge(input)
+          setAge(parseInt(input))
           break
         case "Health Information":
           setHealth(input)
