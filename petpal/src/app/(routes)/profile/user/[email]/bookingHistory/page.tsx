@@ -7,122 +7,155 @@ import Paymentcard from "./_components/Paymentcard";
 import Link from "next/link";
 import getQRpayment from "@/app/libs/service/getQRpayment";
 import RescheduleForm from "./_components//Reschedule";
-import {Modal,Box,Typography} from '@mui/material';
+import { Modal, Box, Typography } from '@mui/material';
 
 
-const style = {
+const modalBoxStyle = {
     position: 'absolute' as 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
-    p: 4,
-  };
+    p:2,
+};
 
 
 function formatTimeToHourMinute(datetimeString: string) {
-  const date = new Date(datetimeString);
-  // Use 'getHours' and 'getMinutes' to extract time parts
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-  // Pad single digits with leading zero
-  const formattedHours = hours.toString().padStart(2, "0");
-  const formattedMinutes = minutes.toString().padStart(2, "0");
-  // Combine hours and minutes in HH:mm format
-  return `${formattedHours}:${formattedMinutes}`;
+    const date = new Date(datetimeString);
+    // Use 'getHours' and 'getMinutes' to extract time parts
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    // Pad single digits with leading zero
+    const formattedHours = hours.toString().padStart(2, "0");
+    const formattedMinutes = minutes.toString().padStart(2, "0");
+    // Combine hours and minutes in HH:mm format
+    return `${formattedHours}:${formattedMinutes}`;
 }
 
 function formatDate(datetimeString: string) {
-  const date = new Date(datetimeString);
-  // Corrected options with specific string literals for TypeScript
-  const options: Intl.DateTimeFormatOptions = {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  };
-  // Adjust 'en-US' to your preferred locale if needed
-  return date.toLocaleDateString("en-US", options);
+    const date = new Date(datetimeString);
+    // Corrected options with specific string literals for TypeScript
+    const options: Intl.DateTimeFormatOptions = {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+    };
+    // Adjust 'en-US' to your preferred locale if needed
+    return date.toLocaleDateString("en-US", options);
 }
 
 function getBookingStatus(booking: Booking): string {
-  if (booking.status.userCompleted) {
-    return "Completed";
-  } else if (booking.status.svcpCompleted) {
-    return "Service Completed";
-  } else if (booking.status.paymentStatus) {
-    return "Paid";
-  } else if (booking.status.svcpConfirmed) {
-    return "Confirmed";
-  } else if (!booking.status.svcpConfirmed) {
-    return "Pending";
-  } else if (booking.cancel.cancelStatus) {
-    return "Cancel";
-  } else {
-    return "";
-  }
+    if (booking.status.userCompleted) {
+        return "Completed";
+    } else if (booking.status.svcpCompleted) {
+        return "Service Completed";
+    } else if (booking.status.paymentStatus) {
+        return "Paid";
+    } else if (booking.status.svcpConfirmed) {
+        return "Confirmed";
+    } else if (!booking.status.svcpConfirmed) {
+        return "Pending";
+    } else if (booking.cancel.cancelStatus) {
+        return "Cancel";
+    } else {
+        return "";
+    }
 }
 
 export default function BookingHistory() {
-  const [bookings, setBookings] = useState<Booking[]>([]);
+    const [bookings, setBookings] = useState<Booking[]>([]);
 
-  // useEffect hook to fetch bookings when component mounts
-  useEffect(() => {
-    const fetchBookings = async () => {
-      try {
-        const response = await getBookingHistory();
-        setBookings(response.result);
-      } catch (error) {
-        console.error("Error fetching bookings:", error);
-      }
+    // useEffect hook to fetch bookings when component mounts
+    useEffect(() => {
+        const fetchBookings = async () => {
+            try {
+                const response = await getBookingHistory();
+                setBookings(response.result);
+            } catch (error) {
+                console.error("Error fetching bookings:", error);
+            }
+        };
+
+        fetchBookings();
+    }, []);
+    const handleCancel = async (id: string, reason: string) => {
+        cancelBooking(id, reason);
     };
 
-    fetchBookings();
-  }, []);
-  const handleCancel = async (id: string, reason: string) => {
-    cancelBooking(id, reason);
-  };
+    const [qrCode, setQRCode] = useState<string | null>(null); // State to hold the QR code
+    const [selectedBookingID, setSelectedBookingID] = useState<string | null>(
+        null
+    ); // State to hold the selected booking ID
+    const [selectedServiceName, setSelectedServiceName] = useState<string | null>(
+        null
+    );
 
-  const [qrCode, setQRCode] = useState<string | null>(null); // State to hold the QR code
-  const [selectedBookingID, setSelectedBookingID] = useState<string | null>(
-    null
-  ); // State to hold the selected booking ID
-  const [selectedServiceName, setSelectedServiceName] = useState<string | null>(
-    null
-  );
 
-  useEffect(() => {
-    const handlePayNow = async () => {
-      if (selectedBookingID) {
-        try {
-          const qrCodeData = await getQRpayment(selectedBookingID); // Fetch QR code
-          if (qrCodeData !== undefined) {
-            setQRCode(qrCodeData.qrImage); // Set QR code in state if qrCodeData is defined
-          } else {
-            setQRCode("/loadingcar.jpg");
-            console.error("QR code data is undefined");
-          }
-          console.log(qrCodeData);
-        } catch (error) {
-          console.error("Error fetching QR code:", error);
-        }
-      }
-    };
+
+    useEffect(() => {
+        const handlePayNow = async () => {
+            if (selectedBookingID) {
+                try {
+                    const qrCodeData = await getQRpayment(selectedBookingID); // Fetch QR code
+                    if (qrCodeData !== undefined) {
+                        setQRCode(qrCodeData.qrImage); // Set QR code in state if qrCodeData is defined
+                    } else {
+                        setQRCode("/loadingcar.jpg");
+                        console.error("QR code data is undefined");
+                    }
+                    console.log(qrCodeData);
+                } catch (error) {
+                    console.error("Error fetching QR code:", error);
+                }
+            }
+        };
 
         handlePayNow(); // Call handlePayNow when selectedBookingID changes
     }, [selectedBookingID]);
 
+
+    const [openReschedule, setOpenReschedule] = React.useState(false);
+    const [selectedReschedule, setselectedReschedule] = useState<[string, string, string] | [null,null,null] >([null,null,null]);
+    // const [selectedTimeSlotId, setselectedTimeSlotId] = useState<string | null>(null);
+    // const [selectedBookingIDReschedule, setselectedBookingIDReschedule] = useState<string | null>(null);
+    const handleOpenReschedule = () => setOpenReschedule(true);
+    const handleCloseReschedule = () => {
+        setOpenReschedule(false);
+        // setselectedTimeSlotId(null);
+        // setSelectedBookingID(null);
+    }
+
     return (
         <main className="flex flex-col items-center pt-10">
-            {qrCode && 
-                <Paymentcard 
-                    onClose={() => {setQRCode(null); setSelectedBookingID(null)}} // Reset QR code when closing Paymentcard
+            {qrCode &&
+                <Paymentcard
+                    onClose={() => { setQRCode(null); setSelectedBookingID(null) }} // Reset QR code when closing Paymentcard
                     qrCode={qrCode} // Pass QR code to Paymentcard
                     bookingID={selectedBookingID} // Pass bookingID
                     serviceName={selectedServiceName} // Pass serviceName
                 />}
+
+            <Modal
+                open={openReschedule}
+                onClose={handleCloseReschedule}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={modalBoxStyle}>
+                {openReschedule &&
+                    <RescheduleForm
+                        bookingID={selectedReschedule[0]}
+                        serviceID={selectedReschedule[1]}
+                        timeslotID={selectedReschedule[2]}
+                        onClose={handleCloseReschedule}
+                    />
+                }
+                </Box>
+            </Modal>
+
+
             {bookings.map((booking, index) => (
                 <div
                     key={index}
@@ -134,21 +167,21 @@ export default function BookingHistory() {
                             <div className="font-bold text-[24px] xl:hidden">
                                 {booking.serviceName} {/* Visible on Mobile */}
                             </div>
-                            <div 
+                            <div
                                 className="flex flex-col font-medium text-[18px] xl:min-w-[170px] text-[#12B837]"
                             >
                                 {getBookingStatus(booking)}
                                 {
-                                    (getBookingStatus(booking)=='Pending') && 
-                                        <button 
+                                    (getBookingStatus(booking) == 'Pending') &&
+                                    <button
                                         onClick={() => {
                                             setSelectedBookingID(booking.bookingID);
-                                            setSelectedServiceName(booking.serviceName); 
+                                            setSelectedServiceName(booking.serviceName);
                                         }}
-                                            className="max-w-[90px] text-blue border rounded-xl my-2 p-1 hover:bg-blue hover:text-white"
-                                        >
-                                            Pay now
-                                        </button>
+                                        className="max-w-[90px] text-blue border rounded-xl my-2 p-1 hover:bg-blue hover:text-white"
+                                    >
+                                        Pay now
+                                    </button>
                                 }
                             </div>
                         </div>
@@ -179,9 +212,19 @@ export default function BookingHistory() {
                             {booking.totalBookingPrice.toFixed(2)}฿
                         </div>
                         <div className="flex xl:hidden">
-                            <div className="font-bold text-[16px] text-[#FFD600]">
+                            <button className="font-bold text-[16px] text-[#FFD600]"
+                                onClick={
+                                    () => {
+                                        setselectedReschedule([booking.bookingID,booking.serviceID, booking.timeslotID]);
+                                        // setselectedReschedule([booking.bookingID, booking.timeslotID]);
+                                        // //setselectedBookingIDReschedule(booking.bookingID);
+                                        // // setselectedTimeSlotId(booking.timeslotID);
+
+                                        // handleOpenReschedule();
+                                    }}
+                            >
                                 Reschedule
-                            </div>
+                            </button>
                             <div className="font-bold text-[16px] ml-3 text-[#FF5858]">
                                 Cancel
                             </div>
@@ -189,9 +232,17 @@ export default function BookingHistory() {
                     </div>
                     <div>
                         <div className="hidden xl:flex">
-                            <div className="font-bold text-[16px] text-[#FFD600]">
+                            <button className="font-bold text-[16px] text-[#FFD600]"
+                                onClick={
+                                    () => {
+                                        setselectedReschedule([booking.bookingID,booking.serviceID, booking.timeslotID]);
+                                        // setselectedBookingIDReschedule(booking.bookingID);
+                                        // setselectedTimeSlotId(booking.timeslotID);
+                                        handleOpenReschedule();
+                                    }}
+                            >
                                 Reschedule
-                            </div>
+                            </button>
                             <button
                                 onClick={() =>
                                     handleCancel(booking.bookingID, "")
