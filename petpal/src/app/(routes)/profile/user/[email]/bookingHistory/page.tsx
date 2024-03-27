@@ -6,6 +6,7 @@ import cancelBooking from "@app/libs/service/cancelBooking";
 import Paymentcard from "./_components/Paymentcard";
 import Link from "next/link";
 import getQRpayment from "@/app/libs/service/getQRpayment";
+import SkeletonList from "./_components/SkeletonList";
 import RescheduleForm from "./_components//Reschedule";
 import { Modal, Box, Typography } from '@mui/material';
 
@@ -65,24 +66,39 @@ function getBookingStatus(booking: Booking): string {
 }
 
 export default function BookingHistory() {
-    const [bookings, setBookings] = useState<Booking[]>([]);
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [isLoading, setIsLoading] = useState(true); // State to track loading status
 
-    // useEffect hook to fetch bookings when component mounts
-    useEffect(() => {
-        const fetchBookings = async () => {
-            try {
-                const response = await getBookingHistory();
-                setBookings(response.result);
-            } catch (error) {
-                console.error("Error fetching bookings:", error);
-            }
-        };
-
-        fetchBookings();
-    }, []);
-    const handleCancel = async (id: string, reason: string) => {
-        cancelBooking(id, reason);
+  // useEffect hook to fetch bookings when component mounts
+  useEffect(() => {
+    const fetchBookings = async () => {
+      try {
+        const response = await getBookingHistory();
+        setBookings(response.result);
+      } catch (error) {
+        console.error("Error fetching bookings:", error);
+      } finally {
+        setIsLoading(false);
+      }
     };
+
+    fetchBookings();
+  }, []);
+
+    // This will hide the loading spinner after 2 seconds if bookings are still null
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        if (isLoading && bookings === null) {
+          setIsLoading(false);
+        }
+      }, 2000);
+  
+      return () => clearTimeout(timer);
+    }, [isLoading, bookings]);
+  
+  const handleCancel = async (id: string, reason: string) => {
+    cancelBooking(id, reason);
+  };
 
     const [qrCode, setQRCode] = useState<string | null>(null); // State to hold the QR code
     const [selectedBookingID, setSelectedBookingID] = useState<string | null>(
@@ -261,4 +277,116 @@ export default function BookingHistory() {
             ))}
         </main>
     );
+  return (
+    <main className="flex flex-col items-center pt-10">
+      {qrCode && (
+        <Paymentcard
+          onClose={() => {
+            setQRCode(null);
+            setSelectedBookingID(null);
+          }} // Reset QR code when closing Paymentcard
+          qrCode={qrCode} // Pass QR code to Paymentcard
+          bookingID={selectedBookingID} // Pass bookingID
+          serviceName={selectedServiceName} // Pass serviceName
+        />
+      )}
+      {bookings && bookings.length > 0 ? (
+        bookings.map((booking, index) => (
+          <div
+            key={index}
+            className="flex flex-col xl:flex-row xl:justify-between xl:items-center bg-[#F9F9F9] w-[327px] xl:w-[82%] mb-4 p-[18px] rounded-xl drop-shadow-lg"
+          >
+            <div className="flex flex-col xl:flex-row xl:justify-between">
+              {/* Mobile: Service Name and Status on one row, centered. Desktop: Status moves to the left. */}
+              <div className="flex justify-between xl:justify-start items-center w-full xl:w-auto space-x-2 xl:mr-[90px]">
+                <div className="font-bold text-[24px] xl:hidden">
+                  {booking.serviceName} {/* Visible on Mobile */}
+                </div>
+                <div className="flex flex-col font-medium text-[18px] xl:min-w-[170px] text-[#12B837]">
+                  {getBookingStatus(booking)}
+                  {getBookingStatus(booking) == "Pending" && (
+                    <button
+                      onClick={() => {
+                        setSelectedBookingID(booking.bookingID);
+                        setSelectedServiceName(booking.serviceName);
+                      }}
+                      className="max-w-[90px] text-blue border rounded-xl my-2 p-1 hover:bg-blue hover:text-white"
+                    >
+                      Pay now
+                    </button>
+                  )}
+                </div>
+              </div>
+              {/* Provider Name: Below on mobile, in a box on the right on desktop */}
+              <div className="mt-2 xl:mt-0 xl:flex xl:items-center xl:justify-start xl:w-auto">
+                <div className="text-left">
+                  <div className="font-bold text-[24px] hidden xl:block">
+                    {booking.serviceName}{" "}
+                    {/* Hidden on Mobile, visible on Desktop */}
+                  </div>
+                  <div className="font-bold text-[18px] text-[#858585]">
+                    {booking.SVCPName}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-between">
+              <div className="font-medium text-[24px] xl:mr-[20px]">
+                {formatDate(booking.startTime)}
+              </div>
+              <div className="font-medium text-[24px]">
+                {formatTimeToHourMinute(booking.startTime)} -{" "}
+                {formatTimeToHourMinute(booking.endTime)}
+              </div>
+            </div>
+            <div className="flex justify-between items-center">
+              <div className="font-medium text-[32px]">
+                {booking.totalBookingPrice.toFixed(2)}฿
+              </div>
+              <div className="flex xl:hidden">
+                <div className="font-bold text-[16px] text-[#FFD600]">
+                  Reschedule
+                </div>
+                <div className="font-bold text-[16px] ml-3 text-[#FF5858]">
+                  Cancel
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className="hidden xl:flex">
+                <div className="font-bold text-[16px] text-[#FFD600]">
+                  Reschedule
+                </div>
+                <button onClick={() => handleCancel(booking.bookingID, "")}>
+                  <div className="font-bold text-[16px] ml-3 text-[#FF5858]">
+                    Cancel
+                  </div>
+                </button>
+              </div>
+              <div className="text-right font-semibold text-[16px] text-[#858585]">
+                Write Feedback
+              </div>
+            </div>
+          </div>
+        ))
+      ) : (
+        <div className='flex flex-col'>
+          {isLoading && 
+            <div> 
+              <SkeletonList/>
+              <SkeletonList/>
+              <SkeletonList/>
+              <SkeletonList/>
+              <SkeletonList/>
+            </div>
+          }
+          {!isLoading && 
+            <div className='flex flex-col justify-center items-center text-3xl pt-48 gap-9'>
+              <span>No Bookings yet</span>
+            </div>
+          }
+        </div>
+      )}
+    </main>
+  );
 }
