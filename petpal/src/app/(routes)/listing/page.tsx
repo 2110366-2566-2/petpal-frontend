@@ -3,9 +3,12 @@ import React, { useEffect, useState } from "react";
 import Searchbar from "@app/(routes)/listing/_components/Searchbar";
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
 import getServices from "@/app/libs/service/getServices";
+import { getCurrentEntityUser } from "@/app/libs/currentEntiity/getCurrentEntityUser";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface Column {
-    id: 'serviceName' | 'serviceType' | 'price' | 'rating';
+    id: 'serviceName' | 'serviceType' | 'price' | 'rating' | 'serviceID' | 'svcpID';
     label: string;
     minWidth?: number;
     align?: 'right';
@@ -29,6 +32,8 @@ interface Column {
       align: 'right',
       format: (value: number) => value.toLocaleString('en-US'),
     },
+    //{ id: 'serviceID', label: 'Service ID', minWidth: 50, align: 'right', },
+    //{ id: 'svcpID', label: 'SVCPID', minWidth: 40, align: 'right',},
   ];
   
   interface Data {
@@ -36,6 +41,8 @@ interface Column {
     serviceType: string;
     price: number;
     rating: number;
+    serviceID: string;
+    svcpID: string;
   }
   
   function createData(
@@ -43,8 +50,10 @@ interface Column {
     serviceType: string,
     price: number,
     rating: number,
+    serviceID: string,
+    svcpID: string
   ): Data {
-    return { serviceName, serviceType, price, rating };
+    return { serviceName, serviceType, price, rating, serviceID, svcpID };
   }
   
 
@@ -57,6 +66,31 @@ export default function ServiceListing({
     sortBy?:string;
   }
 }){
+      const router = useRouter()
+      const [userId, setUserId] = useState<string>()
+      useEffect(() => {
+          getCurrentEntityUser().then((Response) => {
+              setUserId(Response.id)
+          })
+      }, [])
+      useEffect(() => {
+          console.log(userId)
+          switch (userId === undefined) {
+              case true: {
+                console.log("undefined")
+                router.push('/login')
+                break
+              }
+              case false: {
+                  router.push('/listing')
+                  break
+              }
+              default: {
+                  console.log("error")
+                  break
+              }
+          }
+      }, [userId])
       const [page, setPage] = React.useState(0);
       const [rowsPerPage, setRowsPerPage] = React.useState(10);
       const [rows, setRows] = useState<any[]>([]); 
@@ -69,7 +103,9 @@ export default function ServiceListing({
               service.services.serviceName,
               service.services.serviceType,
               service.services.price,
-              service.services.averageRating
+              service.services.averageRating,
+              service.services.serviceID,
+              service.SVCPID,
             ));
             setRows(newData); 
           } catch (error) {
@@ -95,7 +131,7 @@ export default function ServiceListing({
         <main>
             <Searchbar/>
             <main className='flex flex-row p-5 justify-center'>
-                <Paper sx={{ width: '90%', overflow: 'hidden', maxWidth: 700 }}>
+                <Paper sx={{ width: '90%', overflow: 'hidden', maxWidth: 800 }}>
                     <TableContainer sx={{ maxHeight: 470 }}>
                     <Table stickyHeader aria-label="sticky table">
                         <TableHead className="bg-gray">
@@ -149,9 +185,13 @@ export default function ServiceListing({
                                     const value = row[column.id];
                                     return (
                                     <TableCell key={column.id} align={column.align}>
+                                      <Link key={row.serviceName}
+                                          href={`/profile/serviceProvider/${row.svcpID}/service/${row.serviceID}`}
+                                          className="w-full h-full">
                                         {column.format && typeof value === 'number'
                                         ? column.format(value)
                                         : value}
+                                      </Link>
                                     </TableCell>
                                     );
                                 })}

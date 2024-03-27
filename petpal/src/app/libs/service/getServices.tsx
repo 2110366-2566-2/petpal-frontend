@@ -3,19 +3,19 @@ export default async function getServices() {
         method: "POST",
         credentials:'include',
         body: JSON.stringify({
-            descending : true,
-            end_price_range: 1000000000,
-            end_time: "2200-01-02T15:04:05Z",
             address: "",
-            max_rating: 10000000000,
+            descending: true,
+            end_price_range: 1000000,
+            end_time: "5006-01-02T15:04:05Z",
+            max_rating: 10000,
             min_rating: 0,
-            page_number: 0,
-            page_size: 0,
+            page_number: 100,
+            page_size: 1000,
             q: "",
             services_type: "",
-            sort_by: "",
+            sort_by: "price",
             start_price_range: 0,
-            start_time: "0001-01-02T15:04:05Z"
+            start_time: "0000-01-02T15:04:05Z"
         }),
     });
     if(response.ok){
