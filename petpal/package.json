@@ -9,15 +9,20 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@date-io/date-fns": "^3.0.0",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.15.10",
     "@mui/material": "^5.15.10",
+    "@mui/x-date-pickers": "^7.0.0",
     "cookies-next": "^4.1.1",
+    "dayjs": "^1.11.10",
     "framer-motion": "^11.0.12",
+    "fs": "^0.0.1-security",
     "next": "14.1.0",
     "react": "^18",
     "react-dom": "^18",
+    "react-hot-toast": "^2.4.1",
     "use-debounce": "^10.0.0"
   },
   "devDependencies": {
