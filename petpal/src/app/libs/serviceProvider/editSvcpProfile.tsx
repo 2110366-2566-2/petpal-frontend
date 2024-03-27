@@ -3,7 +3,10 @@ export async function editSvcpProfile(
     description?:string,
     address?:string,
     phoneNumber?:string,
+    profileImg?:string,
+    addiImg?:string
     ){
+    console.log("In api edit svcp image",profileImg)
     const response = await fetch(`http://localhost:8080/serviceproviders/`,{
         method:'PUT',
         credentials:'include',
@@ -11,7 +14,8 @@ export async function editSvcpProfile(
             SVCPUsername:SVCPusername,
             description:description,
             address:address,
-            phoneNumber:phoneNumber
+            phoneNumber:phoneNumber,
+            // SVCPAdditionalImg:addiImg
         })
     })
     if(response.ok){

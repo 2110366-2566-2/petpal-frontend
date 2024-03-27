@@ -14,6 +14,7 @@ import { useState, useEffect } from 'react'
 import { getCurrentEntity } from '@/app/libs/user/userBackend'
 import { editUserProfile } from '@/app/libs/user/editUserProfile'
 import { useRouter } from 'next/navigation'
+import uploadImgApi from '@/app/libs/user/uploadImgApi'
 
 import ButtonPropsInterface from "@app/(routes)/profile/_interface/ButtonPropsInterface"
 
@@ -22,7 +23,7 @@ export default function EditProfile() {
 
   const [username , setUsername] = useState('')
   const [profileImg , setProfileImg] = useState('')
-  const [file ,setFile] = useState<File>()
+  const [fileProImg ,setFileProImg] = useState<File>()
 
   useEffect(()=>{
     const fetchData = async()=>{
@@ -34,8 +35,25 @@ export default function EditProfile() {
   },[])
 
   const handleSubmit = async()=>{
-    return await editUserProfile(username)
+    if(fileProImg) await uploadImgApi(fileProImg)
+    await editUserProfile(username)
   }
+
+  const toBase64 = (file: File) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+  
+      fileReader.readAsDataURL(file);
+  
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+  
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
 
   const router = useRouter()
   let thissaveEditButtonProps:ButtonPropsInterface = saveEditButtonProps
@@ -49,7 +67,7 @@ export default function EditProfile() {
             <ProfilePictureComponent src={profileImg} />
             <p >upload profile</p>
             <input type='file' className="mt-2 bg-[#D9D9D9] w-[200px] h-[35px] rounded-[10px] text-[14px] text-center p-[5px]"
-            onChange={(e)=>{setFile(e.target.files?.[0]);console.log(file)}}
+            onChange={(e)=>{setFileProImg(e.target.files?.[0])}}
             />
           </div>
           <div className='hidden md:grid grid-cols-1 gap-[16px]'>

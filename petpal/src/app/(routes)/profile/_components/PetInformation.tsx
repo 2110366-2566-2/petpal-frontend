@@ -40,6 +40,7 @@ export default function PetInformation(){
     const [details , setDetails] = useState<PetInfo>(EmptyPetInfo)
     const [openedDetail , setOpenedDetail] = useState<number>(-1)
     const [deleteAndAddClicked , setDeleteAndAddClicked] = useState<Boolean>()
+    const [petEditButtonName , setPetEditButtonName] = useState<string>('Edit')
 
     const [age,setAge] = useState(0)
     const [behav,setBehav] = useState("")
@@ -151,6 +152,7 @@ export default function PetInformation(){
       }
     }
 
+
     const petinfoVar = {
       initial: {
         y: -10,
@@ -176,6 +178,8 @@ export default function PetInformation(){
       },
     };
 
+    
+
     return(
       <div className = "my-2 ">
           <span className='text-black font-bold text-[20px]'>Pets</span>
@@ -184,8 +188,8 @@ export default function PetInformation(){
             pets.map((pet,index)=>
               <div>
               {index!=0&&
-                <button className='flex justify-between bg-gray w-fit rounded-[5px] pl-1 mb-1' onClick={()=>{setOpenedDetail(index)}}>
-                  <span onClick={()=>handleOpenDetail(pet)}>{pet.name} , {index}</span>
+                <button className='flex justify-between bg-gray w-fit rounded-[5px] pl-1 mb-1' onClick={()=>{setOpenedDetail(index);setPetEditButtonName('Edit')}}>
+                  <span onClick={()=>handleOpenDetail(pet)}>{pet.name}</span>
                   <button className='w-5 h-5 justify-center items-center flex 'onClick={(e) =>{handleDelete(e,index-1)}} >x</button>
                 </button>
               }
@@ -193,7 +197,7 @@ export default function PetInformation(){
             )
           }
           <div className='flex justify-between bg-gray w-fit rounded-[5px] pl-1 mb-1'>
-            <button className='w-5 h-5 justify-center items-center flex 'onClick={() => {setOpenedDetail(0);handleOpenDetail(EmptyPetInfo)}} >+</button>
+            <button className='w-5 h-5 justify-center items-center flex 'onClick={() => {setOpenedDetail(0);handleOpenDetail(EmptyPetInfo);setPetEditButtonName('Add')}} >+</button>
           </div>
         <AnimatePresence>
         {openedDetail !== -1 &&
@@ -227,7 +231,7 @@ export default function PetInformation(){
             )
           }
           <div className='flex justify-end m-2'>
-                <button type = 'submit' className='bg-[#D9D9D9] w-[102px] rounded-[10px] text-[18px] text-center p-[5px]' onClick={(e)=>{handleAdd(e)}}>add</button>
+                <button type = 'submit' className='bg-[#D9D9D9] w-[102px] rounded-[10px] text-[18px] text-center p-[5px]' onClick={(e)=>{handleAdd(e)}}>{petEditButtonName}</button>
           </div>
         </motion.div> }
         </AnimatePresence>
