@@ -10,19 +10,19 @@
 import { Pet } from "@/app/_interface/user/pet";
 
 export interface User {
-    address?:              string;
-    dateOfBirth?:          string;
+    address?: string;
+    dateOfBirth?: string;
     defaultAccountNumber?: string;
-    defaultBank?:          string;
-    email?:                string;
-    fullName?:             string;
-    id?:                   string;
-    individualID?:         string;
-    password?:             string;
-    pets?:                 Pet[];
-    phoneNumber?:          string;
-    profilePicture?:       number[];
-    username?:             string;
+    defaultBank?: string;
+    email?: string;
+    fullName?: string;
+    id?: string;
+    individualID?: string;
+    password?: string;
+    pets?: Pet[];
+    phoneNumber?: string;
+    profilePicture?: string;
+    username?: string;
 }
 // Converts JSON strings to/from your types
 // and asserts the results of JSON.parse at runtime
@@ -88,7 +88,7 @@ function transform(val: any, typ: any, getProps: any, key: any = '', parent: any
             const typ = typs[i];
             try {
                 return transform(val, typ, getProps);
-            } catch (_) {}
+            } catch (_) { }
         }
         return invalidValue(typs, val, key, parent);
     }
@@ -147,9 +147,9 @@ function transform(val: any, typ: any, getProps: any, key: any = '', parent: any
     if (Array.isArray(typ)) return transformEnum(typ, val);
     if (typeof typ === "object") {
         return typ.hasOwnProperty("unionMembers") ? transformUnion(typ.unionMembers, val)
-            : typ.hasOwnProperty("arrayItems")    ? transformArray(typ.arrayItems, val)
-            : typ.hasOwnProperty("props")         ? transformObject(getProps(typ), typ.additional, val)
-            : invalidValue(typ, val, key, parent);
+            : typ.hasOwnProperty("arrayItems") ? transformArray(typ.arrayItems, val)
+                : typ.hasOwnProperty("props") ? transformObject(getProps(typ), typ.additional, val)
+                    : invalidValue(typ, val, key, parent);
     }
     // Numbers can be parsed by Date but shouldn't be.
     if (typ === Date && typeof val !== "number") return transformDate(val);

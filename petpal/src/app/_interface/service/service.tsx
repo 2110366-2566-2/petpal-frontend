@@ -9,15 +9,15 @@
 import { Timeslot } from "@/app/_interface/service/timeslot";
 
 export interface Service {
-    averageRating?:      number;
-    price?:              number;
-    requireCert?:        boolean;
+    averageRating?: number;
+    price?: number;
+    requireCert?: boolean;
     serviceDescription?: string;
-    serviceID?:          string;
-    serviceImg?:         number[];
-    serviceName?:        string;
-    serviceType?:        string;
-    timeslots?:          Timeslot[];
+    serviceID?: string;
+    serviceImg?: string;
+    serviceName?: string;
+    serviceType?: string;
+    timeslots?: Timeslot[];
 }
 
 // Converts JSON strings to/from your types
@@ -32,11 +32,15 @@ export class Convert {
     }
 }
 
-function invalidValue(typ: any, val: any, key: any, parent: any = ''): never {
+function invalidValue(typ: any, val: any, key: any, parent: any = ""): never {
     const prettyTyp = prettyTypeName(typ);
-    const parentText = parent ? ` on ${parent}` : '';
-    const keyText = key ? ` for key "${key}"` : '';
-    throw Error(`Invalid value${keyText}${parentText}. Expected ${prettyTyp} but got ${JSON.stringify(val)}`);
+    const parentText = parent ? ` on ${parent}` : "";
+    const keyText = key ? ` for key "${key}"` : "";
+    throw Error(
+        `Invalid value${keyText}${parentText}. Expected ${prettyTyp} but got ${JSON.stringify(
+            val
+        )}`
+    );
 }
 
 function prettyTypeName(typ: any): string {
@@ -44,7 +48,11 @@ function prettyTypeName(typ: any): string {
         if (typ.length === 2 && typ[0] === undefined) {
             return `an optional ${prettyTypeName(typ[1])}`;
         } else {
-            return `one of [${typ.map(a => { return prettyTypeName(a); }).join(", ")}]`;
+            return `one of [${typ
+                .map((a) => {
+                    return prettyTypeName(a);
+                })
+                .join(", ")}]`;
         }
     } else if (typeof typ === "object" && typ.literal !== undefined) {
         return typ.literal;
@@ -56,7 +64,9 @@ function prettyTypeName(typ: any): string {
 function jsonToJSProps(typ: any): any {
     if (typ.jsonToJS === undefined) {
         const map: any = {};
-        typ.props.forEach((p: any) => map[p.json] = { key: p.js, typ: p.typ });
+        typ.props.forEach(
+            (p: any) => (map[p.json] = { key: p.js, typ: p.typ })
+        );
         typ.jsonToJS = map;
     }
     return typ.jsonToJS;
@@ -65,13 +75,21 @@ function jsonToJSProps(typ: any): any {
 function jsToJSONProps(typ: any): any {
     if (typ.jsToJSON === undefined) {
         const map: any = {};
-        typ.props.forEach((p: any) => map[p.js] = { key: p.json, typ: p.typ });
+        typ.props.forEach(
+            (p: any) => (map[p.js] = { key: p.json, typ: p.typ })
+        );
         typ.jsToJSON = map;
     }
     return typ.jsToJSON;
 }
 
-function transform(val: any, typ: any, getProps: any, key: any = '', parent: any = ''): any {
+function transform(
+    val: any,
+    typ: any,
+    getProps: any,
+    key: any = "",
+    parent: any = ""
+): any {
     function transformPrimitive(typ: string, val: any): any {
         if (typeof typ === typeof val) return val;
         return invalidValue(typ, val, key, parent);
@@ -91,13 +109,21 @@ function transform(val: any, typ: any, getProps: any, key: any = '', parent: any
 
     function transformEnum(cases: string[], val: any): any {
         if (cases.indexOf(val) !== -1) return val;
-        return invalidValue(cases.map(a => { return l(a); }), val, key, parent);
+        return invalidValue(
+            cases.map((a) => {
+                return l(a);
+            }),
+            val,
+            key,
+            parent
+        );
     }
 
     function transformArray(typ: any, val: any): any {
         // val must be an array with no invalid elements
-        if (!Array.isArray(val)) return invalidValue(l("array"), val, key, parent);
-        return val.map(el => transform(el, typ, getProps));
+        if (!Array.isArray(val))
+            return invalidValue(l("array"), val, key, parent);
+        return val.map((el) => transform(el, typ, getProps));
     }
 
     function transformDate(val: any): any {
@@ -111,17 +137,23 @@ function transform(val: any, typ: any, getProps: any, key: any = '', parent: any
         return d;
     }
 
-    function transformObject(props: { [k: string]: any }, additional: any, val: any): any {
+    function transformObject(
+        props: { [k: string]: any },
+        additional: any,
+        val: any
+    ): any {
         if (val === null || typeof val !== "object" || Array.isArray(val)) {
             return invalidValue(l(ref || "object"), val, key, parent);
         }
         const result: any = {};
-        Object.getOwnPropertyNames(props).forEach(key => {
+        Object.getOwnPropertyNames(props).forEach((key) => {
             const prop = props[key];
-            const v = Object.prototype.hasOwnProperty.call(val, key) ? val[key] : undefined;
+            const v = Object.prototype.hasOwnProperty.call(val, key)
+                ? val[key]
+                : undefined;
             result[prop.key] = transform(v, prop.typ, getProps, key, ref);
         });
-        Object.getOwnPropertyNames(val).forEach(key => {
+        Object.getOwnPropertyNames(val).forEach((key) => {
             if (!Object.prototype.hasOwnProperty.call(props, key)) {
                 result[key] = val[key];
             }
@@ -142,9 +174,12 @@ function transform(val: any, typ: any, getProps: any, key: any = '', parent: any
     }
     if (Array.isArray(typ)) return transformEnum(typ, val);
     if (typeof typ === "object") {
-        return typ.hasOwnProperty("unionMembers") ? transformUnion(typ.unionMembers, val)
-            : typ.hasOwnProperty("arrayItems")    ? transformArray(typ.arrayItems, val)
-            : typ.hasOwnProperty("props")         ? transformObject(getProps(typ), typ.additional, val)
+        return typ.hasOwnProperty("unionMembers")
+            ? transformUnion(typ.unionMembers, val)
+            : typ.hasOwnProperty("arrayItems")
+            ? transformArray(typ.arrayItems, val)
+            : typ.hasOwnProperty("props")
+            ? transformObject(getProps(typ), typ.additional, val)
             : invalidValue(typ, val, key, parent);
     }
     // Numbers can be parsed by Date but shouldn't be.
@@ -185,21 +220,39 @@ function r(name: string) {
 }
 
 const typeMap: any = {
-    "Service": o([
-        { json: "averageRating", js: "averageRating", typ: u(undefined, 0) },
-        { json: "price", js: "price", typ: u(undefined, 0) },
-        { json: "requireCert", js: "requireCert", typ: u(undefined, true) },
-        { json: "serviceDescription", js: "serviceDescription", typ: u(undefined, "") },
-        { json: "serviceID", js: "serviceID", typ: u(undefined, "") },
-        { json: "serviceImg", js: "serviceImg", typ: u(undefined, a(0)) },
-        { json: "serviceName", js: "serviceName", typ: u(undefined, "") },
-        { json: "serviceType", js: "serviceType", typ: u(undefined, "") },
-        { json: "timeslots", js: "timeslots", typ: u(undefined, a(r("Timeslot"))) },
-    ], false),
-    "Timeslot": o([
-        { json: "endTime", js: "endTime", typ: u(undefined, "") },
-        { json: "startTime", js: "startTime", typ: u(undefined, "") },
-        { json: "status", js: "status", typ: u(undefined, "") },
-        { json: "timeslotID", js: "timeslotID", typ: u(undefined, "") },
-    ], false),
+    Service: o(
+        [
+            {
+                json: "averageRating",
+                js: "averageRating",
+                typ: u(undefined, 0),
+            },
+            { json: "price", js: "price", typ: u(undefined, 0) },
+            { json: "requireCert", js: "requireCert", typ: u(undefined, true) },
+            {
+                json: "serviceDescription",
+                js: "serviceDescription",
+                typ: u(undefined, ""),
+            },
+            { json: "serviceID", js: "serviceID", typ: u(undefined, "") },
+            { json: "serviceImg", js: "serviceImg", typ: u(undefined, a(0)) },
+            { json: "serviceName", js: "serviceName", typ: u(undefined, "") },
+            { json: "serviceType", js: "serviceType", typ: u(undefined, "") },
+            {
+                json: "timeslots",
+                js: "timeslots",
+                typ: u(undefined, a(r("Timeslot"))),
+            },
+        ],
+        false
+    ),
+    Timeslot: o(
+        [
+            { json: "endTime", js: "endTime", typ: u(undefined, "") },
+            { json: "startTime", js: "startTime", typ: u(undefined, "") },
+            { json: "status", js: "status", typ: u(undefined, "") },
+            { json: "timeslotID", js: "timeslotID", typ: u(undefined, "") },
+        ],
+        false
+    ),
 };

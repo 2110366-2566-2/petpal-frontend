@@ -1,20 +1,18 @@
-import MessageInteraface from "@app/(routes)/chat/_interface/MessageInterface";
+import MessageInterface from "../_interface/MessageInterface";
 
 export default function HandleOnSubmitText(
     message: string,
-    CurrentUserId: number,
-    OtherPersonUserId: number,
-    ShownMessageHistory: MessageInteraface[],
-    SetShownMessageHistory: (value: MessageInteraface[]) => void,
-
+    CurrentUserId: string,
+    ShownMessageHistory: MessageInterface[],
+    SetShownMessageHistory: (value: MessageInterface[]) => void,
 ) {
+    // console.log("ShownMessageHistory inside the conn", ShownMessageHistory)
     const MessageText: string = message;
-    const NewMessage: MessageInteraface = {
+    const NewMessage: MessageInterface = {
         SenderID: CurrentUserId,
-        ReciverID: OtherPersonUserId,
         Content: MessageText,
         TimeSend: new Date()
     }
-    const NewShownMessageHistory: MessageInteraface[] = [...ShownMessageHistory, NewMessage]
+    const NewShownMessageHistory: MessageInterface[] = [...ShownMessageHistory, NewMessage]
     SetShownMessageHistory(NewShownMessageHistory)
 }

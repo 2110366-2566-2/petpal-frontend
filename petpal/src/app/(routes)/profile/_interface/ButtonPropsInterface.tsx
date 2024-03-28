@@ -51,7 +51,7 @@ export var editServiceButton: ButtonPropsInterface = {
     Width: "w-[102px]",
     BgColor: "bg-orange",
     FontColor: "text-[#FFF]",
-    Link: "./edit",
+    Link: "../..",
 }
 
 
@@ -61,4 +61,12 @@ export var cancelServiceButton: ButtonPropsInterface = {
     BgColor: "bg-[#D9D9D9]",
     FontColor: "text-[#000]",
     Link: "./",
+}
+
+export const chatButtonProps: ButtonPropsInterface = {
+    Name: "Chat",
+    Width: "w-[102px]",
+    BgColor: "bg-blue",
+    FontColor: "text-[#FFFF]",
+    Link: "/chat",
 }

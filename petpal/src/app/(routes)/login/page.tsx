@@ -1,13 +1,17 @@
 "use client";
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useContext, useState } from "react";
 import Button from "@/app/(routes)/register/_components/Button";
 import login from "@/app/libs/auth/login";
+import { useRouter } from "next/navigation";
+import { AuthContext } from "@/app/_contexts/AuthContext";
 
 export default function Login() {
     const [registrationType, setRegistrationType] = useState("user");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
+    const { setIsLogin } = useContext(AuthContext);
+    const router = useRouter();
 
     const handleRegistrationTypeChange = (
         e: ChangeEvent<HTMLSelectElement>
@@ -20,10 +24,14 @@ export default function Login() {
             setErrorMessage("Email and password are required.");
             return;
         }
-
         try {
-            login(email, registrationType, password);
+            const loginUser = await login(email, registrationType, password);
+            if (loginUser) {
+                setIsLogin(true);
+                router.push("/");
+            }
         } catch (error) {
+            setIsLogin(false);
             console.error("Error during login:", error);
         }
     };

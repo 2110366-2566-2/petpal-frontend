@@ -2,15 +2,17 @@ import ChatHistoryUserInterface from "@app/(routes)/chat/_interface/ChatHistoryU
 import { ExampleChatHistoryUser1, ExampleChatHistoryUser2, ExampleChatHistoryUser3 } from "@app/(routes)/chat/_interface/ChatHistoryUserInterface";
 
 export default interface ChatPageinterface {
-    ID: Number;
-    Name: string;
-    ChatHistoryList: ChatHistoryUserInterface[];
+    id: string;
+    name: string;
+    type: "svcp" | "user"
+    chatHistoryList: ChatHistoryUserInterface[];
 }
 
 export var ExampleChatPageUser1: ChatPageinterface = {
-    ID: 0,
-    Name: "lungtuu",
-    ChatHistoryList: [
-        ExampleChatHistoryUser3, ExampleChatHistoryUser2, ExampleChatHistoryUser1
+    id: "0",
+    name: "lungtuu",
+    type: "user",
+    chatHistoryList: [
+        ExampleChatHistoryUser3
     ]
 };

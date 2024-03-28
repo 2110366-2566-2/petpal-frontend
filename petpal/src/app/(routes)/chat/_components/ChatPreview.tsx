@@ -1,9 +1,11 @@
 import ChatHistoryUserInterface from "@app/(routes)/chat/_interface/ChatHistoryUserInterface";
 import { useRouter } from 'next/navigation'
 import { usePathname } from 'next/navigation';
-import MessageInteraface from "@app/(routes)/chat/_interface/MessageInterface";
 
-var getLastSendTimeText = (MessageHistory: MessageInteraface[]) => {
+import MessageInterface from "../_interface/MessageInterface";
+
+
+var getLastSendTimeText = (MessageHistory: MessageInterface[]) => {
     var ArrayLength: number = MessageHistory.length
     if (ArrayLength == 0) {
         return <p className="text-buttom text-[8px] text-white font-extralight select-none"></p>
@@ -17,7 +19,7 @@ var getLastSendTimeText = (MessageHistory: MessageInteraface[]) => {
     }
 }
 
-var getLastSendText = (MessageHistory: MessageInteraface[]) => {
+var getLastSendText = (MessageHistory: MessageInterface[]) => {
     var ArrayLength: number = MessageHistory.length
     if (ArrayLength == 0) {
         return <div className="text-left mr-auto truncate text-white font-extralight text-[14px] select-none" ></div>
@@ -29,7 +31,7 @@ var getLastSendText = (MessageHistory: MessageInteraface[]) => {
     }
 }
 
-var getNumReadNotification = (MessageHistory: MessageInteraface[], LastSee: Date) => {
+var getNumReadNotification = (MessageHistory: MessageInterface[], LastSee: Date) => {
     let count: number = 0
     for (let i = 0; i < MessageHistory.length; i++) {
         if (MessageHistory[i].TimeSend > LastSee) {
@@ -58,21 +60,16 @@ var getNumReadNotification = (MessageHistory: MessageInteraface[], LastSee: Date
 
 
 
-export default function ChatPreview({ ChatHistoryUser, setUserId }: { ChatHistoryUser: ChatHistoryUserInterface, setUserId: (value: number) => void }): JSX.Element {
-    var Id: number = ChatHistoryUser.Id
+export default function ChatPreview({ ChatHistoryUser, setUserId }: { ChatHistoryUser: ChatHistoryUserInterface, setUserId: (value: string) => void }): JSX.Element {
+    var Id: string = ChatHistoryUser.Id
     var Name: string = ChatHistoryUser.Name
-    var MessageHistory: MessageInteraface[] = ChatHistoryUser.MessageHistory
+    var MessageHistory: MessageInterface[] = ChatHistoryUser.MessageHistory
     var Picture: string = ChatHistoryUser.Picture
     var LastSee: Date = ChatHistoryUser.LastSee
 
-    const currentPage: string = usePathname();
-    var PathComponent: string[] = currentPage.split("/")
-    var newPath: string = PathComponent.slice(0, -1).join("/") + `/${Id}`
-    // router.push(newPath)
-
     return (
         <div onClick={() => { setUserId(Id) }} className="bg-white flex felx-row px-[20px] py-[12px] space-x-[20px] hover:bg-[#D9D9D9A1] focus:bg-[#000000]">
-            <img src={Picture} alt="" className="w-[60px] h-[60px] rounded-full select-none" />
+            <img src={`data:image/png;base64, ${Picture}`} alt="" className="w-[60px] h-[60px] rounded-full select-none" />
             <div className="m-auto block grow">
                 <div className="m-auto flex felx-row space-x-[10px]">
                     <p className="text-left mr-auto">{Name}</p>
