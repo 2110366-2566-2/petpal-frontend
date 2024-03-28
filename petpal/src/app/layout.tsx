@@ -8,13 +8,14 @@ import { Toaster } from "react-hot-toast";
 
 const prompt = Prompt({
   subsets: ["latin", "thai"],
-  weight: ['100','200','300','400','500','600','700','800','900'],
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
 });
 
 const navitems = [
-  {name : "Listing" , link : "/listing"},
-  {name : "Booking" , link : "/bookingLoading"},
-  {name : "Profile" , link : "/profile"}
+  { name: "Listing", link: "/listing" },
+  { name: "Booking", link: "/bookingLoading" },
+  { name: "Profile", link: "/profile" },
+  { name: "Chat", link: "/chat" }
 ]
 
 export const metadata: Metadata = {
@@ -23,9 +24,9 @@ export const metadata: Metadata = {
 };
 
 let items = [
-  {name : "Listing" , link : "/listing"},
-  {name : "Booking" , link : "/booking"},
-  {name : "Profile" , link : "/profile"}
+  { name: "Listing", link: "/listing" },
+  { name: "Booking", link: "/booking" },
+  { name: "Profile", link: "/profile" }
 ]
 
 export default function RootLayout({
@@ -37,9 +38,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={prompt.className}>
         <AuthProvider>
-          <ResponsiveNavbar brandName={"PETPAL"} navItems={navitems}/>
+          <ResponsiveNavbar brandName={"PETPAL"} navItems={navitems} />
           {children}
-          <Toaster position="top-center"/>
+          <Toaster position="top-center" />
         </AuthProvider>
       </body>
     </html>

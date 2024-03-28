@@ -1,5 +1,5 @@
 export default interface UserRoomInterface {
-    Id: number,
+    Id: string,
     Username: string,
     Role: 'user' | "svcp",
 }
