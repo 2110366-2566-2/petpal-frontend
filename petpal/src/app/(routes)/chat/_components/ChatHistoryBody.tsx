@@ -1,7 +1,7 @@
 import ChatBubble from "@app/(routes)/chat/_components/ChatBubble";
 import MessageInteraface from "@app/(routes)/chat/_interface/MessageInterface";
 
-function createMessageWithTime(ShownMessageHistory: MessageInteraface[], OtherPersonUserId: number): JSX.Element[] {
+function createMessageWithTime(ShownMessageHistory: MessageInteraface[], OtherPersonUserId: string): JSX.Element[] {
     var MessageElementList: JSX.Element[] = []
     if (ShownMessageHistory.length > 1) {
         let MessageHistory: MessageInteraface
@@ -17,7 +17,7 @@ function createMessageWithTime(ShownMessageHistory: MessageInteraface[], OtherPe
     return MessageElementList
 }
 
-export default function ChatHistoryBody({ ShownMessageHistory, OtherPersonUserId }: { ShownMessageHistory: MessageInteraface[], OtherPersonUserId: number }) {
+export default function ChatHistoryBody({ ShownMessageHistory, OtherPersonUserId }: { ShownMessageHistory: MessageInteraface[], OtherPersonUserId: string }) {
     return (
         <ul className="space-y-[5px] mt-auto">
             {

@@ -1,6 +1,6 @@
 import MessageInteraface from "@app/(routes)/chat/_interface/MessageInterface"
 
-export default function ChatBubble({ MessageHistory, OtherPersonUserId }: { MessageHistory: MessageInteraface, OtherPersonUserId: number }) {
+export default function ChatBubble({ MessageHistory, OtherPersonUserId }: { MessageHistory: MessageInteraface, OtherPersonUserId: string }) {
     const IsOtherPersonMessage: boolean = MessageHistory.SenderID == OtherPersonUserId
     const BgColor: string = ((IsOtherPersonMessage) ? "bg-[#FFFFFF]" : "bg-[#FF8A00]")
     const ItemsAlign: string = ((IsOtherPersonMessage) ? "items-start" : "items-end")
