@@ -69,28 +69,28 @@ export default function ServiceListing({
       const router = useRouter()
       const [userId, setUserId] = useState<string>()
       useEffect(() => {
-          getCurrentEntityUser().then((Response) => {
-              setUserId(Response.id)
-          })
-      }, [])
-      useEffect(() => {
-          console.log(userId)
-          switch (userId === undefined) {
-              case true: {
-                console.log("undefined")
-                router.push('/login')
-                break
-              }
-              case false: {
-                  router.push('/listing')
+          async function fetchUser(){
+            const loginUser = await getCurrentEntityUser()
+            setUserId(loginUser.id);
+            switch (loginUser.id === undefined) {
+                case true: {
+                  console.log("undefined")
+                  router.push('/login')
                   break
-              }
-              default: {
-                  console.log("error")
-                  break
-              }
+                }
+                case false: {
+                    router.push('/listing')
+                    break
+                }
+                default: {
+                    console.log("error")
+                    break
+                }
+            }
           }
-      }, [userId])
+          fetchUser()
+      }, [])
+      
       const [page, setPage] = React.useState(0);
       const [rowsPerPage, setRowsPerPage] = React.useState(10);
       const [rows, setRows] = useState<any[]>([]); 
@@ -186,7 +186,7 @@ export default function ServiceListing({
                                     return (
                                     <TableCell key={column.id} align={column.align}>
                                       <Link key={row.serviceName}
-                                          href={`/profile/serviceProvider/${row.svcpID}/service/${row.serviceID}`}
+                                          href={`/profile/serviceProvider/${row.svcpID}/Service/${row.serviceID}`}
                                           className="w-full h-full">
                                         {column.format && typeof value === 'number'
                                         ? column.format(value)
