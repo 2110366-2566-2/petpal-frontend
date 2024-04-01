@@ -84,6 +84,7 @@ export default function Login() {
                     >
                         <option value="user">User</option>
                         <option value="svcp">Service Provider</option>
+                        <option value="admin">Admin</option>
                     </select>
                 </div>
                 <Button name="LOGIN" onClick={handleSubmit} />

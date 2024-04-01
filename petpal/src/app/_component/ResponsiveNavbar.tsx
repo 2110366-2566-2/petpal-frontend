@@ -8,6 +8,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useRouter } from 'next/navigation';
 import { deleteCookie, hasCookie } from 'cookies-next';
 import { AuthContext } from '../_contexts/AuthContext';
+import { getCurrentEntity } from '../libs/user/userBackend';
+import { getCurrentEntityType } from '../libs/currentEntiity/getCurrentEntityType';
 
 interface NavBarProps {
     brandName: string;
@@ -17,6 +19,24 @@ interface NavBarProps {
 export default function ResponsiveNavbar({ brandName, navItems }: NavBarProps) {
     const [isMobile, setIsMobile] = useState(false);
     const {currentEntity , setCurrentEntity , isLogin , setIsLogin} = useContext(AuthContext)
+    const [accType, setAccType] = useState<string>("waiting")
+    const [realNavItems, setRealNavItems] = useState(navItems)
+
+    // change navItems if user is admin by checking if currentEntity can be casted to Admin
+    useEffect(() => {
+        getCurrentEntity().then((Response) => {
+            setAccType(getCurrentEntityType(Response))
+            if(accType === "admin"){
+                console.log('navItems changing to admin')
+                setRealNavItems([
+                    { name: "Issue", link: "/listing" },
+                    { name: "Verify", link: "/booking" },
+                    { name: "Chat", link: "/profile" }
+                ])
+                console.log('navItems changed', realNavItems)
+            }
+        })
+    }, [currentEntity])
 
     const toggleMobileMenu = () => {
       setIsMobile(!isMobile);
@@ -36,7 +56,7 @@ export default function ResponsiveNavbar({ brandName, navItems }: NavBarProps) {
     // everytime current user and islogin change reload it 
     useEffect(() =>{
         router.refresh();
-    },[currentEntity,isLogin])
+    },[currentEntity,isLogin, realNavItems])
     
     const menuVars = {
         initial: {
@@ -67,8 +87,8 @@ export default function ResponsiveNavbar({ brandName, navItems }: NavBarProps) {
                 <a className = "hidden min-[900px]:flex font-bold text-2xl" href="/">{brandName}</a>
                 <ul className="hidden min-[900px]:flex pl-9 md:pl-0">
                     {
-                        navItems.map((link) => 
-                            <li key="{link}" className="my-7 md:my-0 md:ml-8"> 
+                        realNavItems.map((link) => 
+                            <li key="{link}" className="my-7 md:my-0 md:ml-8">
                                 <a href = {link.link}>{link.name}</a>
                             </li>
                         )
@@ -131,7 +151,7 @@ export default function ResponsiveNavbar({ brandName, navItems }: NavBarProps) {
                 >
                     <ul className="flex flex-col">
                         {
-                            navItems.map((link) => 
+                            realNavItems.map((link) => 
                                 <li key="{link}"> 
                                     <a href = {link.link} className='p-3 flex flex-row justify-center items-center hover:bg-[#e9e9e9]'>{link.name}</a>
                                 </li>
