@@ -29,7 +29,8 @@ export default function ResponsiveNavbar({ brandName, navItems }: NavBarProps) {
             if(accType === "admin"){
                 console.log('navItems changing to admin')
                 setRealNavItems([
-                    { name: "Issue", link: "/listing" },
+                    // TODO: change the link to the correct admin page
+                    { name: "Issue", link: "/admin/issue" },
                     { name: "Verify", link: "/booking" },
                     { name: "Chat", link: "/profile" }
                 ])
