@@ -24,6 +24,7 @@ export default function ResponsiveNavbar({ brandName, navItems }: NavBarProps) {
 
     // change navItems if user is admin by checking if currentEntity can be casted to Admin
     useEffect(() => {
+        console.log("NAV BAR")
         getCurrentEntity().then((Response) => {
             setAccType(getCurrentEntityType(Response))
             if(accType === "admin"){
