@@ -28,6 +28,7 @@ import { MessageResponse } from "@/app/_interface/chat/MessageResponse";
 import { adapterChatResponseToChatHistoryUserInterface } from "../_interface/ChatHistoryUserInterface";
 import { AuthContext } from "@/app/_contexts/AuthContext";
 import { getChatHistoryByRoomId } from "@/app/libs/chat/getChatHistoryByRoomId";
+import { EntityType } from "@/app/_enum/currentEntity/EntityType";
 
 // type Message = {
 //     content: string
@@ -86,17 +87,21 @@ export default function ChatHistory({ params }: { params: { id: string } }) {
             let newChatPageUser: ChatPageinterface = {
                 id: "",
                 name: "",
-                type: "user",
+                type: EntityType.USER,
                 chatHistoryList: []
             }
             if (isCurrentEntityTypeUser(res)) {
                 newChatPageUser.id = res.id as string
                 newChatPageUser.name = res.username as string
-                newChatPageUser.type = "user"
+                newChatPageUser.type = EntityType.USER
+            } else if (isCurrentEntityTypeSvcp(res)) {
+                newChatPageUser.id = res.SVCPID as string
+                newChatPageUser.name = res.SVCPUsername as string
+                newChatPageUser.type = EntityType.SERVICE_PROVIDER
             } else {
                 newChatPageUser.id = res.SVCPID as string
                 newChatPageUser.name = res.SVCPUsername as string
-                newChatPageUser.type = "svcp"
+                newChatPageUser.type = EntityType.ADMIN
             }
             console.log("newChatPageUser", newChatPageUser)
             setChatPageUser(newChatPageUser)

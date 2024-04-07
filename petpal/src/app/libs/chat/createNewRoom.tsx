@@ -2,7 +2,7 @@ import { ChatResponse } from "@/app/_interface/chat/ChatResponse";
 
 export async function craeteNewRoom(chatResponse: ChatResponse) {
     try {
-        const response = await fetch(`http://localhost:8080/chat/history/${chatResponse.roomID}`, {
+        const response = await fetch(`http://localhost:8080/chat/history`, {
             method: 'POST',
             credentials: 'include',
             body: JSON.stringify(chatResponse)
