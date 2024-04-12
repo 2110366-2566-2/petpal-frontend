@@ -11,6 +11,8 @@ export function getCurrentEntityType(json: object): string {
         entityType = EntityType.SERVICE_PROVIDER
     } else if (json.hasOwnProperty("id")) {
         entityType = EntityType.USER
+    } else if (json.hasOwnProperty("adminID") || json.hasOwnProperty("adminId")) {
+        entityType = EntityType.ADMIN 
     } else {
         entityType = EntityType.NOT_LOGIN
     }
@@ -19,6 +21,10 @@ export function getCurrentEntityType(json: object): string {
 
 export function isCurrentEntityTypeUser(json: object): boolean {
     return getCurrentEntityType(json) === EntityType.USER
+}
+
+export function isCurrentEntityTypeAdmin(json: object): boolean {
+    return getCurrentEntityType(json) === EntityType.ADMIN
 }
 
 export function isCurrentEntityTypeSvcp(json: object): boolean {

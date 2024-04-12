@@ -4,8 +4,9 @@ import { User } from "../_interface/user/user";
 import { Svcp } from "../_interface/svcp/svcp";
 import { getCurrentEntity } from "../libs/user/userBackend";
 import { getCurrentEntityType } from "../libs/currentEntiity/getCurrentEntityType";
+import { Admin } from "../_interface/admin/admin";
 
-type CurrentEntity = User | Svcp;
+type CurrentEntity = User | Svcp | Admin;
 
 interface TAuthContext {
   currentEntity: CurrentEntity | null;
