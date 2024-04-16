@@ -30,15 +30,6 @@ import { AuthContext } from "@/app/_contexts/AuthContext";
 import { getChatHistoryByRoomId } from "@/app/libs/chat/getChatHistoryByRoomId";
 import { EntityType } from "@/app/_enum/currentEntity/EntityType";
 
-// type Message = {
-//     content: string
-//     client_id: string
-//     username: string
-//     room_id: string
-//     timestamp: Date
-//     type: 'recv' | 'self'
-// }
-
 type Message = {
     content: string,
     roomId: string,
@@ -80,9 +71,6 @@ export default function ChatHistory({ params }: { params: { id: string } }) {
         setLastestReceivedMessage(NewMessage)
     };
     useEffect(() => {
-        // if (currentEntity !== null) {
-        //     console.log("it me mario", currentEntity)
-        // }
         getCurrentEntity().then((res) => {
             let newChatPageUser: ChatPageinterface = {
                 id: "",
@@ -125,16 +113,10 @@ export default function ChatHistory({ params }: { params: { id: string } }) {
                                 )
                             })
                         }
-                        // console.log("newAllChatHistory", newAllChatHistory)
-                        // setAllChatHistory(newAllChatHistory)
                     })
                     break
                 } case "svcp": {
                     getChatHistorySvcp().then((reponse: ChatResponse[]) => {
-                        // console.log("ChatHistoryReponse SVCP", reponse)
-                        // const newAllChatHistory: ChatHistoryUserInterface[] = reponse.map((message: ChatResponse) => adapterChatResponseToChatHistoryUserInterface(chatPageUser, message))
-                        // console.log("newAllChatHistory", newAllChatHistory)
-                        // setAllChatHistory(newAllChatHistory)
                         console.log("ChatHistoryReponse User", reponse)
                         let newAllChatHistory: ChatHistoryUserInterface[] = []
                         reponse.map((message: ChatResponse) => {
@@ -166,16 +148,6 @@ export default function ChatHistory({ params }: { params: { id: string } }) {
                 // When websocket is start
                 ws.onopen = () => {
                     console.log(`Connecting to Websocket with Romm:${chat.RoomId}`)
-                    // Load Chat History
-                    // let ChatHistory
-                    // for (ChatHistory of AllChatHistory) {
-                    // const UserRoom: UserRoomInterface = {
-                    //     Id: UserId,
-                    //     Username: `UserId:${UserId}`,
-                    //     Role: "user",
-                    // }
-                    // WebsocketJoinRoom(ChatHistory.RoomId, UserRoom, setConn)
-                    // }
                 }
                 ws.onmessage = (message) => {
                     const m: Message = JSON.parse(message.data);
@@ -230,21 +202,11 @@ export default function ChatHistory({ params }: { params: { id: string } }) {
     useEffect(() => {
         if (lastestReceivedMessage !== undefined) {
             const senderId: string = lastestReceivedMessage.SenderID
-            console.log("teadf", targetUserId, senderId)
             if (targetUserId === senderId) {
                 const NewShownMessageHistory: MessageInterface[] = [...shownMessageHistory, lastestReceivedMessage]
                 SetShownMessageHistory(NewShownMessageHistory)
             }
-            // var chatHistory: ChatHistoryUserInterface
-            // for (let i = 0; i < allChatHistory.length; i++) {
-            //     const chatHistory = allChatHistory[i]
-            //     if (chatHistory.Id === senderId) {
-            //         let allChatHistory = 
-            //         let newChatHistory = chatHistory
-            //     }
-            // }
         }
-        // allChatHistory:ChatHistoryUserInterface[]
     }, [lastestReceivedMessage])
 
     const sendMessage = () => {
@@ -325,7 +287,7 @@ export default function ChatHistory({ params }: { params: { id: string } }) {
                             <div className="border-solid border-b-2 border-[#D9D9D9a1]">
                                 <HeaderChatHistory Text={selectedChatHistory.Name} ImgSrc={selectedChatHistory.Picture}></HeaderChatHistory>
                             </div>
-                            <div className="h-[100px] bg-[#D9D9D9] flex-grow flex-col p-[10px] justify-items-end overflow-y-scroll">
+                            <div className="h-[100px] bg-[#D9D9D9] flex-grow flex-col p-[10px] justify-items-end overflow-y-scroll ">
                                 <ChatHistoryBody ShownMessageHistory={shownMessageHistory} OtherPersonUserId={targetUserId}></ChatHistoryBody>
                             </div>
                             {/* <ChatHistoryBody ShownMessageHistory={ShownMessageHistory} OtherPersonUserId={UserId}></ChatHistoryBody> */}
