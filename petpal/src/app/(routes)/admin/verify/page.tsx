@@ -37,6 +37,7 @@ export default function VerifyPage() {
 
   return (
     <div className="flex flex-col items-center gap-y-5 pt-5">
+      {serviceProviders != null && (<p className="font-semibold text-[24px]">Unverified service providers</p>)}
       {serviceProviders === null ? (
         <p>No unverified service provider</p>
       ) : (
