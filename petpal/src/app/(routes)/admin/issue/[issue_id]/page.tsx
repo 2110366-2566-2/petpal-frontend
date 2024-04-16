@@ -14,7 +14,7 @@ export default function IssueId(){
     }
 
     return(
-        <div className="mr-[134px] ml-[134px]">
+        <div className="mr-[31px] ml-[31px] md:mr-[134px] md:ml-[134px]">
         <div className="flex justify-end  h-32">
       
             <div className="mr-3 flex items-end ">
@@ -30,10 +30,10 @@ export default function IssueId(){
                 </button>
             </div>
         </div>
-        <div className="flex mt-5 justify-between ">
-            <div className="w-[471px] h-fit bg-[#F9F9F9] shadow-lg p-8 rounded-[20px]">
+        <div className="md:flex mt-5 justify-between ">
+            <div className="w-[100%] md:w-[471px] h-fit bg-[#F9F9F9] shadow-lg p-8 rounded-[20px] mb-5 md:mr-3">
                 <div className='flex justify-between mb-3'>
-                    <div>
+                    <div className='mr-2'>
                         <p className='text-[24px] font-bold'>{mockSvcp.serviceName}</p>
                         <p className='text-[18px] font-bold text-[#858585]'>{mockSvcp.SVCPID}</p>
                     </div>
@@ -48,12 +48,12 @@ export default function IssueId(){
                 <div className='flex justify-between mb-3'> 
                     <p className='text-[32px]'>{mockSvcp.price}</p>
                     <div className='flex items-end'>
-                        <button className='mr-3'>Refund</button>
+                        <button className='font-bold mr-3'>Refund</button>
                         <button className='text-[#FF5858] font-bold'>Delete</button>
                     </div>
                 </div>
             </div>
-            <div className="w-[626px] h-[167px] bg-[#F9F9F9] shadow-lg p-8 rounded-[20px]">
+            <div className="w-[100%] md:w-[626px] h-fit bg-[#F9F9F9] shadow-lg p-8 rounded-[20px] md:ml-3">
                 <div> 
                     <p className='text-[24px] font-bold mb-3'>Issue Detail</p>
                 </div>
