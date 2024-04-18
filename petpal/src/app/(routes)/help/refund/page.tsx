@@ -46,7 +46,7 @@ export default function ReportBug() {
     try {
       await issueCreate(formData.description, 'refund',formData.photo,bookingId);
       toast.success("Request for refund has been submitted successfully!");
-      // router.push("/");
+      router.push("/");
     } catch (error) {
       toast.error("Failed to submit the report");
       // Handle error
