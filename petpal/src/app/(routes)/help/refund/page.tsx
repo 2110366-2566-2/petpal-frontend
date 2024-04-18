@@ -1,15 +1,30 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useState,useContext,useEffect } from 'react';
 import BasicButton from '@/app/_component/BasicButton';
 import RefundForm, { RefundReport } from '@app/(routes)/help/refund/_components/refund_form';
-
+import { useRouter,useSearchParams  } from "next/navigation";
+import toast from "react-hot-toast";
+import { AuthContext } from '@app/_contexts/AuthContext';
+import issueCreate from '@app/libs/help/issuecreate';
 
 export default function ReportBug() {
   // const [bugTitle, setBugTitle] = useState('');
   // const [bugDescription, setBugDescription] = useState('');
   // const [errorMessage, setErrorMessage] = useState('');
+  const router = useRouter();
+  const {currentEntity , setCurrentEntity , isLogin , setIsLogin} = useContext(AuthContext)
+  const searchParams = useSearchParams()
+  const bookingId = searchParams.get('bookingid')
 
-
+  useEffect(() => {
+    if (isLogin === false) {
+      router.push("/login");
+    }
+    else 
+    {
+      router.push('/help/refund?bookingid=' + bookingId)
+    }
+  }, [isLogin, router]);
 
   const [formData, setFormData] = useState<RefundReport>({
     description: '',
@@ -20,7 +35,22 @@ export default function ReportBug() {
     setFormData(newFormData);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+
+    // console.log('Form submitted:', formData);
+    if(formData.description === '' ){
+      toast.error("Please fill Trouble type and Description fields");
+      return;
+    }
+
+    try {
+      await issueCreate(formData.description, 'refund',formData.photo,bookingId);
+      toast.success("Request for refund has been submitted successfully!");
+      // router.push("/");
+    } catch (error) {
+      toast.error("Failed to submit the report");
+      // Handle error
+    }
 
     // Handle form submission with formData
     console.log('Form submitted:', formData);
