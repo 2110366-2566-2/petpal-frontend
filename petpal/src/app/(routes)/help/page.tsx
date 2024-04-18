@@ -1,17 +1,24 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState,useContext ,useEffect} from 'react';
 import BasicButton from '@/app/_component/BasicButton';
 import ReportForm, { FormReport } from '@app/(routes)/help/_components/report_form';
 import issueCreate from '@app/libs/help/issuecreate';
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { AuthContext } from '@app/_contexts/AuthContext';
+
 
 export default function ReportBug() {
   // const [bugTitle, setBugTitle] = useState('');
   // const [bugDescription, setBugDescription] = useState('');
   // const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
-
+  const {currentEntity , setCurrentEntity , isLogin , setIsLogin} = useContext(AuthContext)
+  
+  if (!isLogin) {
+    router.push("/login");
+    return <div></div>;
+  }
 
   const [formData, setFormData] = useState<FormReport>({
     description: '',
