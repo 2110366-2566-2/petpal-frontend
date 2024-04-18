@@ -16,7 +16,8 @@ const navitems = [
   { name: "Listing", link: "/listing" },
   { name: "Booking", link: "/bookingLoading" },
   { name: "Profile", link: "/profile" },
-  { name: "Chat", link: "/chat" }
+  { name: "Chat", link: "/chat" },
+  { name: "Report", link: "/help" }
 ]
 
 export const metadata: Metadata = {
