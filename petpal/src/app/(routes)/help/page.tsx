@@ -12,13 +12,18 @@ export default function ReportBug() {
   // const [bugTitle, setBugTitle] = useState('');
   // const [bugDescription, setBugDescription] = useState('');
   // const [errorMessage, setErrorMessage] = useState('');
-  const router = useRouter();
   const {currentEntity , setCurrentEntity , isLogin , setIsLogin} = useContext(AuthContext)
+  const router = useRouter();
   
-  if (!isLogin) {
-    router.push("/login");
-    return <div></div>;
-  }
+  useEffect(() => {
+    if (isLogin === false) {
+      router.push("/login");
+    }
+    else 
+    {
+      router.push('/help')
+    }
+  }, [isLogin, router]);
 
   const [formData, setFormData] = useState<FormReport>({
     description: '',
