@@ -1,4 +1,4 @@
-import { TextField,Select,MenuItem,FormControl,Radio,RadioGroup,FormControlLabel } from '@mui/material';
+import { TextField,Select,MenuItem,FormControl,Radio,RadioGroup,FormControlLabel,FormLabel } from '@mui/material';
 import React, { useState } from 'react';
 
 
@@ -21,6 +21,7 @@ export default function ReportForm({ formData, handleChange }: ReportFormProps) 
 
     const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
+
         setSelectedType(value);
         handleChange({
             ...formData,
@@ -31,6 +32,8 @@ export default function ReportForm({ formData, handleChange }: ReportFormProps) 
 
     const handleTextFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
+
+
         setDescription(value);
         handleChange({
             ...formData,
@@ -48,8 +51,10 @@ export default function ReportForm({ formData, handleChange }: ReportFormProps) 
     };
 
     return (
-        <FormControl  variant="outlined" style={{ maxWidth: '800px',width:'70%' }}>
+        <FormControl  variant="outlined" style={{ maxWidth: '800px',width:'70%' }}  >
 
+
+    <FormLabel >Trouble type</FormLabel>
     <RadioGroup
         row
         aria-labelledby="demo-row-radio-buttons-group-label"
@@ -57,13 +62,15 @@ export default function ReportForm({ formData, handleChange }: ReportFormProps) 
         value={selectedType}
         onChange={handleRadioChange}
         defaultValue="website"
+        
       >
-         <FormControlLabel value="website" control={<Radio />} label="website" />
+         <FormControlLabel  value="system" control={<Radio  />} label="website" />
         <FormControlLabel value="service" control={<Radio />} label="service" />
        
       </RadioGroup>
 
             <TextField
+                required
                 label="Description"
                 value={description}
                 fullWidth
