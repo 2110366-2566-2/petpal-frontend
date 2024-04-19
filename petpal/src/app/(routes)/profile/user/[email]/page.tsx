@@ -51,6 +51,9 @@ export default function EmailUserProfile({ params }: { params: { email: string }
                     setMyUserId(response.SVCPID)
                     setMyType(EntityType.SERVICE_PROVIDER)
                     break
+                } case EntityType.ADMIN: {
+                    setMyUserId(response.adminID)
+                    setMyType(EntityType.ADMIN)
                 } default: {
                     console.log("error")
                     break

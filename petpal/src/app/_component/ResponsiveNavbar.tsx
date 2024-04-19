@@ -33,7 +33,7 @@ export default function ResponsiveNavbar({ brandName, navItems }: NavBarProps) {
                     // TODO: change the link to the correct admin page
                     { name: "Issue", link: "/admin/issue" },
                     { name: "Verify", link: "/booking" },
-                    { name: "Chat", link: "/profile" }
+                    { name: "Chat", link: "/chat" }
                 ])
                 console.log('navItems changed', realNavItems)
             }

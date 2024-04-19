@@ -30,6 +30,7 @@ import { AuthContext } from "@/app/_contexts/AuthContext";
 import { getChatHistoryByRoomId } from "@/app/libs/chat/getChatHistoryByRoomId";
 import { EntityType } from "@/app/_enum/currentEntity/EntityType";
 import { getChatHistoryAdmin } from "@/app/libs/chat/getChatHistoryAdmin";
+import { isCurrentEntityTypeAdmin } from "@/app/libs/currentEntiity/getCurrentEntityType";
 
 type Message = {
     content: string,
@@ -72,6 +73,7 @@ export default function ChatHistory({ params }: { params: { id: string } }) {
         setLastestReceivedMessage(NewMessage)
     };
     useEffect(() => {
+        console.log("currentEntity", currentEntity)
         getCurrentEntity().then((res) => {
             let newChatPageUser: ChatPageinterface = {
                 id: "",
@@ -87,10 +89,12 @@ export default function ChatHistory({ params }: { params: { id: string } }) {
                 newChatPageUser.id = res.SVCPID as string
                 newChatPageUser.name = res.SVCPUsername as string
                 newChatPageUser.type = EntityType.SERVICE_PROVIDER
-            } else {
-                newChatPageUser.id = res.SVCPID as string
-                newChatPageUser.name = res.SVCPUsername as string
+            } else if (isCurrentEntityTypeAdmin(res)) {
+                newChatPageUser.id = res.adminID as string
+                newChatPageUser.name = res.username as string
                 newChatPageUser.type = EntityType.ADMIN
+            } else {
+                console.log("error")
             }
             console.log("newChatPageUser", newChatPageUser)
             setChatPageUser(newChatPageUser)
@@ -98,48 +102,78 @@ export default function ChatHistory({ params }: { params: { id: string } }) {
     }, [currentEntity])
 
     useEffect(() => {
+        console.log("chat page user", chatPageUser)
         if (chatPageUser !== undefined) {
             console.log("chatPageUser 5434", chatPageUser)
             switch (chatPageUser.type) {
                 case EntityType.USER: {
                     getChatHistoryUser().then((reponse: ChatResponse[]) => {
                         console.log("ChatHistoryReponse User", reponse)
+                        let count = 1
                         if (reponse !== undefined) {
                             let newAllChatHistory: ChatHistoryUserInterface[] = []
+                            const total = reponse.length
                             reponse.map((message: ChatResponse) => {
+                                // newAllChatHistory.push(adapterChatResponseToChatHistoryUserInterface(chatPageUser, message,))
                                 adapterChatResponseToChatHistoryUserInterface(chatPageUser, message).then((result: ChatHistoryUserInterface) => {
                                     newAllChatHistory.push(result)
-                                    setAllChatHistory(newAllChatHistory)
+                                    count = count + 1
+                                    console.log(count, newAllChatHistory.length)
+                                    console.log(count, newAllChatHistory)
+                                    if (newAllChatHistory.length === total) {
+                                        setAllChatHistory(newAllChatHistory)
+                                    }
                                 }
                                 )
                             })
+                            // setAllChatHistory(newAllChatHistory)
                         }
                     })
                     break
                 } case EntityType.SERVICE_PROVIDER: {
                     getChatHistorySvcp().then((reponse: ChatResponse[]) => {
-                        console.log("ChatHistoryReponse User", reponse)
-                        let newAllChatHistory: ChatHistoryUserInterface[] = []
-                        reponse.map((message: ChatResponse) => {
-                            adapterChatResponseToChatHistoryUserInterface(chatPageUser, message).then((result: ChatHistoryUserInterface) => {
-                                newAllChatHistory.push(result)
-                            }
-                            )
-                        })
-                        setAllChatHistory(newAllChatHistory)
+                        console.log("ChatHistoryReponse SVCP", reponse)
+                        let count = 0
+                        if (reponse !== undefined) {
+                            let newAllChatHistory: ChatHistoryUserInterface[] = []
+                            const total = reponse.length
+                            reponse.map((message: ChatResponse) => {
+                                adapterChatResponseToChatHistoryUserInterface(chatPageUser, message).then((result: ChatHistoryUserInterface) => {
+                                    newAllChatHistory.push(result)
+                                    console.log(count, newAllChatHistory.length)
+                                    console.log(count, newAllChatHistory)
+                                    if (newAllChatHistory.length === total) {
+                                        setAllChatHistory(newAllChatHistory)
+                                    }
+                                    count = count + 1
+                                }
+                                )
+                            })
+                            // setAllChatHistory(newAllChatHistory)
+                        }
                     })
                     break
                 } case EntityType.ADMIN: {
                     getChatHistoryAdmin().then((reponse: ChatResponse[]) => {
                         console.log("ChatHistoryReponse Admin", reponse)
-                        let newAllChatHistory: ChatHistoryUserInterface[] = []
-                        reponse.map((message: ChatResponse) => {
-                            adapterChatResponseToChatHistoryUserInterface(chatPageUser, message).then((result: ChatHistoryUserInterface) => {
-                                newAllChatHistory.push(result)
-                            }
-                            )
-                        })
-                        setAllChatHistory(newAllChatHistory)
+                        let count = 0
+                        if (reponse !== undefined) {
+                            let newAllChatHistory: ChatHistoryUserInterface[] = []
+                            const total = reponse.length
+                            reponse.map((message: ChatResponse) => {
+                                adapterChatResponseToChatHistoryUserInterface(chatPageUser, message).then((result: ChatHistoryUserInterface) => {
+                                    newAllChatHistory.push(result)
+                                    console.log(count, newAllChatHistory.length)
+                                    console.log(count, newAllChatHistory)
+                                    if (newAllChatHistory.length === total) {
+                                        setAllChatHistory(newAllChatHistory)
+                                    }
+                                    count = count + 1
+                                }
+                                )
+                            })
+                            // setAllChatHistory(newAllChatHistory)
+                        }
                     })
                     break
                 }
@@ -151,10 +185,16 @@ export default function ChatHistory({ params }: { params: { id: string } }) {
         }
     }, [chatPageUser])
     useEffect(() => {
-        if (chatPageUser !== undefined && allChatHistory !== undefined) {
+        // const newa = allChatHistory
+        console.log("config", allChatHistory.length, allChatHistory)
+        if (chatPageUser !== undefined && allChatHistory !== undefined && allChatHistory.length !== 0) {
             let newConnWithNameList: ConnWithName[] = []
+            console.log("allChatHistory in conn 1", allChatHistory.length)
+            console.log("allChatHistory in conn", allChatHistory)
             let chat: ChatHistoryUserInterface
+            console.log("allChatHistory in conn 2", allChatHistory.length)
             for (chat of allChatHistory) {
+                console.log("chat", chat)
                 const ws = WebsocketJoinRoom(chat.RoomId, { Id: chatPageUser.id, Username: chatPageUser.name, Role: chatPageUser.type });
                 if (ws == null) {
                     console.log("Connection is not established. Skipping event handler setup.");
