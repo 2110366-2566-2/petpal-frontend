@@ -24,6 +24,7 @@ const modalBoxStyle = {
     border: "2px solid #000",
     boxShadow: 24,
     p: 2,
+    minWidth: "200px"
 };
 
 function getBookingStatus(booking: Booking): string {
@@ -119,8 +120,8 @@ export default function BookingHistory() {
 
     const [openReschedule, setOpenReschedule] = React.useState(false);
     const [selectedReschedule, setselectedReschedule] = useState<
-        [string, string, string] | [null, null, null]
-    >([null, null, null]);
+        [string, string, string,string,string] | [null, null, null, null,null]
+    >([null, null, null, null,null]);
     // const [selectedTimeSlotId, setselectedTimeSlotId] = useState<string | null>(null);
     // const [selectedBookingIDReschedule, setselectedBookingIDReschedule] = useState<string | null>(null);
     const handleOpenReschedule = () => setOpenReschedule(true);
@@ -151,12 +152,14 @@ export default function BookingHistory() {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={modalBoxStyle}>
+                <Box sx={modalBoxStyle} >
                     {openReschedule && (
                         <RescheduleForm
                             bookingID={selectedReschedule[0]}
                             serviceID={selectedReschedule[1]}
                             timeslotID={selectedReschedule[2]}
+                            startTime={selectedReschedule[3]}
+                            endTime={selectedReschedule[4]}
                             onClose={handleCloseReschedule}
                         />
                     )}
@@ -231,6 +234,8 @@ export default function BookingHistory() {
                                             booking.bookingID,
                                             booking.serviceID,
                                             booking.timeslotID,
+                                            booking.startTime,
+                                            booking.endTime,
                                         ]);
                                         handleOpenReschedule();
                                     }}
@@ -263,6 +268,8 @@ export default function BookingHistory() {
                                             booking.bookingID,
                                             booking.serviceID,
                                             booking.timeslotID,
+                                            booking.startTime,
+                                            booking.endTime,
                                         ]);
                                         handleOpenReschedule();
                                     }}
