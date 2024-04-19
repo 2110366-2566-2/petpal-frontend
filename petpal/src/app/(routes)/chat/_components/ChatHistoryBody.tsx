@@ -27,7 +27,9 @@ function createMessageList(ShownMessageHistory: MessageInteraface[], OtherPerson
                     price: 500,
                     Detail: "so my dog walker disappeared for half the session. can i get a refund? maybe ban that guy too"
                 }
+                console.log("issue tag detected")
                 messageList = <IssueTag key={count} issueProps={issueTagProps}></IssueTag>
+                // messageList = <ChatBubble key={count} MessageHistory={MessageHistory} OtherPersonUserId={OtherPersonUserId}></ChatBubble>
 
             }
             else {
@@ -42,10 +44,10 @@ function createMessageList(ShownMessageHistory: MessageInteraface[], OtherPerson
 
 export default function ChatHistoryBody({ ShownMessageHistory, OtherPersonUserId }: { ShownMessageHistory: MessageInteraface[], OtherPersonUserId: string }) {
     return (
-        <ul className="space-y-[5px] mt-auto">
+        <div className="space-y-[5px] mt-auto flex flex-col">
             {
                 createMessageList(ShownMessageHistory, OtherPersonUserId)
             }
-        </ul>
+        </div>
     )
 }

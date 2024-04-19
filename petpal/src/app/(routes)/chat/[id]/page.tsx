@@ -29,6 +29,7 @@ import { adapterChatResponseToChatHistoryUserInterface } from "../_interface/Cha
 import { AuthContext } from "@/app/_contexts/AuthContext";
 import { getChatHistoryByRoomId } from "@/app/libs/chat/getChatHistoryByRoomId";
 import { EntityType } from "@/app/_enum/currentEntity/EntityType";
+import { getChatHistoryAdmin } from "@/app/libs/chat/getChatHistoryAdmin";
 
 type Message = {
     content: string,
@@ -100,7 +101,7 @@ export default function ChatHistory({ params }: { params: { id: string } }) {
         if (chatPageUser !== undefined) {
             console.log("chatPageUser 5434", chatPageUser)
             switch (chatPageUser.type) {
-                case "user": {
+                case EntityType.USER: {
                     getChatHistoryUser().then((reponse: ChatResponse[]) => {
                         console.log("ChatHistoryReponse User", reponse)
                         if (reponse !== undefined) {
@@ -115,7 +116,7 @@ export default function ChatHistory({ params }: { params: { id: string } }) {
                         }
                     })
                     break
-                } case "svcp": {
+                } case EntityType.SERVICE_PROVIDER: {
                     getChatHistorySvcp().then((reponse: ChatResponse[]) => {
                         console.log("ChatHistoryReponse User", reponse)
                         let newAllChatHistory: ChatHistoryUserInterface[] = []
@@ -128,7 +129,21 @@ export default function ChatHistory({ params }: { params: { id: string } }) {
                         setAllChatHistory(newAllChatHistory)
                     })
                     break
-                } default: {
+                } case EntityType.ADMIN: {
+                    getChatHistoryAdmin().then((reponse: ChatResponse[]) => {
+                        console.log("ChatHistoryReponse Admin", reponse)
+                        let newAllChatHistory: ChatHistoryUserInterface[] = []
+                        reponse.map((message: ChatResponse) => {
+                            adapterChatResponseToChatHistoryUserInterface(chatPageUser, message).then((result: ChatHistoryUserInterface) => {
+                                newAllChatHistory.push(result)
+                            }
+                            )
+                        })
+                        setAllChatHistory(newAllChatHistory)
+                    })
+                    break
+                }
+                default: {
                     console.log("error!!!")
                     break
                 }

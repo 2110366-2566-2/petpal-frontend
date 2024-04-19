@@ -65,12 +65,12 @@ export default function EmailUserProfile({ params }: { params: { email: string }
             let thisUserId: string = myUserId
             const newChatOnClick = () => {
                 let thisUserId: string = myUserId
-                // chatButtonFunction(
-                //     myUserId = thisUserId,
-                //     targetUserId = targetUserId,
-                //     myType = myType,
-                //     targetType = EntityType.USER
-                // )
+                chatButtonFunction(
+                    thisUserId,
+                    targetUserId,
+                    myType,
+                    EntityType.USER
+                )
             }
             setChatOnClick(newChatOnClick)
         }
