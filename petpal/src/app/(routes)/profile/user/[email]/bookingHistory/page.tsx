@@ -13,6 +13,8 @@ import {
     formatTimeToHourMinute,
     formatDate,
 } from "@app/libs/service/formatDate";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 const modalBoxStyle = {
     position: "absolute" as "absolute",
@@ -23,36 +25,56 @@ const modalBoxStyle = {
     border: "2px solid #000",
     boxShadow: 24,
     p: 2,
+    minWidth: "200px"
 };
 
-function getBookingStatus(booking: Booking): string {
-    // if (booking.status.userCompleted) {
-    //     return "Completed";
-    // } else if (booking.status.svcpCompleted) {
-    //     return "Service Completed";
-    // } else if (booking.status.paymentStatus) {
-    //     return "Paid";
-    // } else if (booking.status.svcpConfirmed) {
-    //     return "Confirmed";
-    // } else if (!booking.status.svcpConfirmed) {
-    //     return "Pending";
-    // } else if (booking.cancel.cancelStatus) {
-    //     return "Cancel";
-    // } else {
-    //     return "";
-    // }
 
-    if (booking.cancel.cancelStatus) {
-        return "Cancelled";
-    } else {
-        return booking.statusString;
+
+function isReshedulable(booking: Booking): boolean {
+    return booking.statusString == "Pending Payment";
+}
+function isCancelable(booking: Booking): boolean {
+    return booking.statusString == "Paid";
+}
+function isRefundable(booking: Booking): boolean {
+    return booking.statusString == "Service Completed" || booking.statusString == "Completed";
+}
+function isFeedbackable(booking: Booking): boolean {
+    return booking.statusString == "Service Completed";
+}
+function isCompleteable(booking: Booking): boolean {
+    return booking.statusString == "Completed";
+}
+// Payment Expired ,Pending Payment ,Cancelled ,Paid ,Service Completed ,Completed , Refunded
+function statusColor(status: string): string {
+    switch (status) {
+        case "Pending Payment":
+            return "#FFD600"; // Yellow
+        case "Paid":
+            return "#12B837"; // Green
+        case "Service Completed":
+            return "#FF5858"; // Red
+        case "Completed":
+            return "#858585"; // Gray
+        case "Payment Expired":
+            return "#FF0000"; // Red
+        case "Cancelled":
+            return "#FF0000"; // Red
+        case "Refunded":
+            return "#3399FF"; // Blue
+        default:
+            return "#858585"; // Gray
     }
 }
+
+
+
+
 
 export default function BookingHistory() {
     const [bookings, setBookings] = useState<Booking[]>([]);
     const [isLoading, setIsLoading] = useState(true); // State to track loading status
-
+    const router = useRouter();
     // useEffect hook to fetch bookings when component mounts
     useEffect(() => {
         const fetchBookings = async () => {
@@ -81,7 +103,19 @@ export default function BookingHistory() {
     }, [isLoading, bookings]);
 
     const handleCancel = async (id: string, reason: string) => {
-        cancelBooking(id, reason);
+        try     
+        {
+            toast.success("Booking has been cancelled successfully!");
+            cancelBooking(id, reason);
+            router.push('/bookingLoading');
+        }
+        catch (error) {
+            toast.error("Error cancelling booking");
+            console.error("Error fetching bookings:", error);
+        }
+    };
+    const handleRefund = async (id: string) => {
+        router.push("/help/refund?bookingid=" + id);
     };
 
     const [qrCode, setQRCode] = useState<string | null>(null); // State to hold the QR code
@@ -115,8 +149,8 @@ export default function BookingHistory() {
 
     const [openReschedule, setOpenReschedule] = React.useState(false);
     const [selectedReschedule, setselectedReschedule] = useState<
-        [string, string, string] | [null, null, null]
-    >([null, null, null]);
+        [string, string, string,string,string] | [null, null, null, null,null]
+    >([null, null, null, null,null]);
     // const [selectedTimeSlotId, setselectedTimeSlotId] = useState<string | null>(null);
     // const [selectedBookingIDReschedule, setselectedBookingIDReschedule] = useState<string | null>(null);
     const handleOpenReschedule = () => setOpenReschedule(true);
@@ -147,12 +181,14 @@ export default function BookingHistory() {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={modalBoxStyle}>
+                <Box sx={modalBoxStyle} >
                     {openReschedule && (
                         <RescheduleForm
                             bookingID={selectedReschedule[0]}
                             serviceID={selectedReschedule[1]}
                             timeslotID={selectedReschedule[2]}
+                            startTime={selectedReschedule[3]}
+                            endTime={selectedReschedule[4]}
                             onClose={handleCloseReschedule}
                         />
                     )}
@@ -167,14 +203,15 @@ export default function BookingHistory() {
                     >
                         <div className="flex flex-col xl:flex-row xl:justify-between">
                             {/* Mobile: Service Name and Status on one row, centered. Desktop: Status moves to the left. */}
-                            <div className="flex justify-between xl:justify-start items-center w-full xl:w-auto space-x-2 xl:mr-[90px]">
-                                <div className="font-bold text-[24px] xl:hidden">
+                            <div className="font-bold text-[24px] xl:hidden">
                                     {booking.serviceName}{" "}
                                     {/* Visible on Mobile */}
                                 </div>
-                                <div className="flex flex-col font-medium text-[18px] xl:min-w-[170px] text-[#12B837]">
-                                    {getBookingStatus(booking)}
-                                    {getBookingStatus(booking) == "Pending Payment" && (
+                            <div className="flex justify-between xl:justify-start items-center w-full xl:w-auto space-x-2 xl:mr-[90px]">
+                                
+                                <div className={`flex flex-col font-medium text-[18px] xl:min-w-[170px] text-[${statusColor(booking.statusString)}]`}>
+                                    {booking.statusString}
+                                    {booking.statusString == "Pending Payment" && (
                                         <button
                                             onClick={() => {
                                                 setSelectedBookingID(
@@ -204,7 +241,7 @@ export default function BookingHistory() {
                                 </div>
                             </div>
                         </div>
-                        <div className="flex justify-between">
+                        
                             <div className="font-medium text-[24px] xl:mr-[20px]">
                                 {formatDate(booking.startTime)}
                             </div>
@@ -212,45 +249,89 @@ export default function BookingHistory() {
                                 {formatTimeToHourMinute(booking.startTime)} -{" "}
                                 {formatTimeToHourMinute(booking.endTime)}
                             </div>
-                        </div>
-                        <div className="flex justify-between items-center">
+                        
+                        
                             <div className="font-medium text-[32px]">
                                 {booking.totalBookingPrice.toFixed(2)}฿
                             </div>
-                            <div className="flex xl:hidden">
-                                <button
+                      
+                           <div className="flex xl:hidden">
+                                {isReshedulable(booking) && ( <button
                                     className="font-bold text-[16px] text-[#FFD600]"
                                     onClick={() => {
                                         setselectedReschedule([
                                             booking.bookingID,
                                             booking.serviceID,
                                             booking.timeslotID,
+                                            booking.startTime,
+                                            booking.endTime,
                                         ]);
                                         handleOpenReschedule();
                                     }}
                                 >
                                     Reschedule
-                                </button>
-                                <div className="font-bold text-[16px] ml-3 text-[#FF5858]">
-                                    Cancel
-                                </div>
+                                </button>)}
+
+                                {isCancelable(booking) && (
+                                    <button
+                                        onClick={() =>
+                                            handleCancel(booking.bookingID, "")
+                                        }
+                                    >
+                                        <div className="font-bold text-[16px] ml-3 text-[#FF5858]">
+                                            Cancel
+                                        </div>
+                                    </button>
+                                )}
+
                             </div>
-                        </div>
+                            
+
+                        <div className="flex xl:hidden pl-50 ">
+
+                            {isRefundable(booking) && (
+                            <button
+                                    onClick={() => handleRefund(booking.bookingID)}
+                                    >
+                                    <div className="font-bold text-[16px]  text-[#3366ff]">
+                                        Refund
+                                    </div>
+
+                                    </button>
+                            )}
+
+
+                            {isFeedbackable(booking) && (
+                                    <div className="text-right ml-3 font-semibold text-[16px] text-[#858585]">
+                                Write Feedback
+                            </div>
+                            )}
+
+                            </div>
                         <div>
                             <div className="hidden xl:flex">
+
+                                {isReshedulable(booking) && (
                                 <button
                                     className="font-bold text-[16px] text-[#FFD600]"
+
+                                
                                     onClick={() => {
                                         setselectedReschedule([
                                             booking.bookingID,
                                             booking.serviceID,
                                             booking.timeslotID,
+                                            booking.startTime,
+                                            booking.endTime,
                                         ]);
                                         handleOpenReschedule();
                                     }}
                                 >
                                     Reschedule
                                 </button>
+                                )}
+
+                                {isCancelable(booking) && (
                                 <button
                                     onClick={() =>
                                         handleCancel(booking.bookingID, "")
@@ -260,10 +341,30 @@ export default function BookingHistory() {
                                         Cancel
                                     </div>
                                 </button>
+                                )}
+                                    
                             </div>
-                            <div className="text-right font-semibold text-[16px] text-[#858585]">
+
+                            
+                            <div className="hidden xl:flex">
+                            {isRefundable(booking) && (
+                            <button
+                                    onClick={() => handleRefund(booking.bookingID)}
+                                    >
+                                    <div className="font-bold text-[16px]  text-[#3366ff]">
+                                        Refund
+                                    </div>
+
+                                    </button>
+                            )}
+                            {isFeedbackable(booking) && (
+                                    <div className="text-right ml-3 font-semibold text-[16px] text-[#858585]">
                                 Write Feedback
                             </div>
+                            )}
+                            </div>
+
+                           
                         </div>
                     </div>
                 ))
