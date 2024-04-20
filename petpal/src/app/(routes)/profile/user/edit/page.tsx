@@ -25,6 +25,7 @@ export default function EditProfile() {
   const [profileImg , setProfileImg] = useState('')
   const [fileProImg ,setFileProImg] = useState<File>()
   const [errorMessage , setErrorMessage] = useState('')
+  const [errorMessageName , setErrorMessageName] = useState('')
 
   useEffect(()=>{
     const fetchData = async()=>{
@@ -39,9 +40,9 @@ export default function EditProfile() {
     if(fileProImg) await uploadImgApi(fileProImg)
     
     if(username == ''){
-      setErrorMessage('Please set your username')
+      setErrorMessageName('Please set your username')
     }else{
-      setErrorMessage('')
+      setErrorMessageName('')
       await editUserProfile(username)
       router.push(thissaveEditButtonProps.Link)
     }
@@ -80,7 +81,7 @@ export default function EditProfile() {
           </div>
           <div className='hidden md:grid grid-cols-1 gap-[16px]'>
             <SmallButtonComponent ButtonProps={editProfileButtonProps} Working={false}></SmallButtonComponent>
-            <SmallButtonComponent ButtonProps={saveEditButtonProps} onClick={() => {handleSubmit(); router.push(thissaveEditButtonProps.Link)}}></SmallButtonComponent>
+            <SmallButtonComponent ButtonProps={saveEditButtonProps} onClick={() => {handleSubmit()}}></SmallButtonComponent>
           </div>
         </div>
         <div className='w-[100%] md:max-w-[600px]  md:float-right m-auto space-y-[30px] mt-[0px] mb-[20px]'>
@@ -92,6 +93,12 @@ export default function EditProfile() {
               value = {username}
               onChange={(e)=>{setUsername(e.target.value)}}
               placeholder='username' />
+              {
+                (errorMessageName != "") &&
+                <div className='ml-1'>
+                <span className='text-[#FF0000]'>{errorMessageName}</span>
+                </div>
+            }
           </div>
           <div className="my-2 ">
             <PetInformation />
