@@ -9,7 +9,7 @@ export default async function registerUser(
     phoneNumber: string,
     username: string
 ) {
-    const response = await fetch(API_URL + "register-user", {
+    const response = await fetch(API_URL + "/register-user", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
