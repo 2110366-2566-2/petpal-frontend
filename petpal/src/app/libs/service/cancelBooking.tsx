@@ -1,9 +1,11 @@
+import { API_URL } from "@/app/_constants/env";
+
 export default async function cancelBooking(
     bookingID: string,
     cancelReason: string
 ) {
     const response = await fetch(
-        "http://localhost:8080/service/booking/cancel/user",
+        API_URL + "/service/booking/cancel/user",
         {
             method: "PATCH",
             credentials: "include",

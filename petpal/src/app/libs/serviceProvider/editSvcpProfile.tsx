@@ -1,3 +1,5 @@
+import { API_URL } from "@/app/_constants/env"
+
 export async function editSvcpProfile(
     SVCPusername?:string,
     description?:string,
@@ -7,7 +9,7 @@ export async function editSvcpProfile(
     addiImg?:string
     ){
     console.log("In api edit svcp image",profileImg)
-    const response = await fetch(`http://localhost:8080/serviceproviders/`,{
+    const response = await fetch(`${API_URL}/serviceproviders/`,{
         method:'PUT',
         credentials:'include',
         body:JSON.stringify({

@@ -1,10 +1,12 @@
+import { API_URL } from "@/app/_constants/env";
+
 export default async function registerSVCP(
     email: string,
     password: string,
     serviceType: string,
     username: string
 ) {
-    const response = await fetch("http://localhost:8080/register-svcp", {
+    const response = await fetch(API_URL + "/register-svcp", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

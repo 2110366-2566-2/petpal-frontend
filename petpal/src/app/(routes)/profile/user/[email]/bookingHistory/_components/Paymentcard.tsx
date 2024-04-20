@@ -1,6 +1,7 @@
 import React from 'react'
 import Image, { StaticImageData } from 'next/image'
 import toast from 'react-hot-toast';
+import { API_URL } from '@/app/_constants/env';
 
 interface Props {
     onClose: () => void;
@@ -19,7 +20,7 @@ export default function Paymentcard({onClose, qrCode, bookingID, serviceName}:Pr
 	const handleConfirmPayment = async () => {
 		try {
 			const response = await toast.promise(
-				fetch("http://localhost:8080/service/booking/payment/authorize", {
+				fetch(API_URL + "/service/booking/payment/authorize", {
 					method: "POST",
 					credentials: "include",
 					body: JSON.stringify({ bookingID: bookingID }) // Correct body format

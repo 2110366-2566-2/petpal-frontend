@@ -1,3 +1,5 @@
+import { API_URL } from "@/app/_constants/env";
+
 export default async function issueCreate(
     details : string,
     issueType  : string,
@@ -13,7 +15,7 @@ export default async function issueCreate(
         formData.append('associatedBookingID', associatedBookingID);
 
 
-    const response = await fetch(`http://localhost:8080/issue/`, {
+    const response = await fetch(`${API_URL}/issue/`, {
         method: "POST",
         credentials:'include',
         body: formData,

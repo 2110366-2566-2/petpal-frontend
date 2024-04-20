@@ -1,7 +1,9 @@
+import { API_URL } from "@/app/_constants/env";
+
 export default async function getQRpayment(
     bookingID: string | null,
 ) {
-    const response = await fetch("http://localhost:8080/service/booking/payment/qr", {
+    const response = await fetch(API_URL + "/service/booking/payment/qr", {
         method: "POST",
         body: JSON.stringify({
             bookingID: bookingID
