@@ -1,9 +1,11 @@
+import { API_URL } from "@/app/_constants/env"
+
 export async function editUserProfile(
     username:string
 ) {
     try
     {
-        const response = await fetch(`http://localhost:8080/user/`,{
+        const response = await fetch(`${API_URL}/user/`,{
             method:'PUT',
             credentials:'include',
             body: JSON.stringify({

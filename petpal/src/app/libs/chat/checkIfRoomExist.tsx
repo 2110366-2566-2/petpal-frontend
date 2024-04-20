@@ -1,6 +1,8 @@
+import { API_URL } from "@/app/_constants/env";
+
 export async function checkIfRoomExist(roomId: string) {
     try {
-        const response = await fetch(`http://localhost:8080/chat/history/${roomId}`, {
+        const response = await fetch(`${API_URL}/chat/history/${roomId}`, {
             method: 'GET',
             credentials: 'include',
         });

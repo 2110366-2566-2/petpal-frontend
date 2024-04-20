@@ -186,7 +186,7 @@ export default function ServiceListing({
                                     return (
                                     <TableCell key={column.id} align={column.align}>
                                       <Link key={row.serviceName}
-                                          href={`/profile/serviceProvider/${row.svcpID}/Service/${row.serviceID}`}
+                                          href={`/profile/serviceProvider/${row.svcpID}/service/${row.serviceID}`}
                                           className="w-full h-full">
                                         {column.format && typeof value === 'number'
                                         ? column.format(value)

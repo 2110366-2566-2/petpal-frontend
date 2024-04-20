@@ -1,7 +1,9 @@
+import { API_URL } from "@/app/_constants/env"
+
 export async function getFeedbackApi(
     id:string
 ){
-    const response = await fetch(`http://localhost:8080/service/feedback/${id}`,{
+    const response = await fetch(`${API_URL}/service/feedback/${id}`,{
         method:'GET',
         credentials:'include',
     })
@@ -17,7 +19,7 @@ export async function postFeedbackApi(
     content:string,
     rating:number
 ){
-    const response = await fetch(`http://localhost:8080/service/feedback/${id}`,{
+    const response = await fetch(`${API_URL}/service/feedback/${id}`,{
         method:'POST',
         credentials:'include',
         body:JSON.stringify({

@@ -1,3 +1,4 @@
+import { API_URL } from "@/app/_constants/env";
 import React from "react";
 import toast from "react-hot-toast";
 
@@ -12,7 +13,7 @@ export default function VerificationModal({ onClose, SVCPUsername, SVCPID }: Pro
   const handleConfirm = async () => {
     try {
         const response = await toast.promise(
-            fetch(`http://localhost:8080/admin/serviceproviders/verify/${SVCPID}`, {
+            fetch(`${API_URL}/admin/serviceproviders/verify/${SVCPID}`, {
                 method: "PATCH",
                 credentials: "include",
                 body: JSON.stringify({

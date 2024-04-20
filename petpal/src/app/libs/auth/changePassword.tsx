@@ -1,10 +1,12 @@
+import { API_URL } from "@/app/_constants/env"
+
 export async function changePasswordApi(
     pswd:string,
     email:string,
     usertype:string
     ) {
     try{
-        const response = await fetch(`http://localhost:8080/change-password`,{
+        const response = await fetch(`${API_URL}/change-password`,{
             method:'POST',
             credentials:'include',
             body:JSON.stringify({

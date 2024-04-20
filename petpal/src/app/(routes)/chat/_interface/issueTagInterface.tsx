@@ -3,6 +3,5 @@ export default interface issueTagInterface {
     issueDate: Date
     type: string
     status: string
-    price: number
     Detail: string
 }

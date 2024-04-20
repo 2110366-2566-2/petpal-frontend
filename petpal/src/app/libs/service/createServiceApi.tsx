@@ -1,3 +1,5 @@
+import { API_URL } from "@/app/_constants/env";
+
 export default async function createServiceApi(
     price:number,
     serviceDescription:string,
@@ -6,7 +8,7 @@ export default async function createServiceApi(
     timeslot:Array<Object>
 ){
     console.log("In api", timeslot)
-    const response = await fetch('http://localhost:8080/service/create' , {
+    const response = await fetch(API_URL + '/service/create' , {
         method:'POST',
         credentials:'include',
         body: JSON.stringify({

@@ -1,3 +1,4 @@
+import { API_URL } from "@/app/_constants/env";
 import { getCurrentEntity } from "../user/userBackend";
 
 // type Service struct {
@@ -43,8 +44,8 @@ export default async function get_service_by_id(id : string){
             return service;
         }
         else {
-            // Fetch service from http://localhost:8080/service/id
-            const response = await fetch(`http://localhost:8080/service/${id}`);
+            // Fetch service from /service/id
+            const response = await fetch(`${API_URL}/service/${id}`);
             if(response.ok){
                 return await response.json();
             }else{

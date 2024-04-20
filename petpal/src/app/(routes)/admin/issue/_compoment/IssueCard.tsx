@@ -1,6 +1,7 @@
 import { Issue } from "@app/(routes)/admin/issue/_interface/Issue";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { API_URL } from "@/app/_constants/env";
 
 export default function IssueCard({ issue, isMyIssue }: { issue: Issue, isMyIssue: boolean }) {
     const [isShow, setIsShow] = useState<boolean>(issue.isResolved? false : true)
@@ -17,13 +18,13 @@ export default function IssueCard({ issue, isMyIssue }: { issue: Issue, isMyIssu
     function handleIssueAction(e: React.MouseEvent<HTMLButtonElement>) {
         e.stopPropagation()
         if (isMyIssue) {
-            const res = fetch(`http://localhost:8080/issue/resolve/${issue.issueID}`, {
+            const res = fetch(`${API_URL}/issue/resolve/${issue.issueID}`, {
                 method: 'POST',
                 credentials: 'include',
             })
             setIsShow(false)
         } else {
-            const res = fetch(`http://localhost:8080/issue/accept/${issue.issueID}`, {
+            const res = fetch(`${API_URL}/issue/accept/${issue.issueID}`, {
                 method: 'POST',
                 credentials: 'include',
             })

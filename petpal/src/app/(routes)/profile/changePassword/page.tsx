@@ -26,11 +26,11 @@ export default function changePassword() {
         if(!entity.SVCPID) return 'user'
         else return 'serviceProvider'
       })
-      setProfileImg(()=>{
-        if(!entity.SVCPID) return entity.SVCPImg
-        else return entity.profilePicture
-      })
-
+      // setProfileImg(()=>{
+      //   if(!entity.SVCPID) return entity.SVCPImg
+      //   else return entity.profilePicture
+      // })
+      setProfileImg(entity.profilePicture || entity.SVCPImg)
       setEmail(()=>{
         if(entity.SVCPEmail) return entity.SVCPEmail
         else return entity.email
@@ -52,7 +52,7 @@ export default function changePassword() {
     <div className='items-center'>
       <div className='md:flex m-[50px] items-center'>
         <div className='max-w-[300px] space-y-[10px] md:float-left m-auto mt-[0px] items-top'>
-          <ProfilePictureComponent src = {`data:image/jpg;base64, ${profileImg}`}/>
+          <ProfilePictureComponent src = {profileImg}/>
           <div className='hidden md:grid grid-cols-1 gap-[16px]'>
             <SmallButtonComponent ButtonProps={editProfileButtonProps} Working = {false}></SmallButtonComponent>
             <SmallButtonComponent ButtonProps={saveEditButtonProps} onClick={()=>{handleSubmit();route.push(thissaveEditButtonProps.Link)}}></SmallButtonComponent>
