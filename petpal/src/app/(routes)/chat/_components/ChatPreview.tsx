@@ -66,7 +66,10 @@ export default function ChatPreview({ ChatHistoryUser, setUserId }: { ChatHistor
     var MessageHistory: MessageInterface[] = ChatHistoryUser.MessageHistory
     var Picture: string = ChatHistoryUser.Picture
     var LastSee: Date = ChatHistoryUser.LastSee
-    const picutreString: string = Picture.includes("static") ? Picture : `data:image/png;base64, ${Picture}`
+    let picutreString: string = ""
+    if (Picture !== undefined) {
+        picutreString = Picture.includes("static") ? Picture : `data:image/png;base64, ${Picture}`
+    }
 
     return (
         <div onClick={() => { setUserId(Id) }} className="bg-white flex felx-row px-[20px] py-[12px] space-x-[20px] hover:bg-[#D9D9D9A1] focus:bg-[#000000]">
