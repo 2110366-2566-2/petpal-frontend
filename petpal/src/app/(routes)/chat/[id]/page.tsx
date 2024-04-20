@@ -4,7 +4,7 @@ import { useState, useEffect, useContext } from "react";
 import HeaderChatHistory from "../_components/HeaderChatHistory";
 import HeaderChatComponent from "../_components/HeaderChatComponent";
 import ChatPreview from "../_components/ChatPreview";
-import ChatHistoryBody from "../_components/ChatHistoryBody";
+import { createMessageList } from "../_components/ChatHistoryBody";
 import ChatHistoryUserInterface from "../_interface/ChatHistoryUserInterface";
 import ChatPageinterface from "../_interface/ChatPageInterface";
 import MessageInterface from "../_interface/MessageInterface";
@@ -57,6 +57,7 @@ export default function ChatHistory({ params }: { params: { id: string } }) {
     const [allChatHistory, setAllChatHistory] = useState<ChatHistoryUserInterface[]>([])
     const [selectedChatHistory, setSelectedChatHistory] = useState<ChatHistoryUserInterface>()
     const [shownMessageHistory, SetShownMessageHistory] = useState<MessageInterface[]>([])
+    const [chatHistoryBody, setChatHistoryBody] = useState<JSX.Element[]>([])
 
     const [ShownChatHistoryUserList, SetShownChatHistoryUserList] = useState<ChatHistoryUserInterface[]>()
     const [connWithNameList, setConnWithNameList] = useState<ConnWithName[]>([])
@@ -252,6 +253,11 @@ export default function ChatHistory({ params }: { params: { id: string } }) {
 
     useEffect(() => {
         console.log("shownMessageHistoryChange", shownMessageHistory)
+        createMessageList(shownMessageHistory, targetUserId).then((Response) => {
+            setChatHistoryBody(Response)
+        }
+
+        )
     }, [shownMessageHistory])
 
     useEffect(() => {
@@ -343,9 +349,10 @@ export default function ChatHistory({ params }: { params: { id: string } }) {
                                 <HeaderChatHistory Text={selectedChatHistory.Name} ImgSrc={selectedChatHistory.Picture}></HeaderChatHistory>
                             </div>
                             <div className="h-[100px] bg-[#D9D9D9] flex-grow flex-col p-[10px] justify-items-end overflow-y-scroll ">
-                                <ChatHistoryBody ShownMessageHistory={shownMessageHistory} OtherPersonUserId={targetUserId}></ChatHistoryBody>
+                                <div className="space-y-[5px] mt-auto flex flex-col">
+                                    {chatHistoryBody}
+                                </div>
                             </div>
-                            {/* <ChatHistoryBody ShownMessageHistory={ShownMessageHistory} OtherPersonUserId={UserId}></ChatHistoryBody> */}
                             <div className="pl-[15px] h-[75px] bg-white flex flex-row space-x-[15px] items-center">
                                 <img src={PlusIcon.src} alt="Maginifying" className="w-[24px] h-[24px] my-auto" />
                                 <input name="message" className="h-[50px] bg-[#D9D9D9CC] outline-none my-auto flex-grow p-[10px] rounded-[15px]" type="text" placeholder="Typing a message..." value={currentMessage}
