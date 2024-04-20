@@ -67,12 +67,15 @@ export default function EditProfile() {
   const handleSubmit = async() => {
     // console.log(username,description,address,phoneNumber)
     if(fileProImg) await uploadImgApi(fileProImg)
-    await editSvcpProfile(
-      username,
-      description,
-      address,
-      phoneNumber,
-    )
+    if(username && description && address && phoneNumber){
+      await editSvcpProfile(
+        username,
+        description,
+        address,
+        phoneNumber,
+      )
+      router.push(thisSaveProfileButton.Link)
+    }
   }
 
   const handleAddImg = async (e:React.ChangeEvent<HTMLInputElement>) =>{
@@ -150,7 +153,7 @@ export default function EditProfile() {
         </div>
         <div className='w-[100%] grid grid-cols-1 gap-[16px] md:hidden '>
           <SmallButtonComponent ButtonProps={editProfileButtonProps} Working={false}></SmallButtonComponent>
-          <SmallButtonComponent ButtonProps={thisSaveProfileButton} onClick={async() =>{handleSubmit();router.push(thisSaveProfileButton.Link)}}></SmallButtonComponent>
+          <SmallButtonComponent ButtonProps={thisSaveProfileButton} onClick={async() =>{handleSubmit()}}></SmallButtonComponent>
         </div>
       </div>
 

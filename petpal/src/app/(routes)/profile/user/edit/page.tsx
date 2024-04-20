@@ -24,6 +24,7 @@ export default function EditProfile() {
   const [username , setUsername] = useState('')
   const [profileImg , setProfileImg] = useState('')
   const [fileProImg ,setFileProImg] = useState<File>()
+  const [errorMessage , setErrorMessage] = useState('')
 
   useEffect(()=>{
     const fetchData = async()=>{
@@ -36,7 +37,14 @@ export default function EditProfile() {
 
   const handleSubmit = async()=>{
     if(fileProImg) await uploadImgApi(fileProImg)
-    await editUserProfile(username)
+    
+    if(username == ''){
+      setErrorMessage('Please set your username')
+    }else{
+      setErrorMessage('')
+      await editUserProfile(username)
+      router.push(thissaveEditButtonProps.Link)
+    }
   }
 
   const toBase64 = (file: File) => {
@@ -92,7 +100,15 @@ export default function EditProfile() {
         </div>
         <div className='w-[100%] grid grid-cols-1 gap-[16px] md:hidden '>
           <SmallButtonComponent ButtonProps={editProfileButtonProps} Working={false}></SmallButtonComponent>
-          <SmallButtonComponent ButtonProps={saveEditButtonProps}  onClick={() => {handleSubmit(); router.push(thissaveEditButtonProps.Link)}}></SmallButtonComponent>
+          <SmallButtonComponent ButtonProps={saveEditButtonProps}  onClick={() => {
+            handleSubmit(); 
+            }}></SmallButtonComponent>
+            {
+                (errorMessage != "") &&
+                <div className='ml-1'>
+                <span className='text-[#FF0000]'>{errorMessage}</span>
+                </div>
+            }
         </div>
       </div>
 
