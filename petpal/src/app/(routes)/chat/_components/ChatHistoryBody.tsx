@@ -19,6 +19,7 @@ function createMessageList(ShownMessageHistory: MessageInteraface[], OtherPerson
             const isIssueTag: boolean = content.includes(SPEACIAL_TAG_LIST[0])
             if (isIssueTag) {
                 const issueId: string = content.replace(SPEACIAL_TAG_LIST[0], "")
+
                 const issueTagProps: issueTagInterface = {
                     id: "test",
                     issueDate: new Date(),

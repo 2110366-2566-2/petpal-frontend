@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useParams, useRouter} from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import toast from 'react-hot-toast';
 import getSVCP from "@/app/libs/serviceProvider/getSVCP";
@@ -8,6 +8,10 @@ import { Service } from "@/app/_interface/service/service";
 import { Convert, Svcp } from "@/app/_interface/svcp/svcp";
 import ConfirmAppointmentButton from "@/app/(routes)/profile/_components/ConfirmAppointmentBtn";
 import createBooking from "@/app/libs/service/createBooking";
+import ButtonPropsInterface from "@/app/(routes)/profile/_interface/ButtonPropsInterface";
+import createButtonList from "@/app/(routes)/profile/_utils/createButtonList";
+import { chatButtonFunction } from "@/app/(routes)/profile/_utils/chatButtonFunction";
+import { EntityType } from "@/app/_enum/currentEntity/EntityType";
 
 import {
     formatTimeToHourMinute,
@@ -21,7 +25,16 @@ export default function BookAppointment() {
     const [SVCPUsername, setSVCPUsername] = useState("Provider Name");
     const [service, setService] = useState<Service | null>(null);
     const router = useRouter();
-    
+    let ServiceProviderProfileButtonProps: ButtonPropsInterface = {
+        Name: "Profile",
+        Width: "w-[100px]",
+        BgColor: "bg-[#FF0000]",
+        FontColor: "text-[#FFF]",
+        Link: `../`,
+    }
+    const buttonPropsList: ButtonPropsInterface[] = [ServiceProviderProfileButtonProps]
+
+
     useEffect(() => {
         const fetchServices = async () => {
             try {
@@ -60,12 +73,12 @@ export default function BookAppointment() {
             typeof params.ServiceId === "string"
                 ? params.ServiceId
                 : params.ServiceId?.[0];
-    
+
         if (!params.ServiceId || !selectedTimeslotId) {
             toast.error("Please select a timeslot.");
             return;
         }
-    
+
         try {
             const bookingResponse = await toast.promise(
                 createBooking(ServiceId, selectedTimeslotId),
@@ -122,14 +135,17 @@ export default function BookAppointment() {
                                 {service.serviceDescription}
                             </p>
                         </div>
+                        <div>
+                            {createButtonList(true, buttonPropsList)}
+                        </div>
                     </div>
                 </div>
                 <div className="flex flex-col md:flex-row p-5 ">
                     <div className="xl:hidden">
-                            <p className="font-medium text-[18px] md:max-w-[550px] md:mr-[20px]">
-                                {service.serviceDescription}
-                            </p>
-                        </div>
+                        <p className="font-medium text-[18px] md:max-w-[550px] md:mr-[20px]">
+                            {service.serviceDescription}
+                        </p>
+                    </div>
                     <div className="mt-[150px] md:mt-[0px]">
                         <select
                             value={selectedTimeslotId}
@@ -144,23 +160,20 @@ export default function BookAppointment() {
                                     key={timeslot.timeslotID}
                                     value={timeslot.timeslotID}
                                 >
-                                    {`${
-                                        timeslot.startTime
-                                            ? formatDate(timeslot.startTime)
-                                            : "Unknown date"
-                                    }: ${
-                                        timeslot.startTime
+                                    {`${timeslot.startTime
+                                        ? formatDate(timeslot.startTime)
+                                        : "Unknown date"
+                                        }: ${timeslot.startTime
                                             ? formatTimeToHourMinute(
-                                                  timeslot.startTime
-                                              )
+                                                timeslot.startTime
+                                            )
                                             : "Unknown start time"
-                                    } - ${
-                                        timeslot.endTime
+                                        } - ${timeslot.endTime
                                             ? formatTimeToHourMinute(
-                                                  timeslot.endTime
-                                              )
+                                                timeslot.endTime
+                                            )
                                             : "Unknown end time"
-                                    }`}
+                                        }`}
                                 </option>
                             ))}
                         </select>
