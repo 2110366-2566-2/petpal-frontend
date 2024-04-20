@@ -1,7 +1,8 @@
 import ChatIcon from '@mui/icons-material/Chat';
-export default function IssueId(){
+import { useEffect, useState } from 'react';
+export default function IssueId({params}:{params:{issue_id:string}}){
 
-    const mockSvcp = {
+    const mockissue = {
         serviceName:"grooming dog",
         SVCPID:"Iron man",
         userID:"Captain america",
@@ -12,6 +13,15 @@ export default function IssueId(){
         price:"500",
         issueDetail:"so my dog walker disappeared for half the session. can i get a refund? maybe ban that guy too"
     }
+
+    const [issueId , setIssueId] = useState<string>(params.issue_id)
+
+    useEffect(()=>{
+        const fetchData =() =>{
+            
+        }
+        fetchData()
+    },[])
 
     return(
         <div className="mr-[31px] ml-[31px] md:mr-[134px] md:ml-[134px]">
