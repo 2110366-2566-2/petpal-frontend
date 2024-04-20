@@ -30,7 +30,7 @@ export default function ResponsiveNavbar({ brandName, navItems }: NavBarProps) {
                 console.log('navItems changing to admin')
                 setRealNavItems([
                     { name: "Issue", link: "/admin/issue" },
-                    { name: "Verify", link: "/verify" },
+                    { name: "Verify", link: "/admin/verify" },
                     { name: "Chat", link: "/chat" }
                 ])
                 console.log('navItems changed', realNavItems)

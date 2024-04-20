@@ -14,8 +14,8 @@ export default function IssueCard({ issue, isMyIssue }: { issue: Issue, isMyIssu
     const issueDate = issue.issueDate? new Date(issue.issueDate).toLocaleDateString('en-GB') : "No date specified"
     const issueStatus = issue.isResolved? "Resolved" : "In progress"
 
-
-    function handleIssueAction() {
+    function handleIssueAction(e: React.MouseEvent<HTMLButtonElement>) {
+        e.stopPropagation()
         if (isMyIssue) {
             const res = fetch(`http://localhost:8080/issue/resolve/${issue.issueID}`, {
                 method: 'POST',
