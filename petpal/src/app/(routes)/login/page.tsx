@@ -2,15 +2,17 @@
 import React, { ChangeEvent, useContext, useState } from "react";
 import Button from "@/app/(routes)/register/_components/Button";
 import login from "@/app/libs/auth/login";
-import { useRouter } from "next/navigation";
 import { AuthContext } from "@/app/_contexts/AuthContext";
+import { useRouter } from "next/navigation";
+import { getCurrentEntity } from "@/app/libs/user/userBackend";
+import { getCurrentEntityType } from "@/app/libs/currentEntiity/getCurrentEntityType";
 
 export default function Login() {
     const [registrationType, setRegistrationType] = useState("user");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
-    const { setIsLogin } = useContext(AuthContext);
+    const { setIsLogin ,setCurrentEntity ,setAccType} = useContext(AuthContext);
     const router = useRouter();
 
     const handleRegistrationTypeChange = (
@@ -28,7 +30,11 @@ export default function Login() {
             const loginUser = await login(email, registrationType, password);
             if (loginUser) {
                 setIsLogin(true);
-                router.push("/");
+                getCurrentEntity().then((Response) => {
+                    setCurrentEntity(Response);
+                    setAccType(getCurrentEntityType(Response))
+                });
+                router.push("/")
             }
         } catch (error) {
             setIsLogin(false);

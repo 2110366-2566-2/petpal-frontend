@@ -8,8 +8,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useRouter } from 'next/navigation';
 import { deleteCookie, hasCookie } from 'cookies-next';
 import { AuthContext } from '../_contexts/AuthContext';
-import { getCurrentEntity } from '../libs/user/userBackend';
-import { getCurrentEntityType } from '../libs/currentEntiity/getCurrentEntityType';
 
 interface NavBarProps {
     brandName: string;
@@ -18,31 +16,28 @@ interface NavBarProps {
 
 export default function ResponsiveNavbar({ brandName, navItems }: NavBarProps) {
     const [isMobile, setIsMobile] = useState(false);
-    const { currentEntity, setCurrentEntity, isLogin, setIsLogin } = useContext(AuthContext)
-    const [accType, setAccType] = useState<string>("waiting")
+    const { currentEntity, setCurrentEntity, isLogin, setIsLogin ,accType, setAccType} = useContext(AuthContext)
     const [realNavItems, setRealNavItems] = useState(navItems)
+    
+    const router = useRouter()
 
     // change navItems if user is admin by checking if currentEntity can be casted to Admin
     useEffect(() => {
         console.log("NAV BAR")
-        getCurrentEntity().then((Response) => {
-            setAccType(getCurrentEntityType(Response))
-            if (accType === "admin") {
-                console.log('navItems changing to admin')
-                setRealNavItems([
-                    { name: "Issue", link: "/admin/issue" },
-                    { name: "Verify", link: "/admin/verify" },
-                    { name: "Chat", link: "/chat" }
-                ])
-                console.log('navItems changed', realNavItems)
-            }
-        })
+        if (accType === "admin") {
+            console.log('navItems changing to admin')
+            setRealNavItems([
+                { name: "Issue", link: "/admin/issue" },
+                { name: "Verify", link: "/admin/verify" },
+                { name: "Chat",  link: "/chat" }
+            ])
+            console.log('navItems changed', realNavItems)
+        } 
     }, [currentEntity])
 
     const toggleMobileMenu = () => {
         setIsMobile(!isMobile);
     };
-    const router = useRouter()
 
     const onClickButtonHandler = () => {
         if (!isLogin) {
@@ -52,6 +47,7 @@ export default function ResponsiveNavbar({ brandName, navItems }: NavBarProps) {
             deleteCookie('token');
             setIsLogin(false);
             setCurrentEntity(null);
+            window.location.reload();
         }
     };
     // everytime current user and islogin change reload it 
