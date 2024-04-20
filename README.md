@@ -1,6 +1,6 @@
 # petpal-frontend
-<h3>How to run</h3> 
-```
+How to run
+```bash
 cd petpal
 npm run dev
 ```
