@@ -40,13 +40,7 @@ export default function FetchBankInformation(){
         fetchCurrentEntity();
     } , [addAndDeleteReq])
 
-    
-    // const LogData = await LoginApi()
-    // setCookie("token",LogData?.data.AccessToken);
-    // console.log("logdata from login",LogData)
-    // const entity =await getCurrentEntity()
-    // // const entity = {defaultAccountNumber:"1",defaultBank:"2"}
-    // console.log("in", entity)
+
     let banks = [
         {id:0 , name : "None"},
         {id: 1 , name: "Kasikorn"},
@@ -120,7 +114,7 @@ export default function FetchBankInformation(){
                 <span className='text-black font-bold text-[16px]'>Accout Number</span>
                     <input type="text" className='p-1 mt-1 block w-full rounded-md shadow-sm
                     focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 peer-focus:text-primary border-[#D9D9D9] border-[3px]'
-                    placeholder='x-xxx-x-xxxx' 
+                    placeholder='1234567890' 
                     value={defAccount}
                     onChange={(e) => setDefAccount(e.target.value)}/>
                 </div>

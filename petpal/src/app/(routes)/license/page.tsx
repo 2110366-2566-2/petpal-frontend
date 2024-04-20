@@ -3,6 +3,7 @@
 import React from 'react'
 import 'tailwindcss/tailwind.css'
 import { useState } from 'react'
+import { API_URL } from '@/app/_constants/env'
 
 export default function License() {
   
@@ -27,7 +28,7 @@ export default function License() {
       formData.append('svcpEmail', 'pooh@gg');
       formData.set('license', file);
 
-      const response = await fetch('http://localhost:8080/serviceprovider/upload-license', {
+      const response = await fetch(API_URL + '/serviceprovider/upload-license', {
         method: 'POST',
         body: formData,
       })

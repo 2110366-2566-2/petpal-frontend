@@ -1,6 +1,6 @@
 "use client";
 import React, { ChangeEvent, useState } from "react";
-import Button from "@app/(routes)/register/_components/Button"
+import Button from "@app/(routes)/register/_components/Button";
 import registerUser from "@app/libs/auth/registerUser";
 import registerSVCP from "@app/libs/auth/registerSVCP";
 import { useRouter } from "next/navigation";
@@ -19,7 +19,7 @@ export default function Register() {
     const [registrationType, setRegistrationType] = useState("User");
     const [errorMessage, setErrorMessage] = useState("");
 
-    const router = useRouter()
+    const router = useRouter();
     const handleRegistrationTypeChange = (
         e: ChangeEvent<HTMLSelectElement>
     ) => {
@@ -32,25 +32,42 @@ export default function Register() {
     };
     const handleSubmit = async () => {
         // Validate form fields
-        console.log(address);
-        console.log(dateOfBirth + "T00:00:00Z");
-        console.log(email);
-        console.log(fullName);
-        console.log(password);
-        console.log(password2);
-        console.log(phoneNumber);
-        console.log(username);
-        console.log(serviceType);
-        console.log(registrationType);
-        if (
-            !email.trim() ||
-            !password.trim() ||
-            !password2.trim() ||
-            !username.trim()
-        ) {
-            setErrorMessage(" Please fill all fields");
-            return;
+        // console.log(address);
+        // console.log(dateOfBirth + "T00:00:00Z");
+        // console.log(email);
+        // console.log(fullName);
+        // console.log(password);
+        // console.log(password2);
+        // console.log(phoneNumber);
+        // console.log(username);
+        // console.log(serviceType);
+        // console.log(registrationType);
+        if (registrationType === "User") {
+            if (
+                !email.trim() ||
+                !password.trim() ||
+                !password2.trim() ||
+                !username.trim() ||
+                !address.trim() ||
+                !dateOfBirth.trim() ||
+                !fullName.trim() ||
+                !phoneNumber.trim()
+            ) {
+                setErrorMessage(" Please fill all fields");
+                return;
+            }
+        } else if (registrationType === "Service Provider") {
+            if (
+                !email.trim() ||
+                !password.trim() ||
+                !password2.trim() ||
+                !username.trim()
+            ) {
+                setErrorMessage(" Please fill all fields");
+                return;
+            }
         }
+
         if (password != password2) {
             setErrorMessage(" Passwords do not match. Please try again.");
             return;
@@ -67,7 +84,7 @@ export default function Register() {
                     phoneNumber,
                     username
                 );
-                if(newUser){
+                if (newUser) {
                     router.push("/login");
                 }
             } catch (error) {
@@ -75,8 +92,13 @@ export default function Register() {
             }
         } else if (registrationType === "Service Provider") {
             try {
-                const newSVCP = await registerSVCP(email, password, serviceType, username);
-                if(newSVCP){
+                const newSVCP = await registerSVCP(
+                    email,
+                    password,
+                    serviceType,
+                    username
+                );
+                if (newSVCP) {
                     router.push("/login");
                 }
             } catch (error) {

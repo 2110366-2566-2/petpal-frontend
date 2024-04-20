@@ -1,18 +1,13 @@
 import { EntityType } from "@/app/_enum/currentEntity/EntityType"
-export function getCurrentEntityType(json: object): string {
-    let entityType: string
+export function getCurrentEntityType(json: object): EntityType {
+    let entityType: EntityType
 
-    // switch (json) {
-    //     case ("SVCPID" in json): {
-    //         console.log("waiting")
-    //     } case
-    // }
     if (json.hasOwnProperty("SVCPID")) {
         entityType = EntityType.SERVICE_PROVIDER
     } else if (json.hasOwnProperty("id")) {
         entityType = EntityType.USER
     } else if (json.hasOwnProperty("adminID") || json.hasOwnProperty("adminId")) {
-        entityType = EntityType.ADMIN 
+        entityType = EntityType.ADMIN
     } else {
         entityType = EntityType.NOT_LOGIN
     }
