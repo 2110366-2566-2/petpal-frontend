@@ -1,5 +1,7 @@
+import { API_URL } from "@/app/_constants/env";
+
 export default async function getUnverified() {
-    const response = await fetch("http://localhost:8080/serviceproviders/unverified", {
+    const response = await fetch(API_URL + "/serviceproviders/unverified", {
       method: "GET",
       credentials: 'include'
     });

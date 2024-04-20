@@ -1,5 +1,7 @@
+import { API_URL } from "@/app/_constants/env";
+
 export default async function getServices() {
-    const response = await fetch("http://localhost:8080/service/searching", {
+    const response = await fetch(API_URL + "/service/searching", {
         method: "POST",
         credentials:'include',
         body: JSON.stringify({

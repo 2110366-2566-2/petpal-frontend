@@ -1,3 +1,4 @@
+import { API_URL } from "@/app/_constants/env";
 import { setCookie } from "cookies-next";
 import toast from "react-hot-toast";
 export default async function login(
@@ -5,7 +6,7 @@ export default async function login(
     registrationType: string,
     password: string
 ) {
-    const response = await fetch("http://localhost:8080/login", {
+    const response = await fetch(API_URL + "/login", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

@@ -1,3 +1,5 @@
+import { API_URL } from "@/app/_constants/env";
+
 export default async function registerUser(
     address: string,
     dateOfBirth: string,
@@ -7,7 +9,7 @@ export default async function registerUser(
     phoneNumber: string,
     username: string
 ) {
-    const response = await fetch("http://localhost:8080/register-user", {
+    const response = await fetch(API_URL + "register-user", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

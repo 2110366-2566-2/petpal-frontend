@@ -1,6 +1,8 @@
+import { API_URL } from "@/app/_constants/env";
+
 export default async function getBookingHistory() {
     const response = await fetch(
-        "http://localhost:8080/service/booking/all/user",
+        API_URL + "/service/booking/all/user",
         {
             method: "POST",
             credentials: "include",

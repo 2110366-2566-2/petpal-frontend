@@ -1,8 +1,9 @@
+import { API_URL } from "@/app/_constants/env";
 import { ChatResponse } from "@/app/_interface/chat/ChatResponse";
 
 export async function getChatHistoryByRoomId(roomId: string) {
     try {
-        const response = await fetch(`http://localhost:8080/chat/history/${roomId}`, {
+        const response = await fetch(`${API_URL}/chat/history/${roomId}`, {
             method: 'GET',
             credentials: 'include',
         });

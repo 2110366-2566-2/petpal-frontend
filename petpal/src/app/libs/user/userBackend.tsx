@@ -1,10 +1,11 @@
 
 // import { cookies } from 'next/headers'
+import { API_URL } from "@/app/_constants/env";
 import { setCookie } from "cookies-next";
 export async function LoginApi() {
     try {
         console.log("In loginAPI")
-        const response = await fetch('http://localhost:8080/login', {
+        const response = await fetch(API_URL + '/login', {
             method: 'POST',
             headers: {
                 'Cache-Control': 'no-cache',
@@ -35,7 +36,7 @@ export async function LoginApi() {
 export async function getCurrentEntity() {
     try {
 
-        const response = await fetch('http://localhost:8080/current-entity', {
+        const response = await fetch(API_URL + '/current-entity', {
             method: 'GET',
             credentials: 'include',
         });
@@ -56,7 +57,7 @@ export async function deleteBank(usertype: String) {
     console.log("get in deleteBank function")
     try {
         // const log = await Login()
-        const response = await fetch(`http://localhost:8080/${usertype}/delete-bank-account`, {
+        const response = await fetch(`${API_URL}/${usertype}/delete-bank-account`, {
             method: 'DELETE',
             credentials: "include",
         })
@@ -71,7 +72,7 @@ export async function setdefaultBank(usertype: String, accountNumber: String, ba
     // const log = await Login()
     console.log("in set default bank ")
     try {
-        const response = await fetch(`http://localhost:8080/${usertype}/set-default-bank-account`, {
+        const response = await fetch(`${API_URL}/${usertype}/set-default-bank-account`, {
             method: 'POST',
             credentials: "include",
             body: JSON.stringify({
