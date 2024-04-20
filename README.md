@@ -1,3 +1,6 @@
 # petpal-frontend
-
-hello
+<h3>How to run</h3> 
+```
+cd petpal
+npm run dev
+```
