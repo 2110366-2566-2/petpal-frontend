@@ -67,7 +67,7 @@ export default function EditProfile() {
   const handleSubmit = async() => {
     // console.log(username,description,address,phoneNumber)
     if(fileProImg) await uploadImgApi(fileProImg)
-    if(username && description && address && phoneNumber){
+    if(username && address && phoneNumber){
       await editSvcpProfile(
         username,
         description,
