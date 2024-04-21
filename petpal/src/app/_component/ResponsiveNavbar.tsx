@@ -16,14 +16,23 @@ interface NavBarProps {
 
 export default function ResponsiveNavbar({ brandName, navItems }: NavBarProps) {
     const [isMobile, setIsMobile] = useState(false);
-    const { currentEntity, setCurrentEntity, isLogin, setIsLogin ,accType, setAccType} = useContext(AuthContext)
+    const { currentEntity, setCurrentEntity, isLogin, setIsLogin ,accType} = useContext(AuthContext)
     const [realNavItems, setRealNavItems] = useState(navItems)
     
     const router = useRouter()
 
+    const reloadAndRedirect = () => {
+        // Reload the window
+        window.location.reload();
+    
+        // Listen for the window.onload event
+        window.onload = () => {
+            // Redirect to the specified route once the window is reloaded
+            router.replace("/");
+        };
+    };
     // change navItems if user is admin by checking if currentEntity can be casted to Admin
     useEffect(() => {
-        console.log("NAV BAR")
         if (accType === "admin") {
             console.log('navItems changing to admin')
             setRealNavItems([
@@ -64,7 +73,7 @@ export default function ResponsiveNavbar({ brandName, navItems }: NavBarProps) {
             deleteCookie('token');
             setIsLogin(false);
             setCurrentEntity(null);
-            window.location.reload();
+            reloadAndRedirect();
         }
     };
     // everytime current user and islogin change reload it 
