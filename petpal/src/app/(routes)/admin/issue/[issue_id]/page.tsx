@@ -111,9 +111,11 @@ export default function IssueId({ params }: { params: { issue_id: string } }) {
 
                 <div className="mr-3 flex items-end ">
                     <button onClick={(event) => {
-                        const speacial_tag: string = `<ISSUE_TAGE>${issueId}`
-                        chatButtonFunction(Issue.workingAdminID, booking.userID, EntityType.ADMIN, EntityType.USER, speacial_tag, true)
-                        router.push("/chat")
+                        if (Issue.workingAdminID !== "") {
+                            const speacial_tag: string = `<ISSUE_TAGE>${issueId}`
+                            chatButtonFunction(Issue.workingAdminID, booking.userID, EntityType.ADMIN, EntityType.USER, speacial_tag, true)
+                            router.push("/chat")
+                        }
                     }}>
                         <ChatIcon />
                         <span className="ml-1">User</span>
@@ -121,10 +123,12 @@ export default function IssueId({ params }: { params: { issue_id: string } }) {
                 </div>
                 <div className="mr-3 flex items-end ">
                     <button onClick={(event) => {
-                        const speacial_tag: string = `<ISSUE_TAGE>${issueId}`
-                        chatButtonFunction(Issue.workingAdminID, booking.SVCPID, EntityType.ADMIN, EntityType.SERVICE_PROVIDER, speacial_tag, true)
-                        console.log(booking.SVCPID)
-                        router.push("/chat")
+                        if (Issue.workingAdminID !== "") {
+                            const speacial_tag: string = `<ISSUE_TAGE>${issueId}`
+                            chatButtonFunction(Issue.workingAdminID, booking.SVCPID, EntityType.ADMIN, EntityType.SERVICE_PROVIDER, speacial_tag, true)
+                            console.log(booking.SVCPID)
+                            router.push("/chat")
+                        }
                     }}>
                         <ChatIcon />
                         <span className="ml-1">Service Provider</span>

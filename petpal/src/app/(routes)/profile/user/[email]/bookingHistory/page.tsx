@@ -1,5 +1,4 @@
 "use client";
-import getQRpayment from "@/app/libs/service/getQRpayment";
 import Booking from "@app/(routes)/profile/_interface/Booking";
 import cancelBooking from "@app/libs/service/cancelBooking";
 import {
@@ -14,6 +13,7 @@ import toast from "react-hot-toast";
 import RescheduleForm from "./_components//Reschedule";
 import Paymentcard from "./_components/Paymentcard";
 import SkeletonList from "./_components/SkeletonList";
+
 
 const modalBoxStyle = {
     position: "absolute" as "absolute",
@@ -159,6 +159,9 @@ export default function BookingHistory() {
         // setselectedTimeSlotId(null);
         // setSelectedBookingID(null);
     };
+    function gotoFeedback() {
+        router.push(`/profile/user/_/bookingHistory/${selectedBookingID}/feedback`);
+    }
 
     return (
         <main className="flex flex-col items-center pt-10">
@@ -301,9 +304,13 @@ export default function BookingHistory() {
 
 
                             {isFeedbackable(booking) && (
+                                 <button
+                                 onClick={() =>gotoFeedback()}
+                                 >
                                     <div className="text-right ml-3 font-semibold text-[16px] text-[#858585]">
                                 Write Feedback
                             </div>
+                            </button>
                             )}
 
                             </div>
@@ -357,9 +364,13 @@ export default function BookingHistory() {
                                     </button>
                             )}
                             {isFeedbackable(booking) && (
+                                <button
+                                onClick={() =>gotoFeedback()}
+                                >
                                     <div className="text-right ml-3 font-semibold text-[16px] text-[#858585]">
                                 Write Feedback
                             </div>
+                            </button>
                             )}
                             </div>
 

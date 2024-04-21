@@ -32,7 +32,24 @@ export default function ResponsiveNavbar({ brandName, navItems }: NavBarProps) {
                 { name: "Chat",  link: "/chat" }
             ])
             console.log('navItems changed', realNavItems)
-        } 
+        }else if(accType === "svcp"){
+            console.log('navItems changing to svcp')
+            setRealNavItems([
+                { name: "Profile", link: "/profile" },
+                { name: "Chat", link: "/chat" },
+                { name: "Report", link: "/help" }
+            ])
+        }else if(accType === "user"){
+            setRealNavItems([
+                { name: "Listing", link: "/listing" },
+                { name: "Booking", link: "/bookingLoading" },
+                { name: "Profile", link: "/profile" },
+                { name: "Chat", link: "/chat" },
+                { name: "Report", link: "/help" }
+            ]);
+        }else{
+            setRealNavItems([]);
+        }
     }, [currentEntity])
 
     const toggleMobileMenu = () => {
