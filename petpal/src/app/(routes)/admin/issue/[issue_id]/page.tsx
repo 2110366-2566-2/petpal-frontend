@@ -1,6 +1,6 @@
 'use client'
 import { chatButtonFunction } from '@/app/(routes)/profile/_utils/chatButtonFunction';
-import { getBookingById, getIssueById } from '@/app/libs/admin/adminApi';
+import { getBookingById, getIssueById, refundBooking } from '@/app/libs/admin/adminApi';
 import ChatIcon from '@mui/icons-material/Chat';
 import { useEffect, useState } from 'react';
 import { useRouter } from "next/navigation";
@@ -71,16 +71,13 @@ export default function IssueId({ params }: { params: { issue_id: string } }) {
     const [stime, setStime] = useState<string>()
     const [etime, setEtime] = useState<string>()
 
+    const [active ,setActive] =  useState(true)
+
     useEffect(() => {
         const fetchData = async () => {
             await getIssueById(issueId).then((response) => {
                 setIssue(response)
             })
-            // if(Issue){
-            //     await getBookingById(Issue.associatedBookingID).then((response)=>{
-            //         setBooking(response)
-            //     })
-            // }
         }
         fetchData()
     }, [])
@@ -100,6 +97,11 @@ export default function IssueId({ params }: { params: { issue_id: string } }) {
             })
         }
         fetchData()
+    }
+
+    const handleRefund = async() =>{
+        console.log("refund")
+        if(Issue) await refundBooking(Issue?.associatedBookingID)
     }
 
     if (!Issue || !booking) {
@@ -153,7 +155,9 @@ export default function IssueId({ params }: { params: { issue_id: string } }) {
                     <div className='flex justify-between mb-3'>
                         {/* <p className='text-[32px]'>{booking.price}</p> */}
                         <div className='flex items-end'>
-                            <button className='font-bold mr-3'>Refund</button>
+
+                            {active && <button className='font-bold mr-3' onClick={()=>{handleRefund();setActive(!active)}}>Refund</button>}
+                            {!active && <button className='font-bold mr-3 text-[#858585]'>Refund</button>}
                             <button className='text-[#FF5858] font-bold'>Delete</button>
                         </div>
                     </div>
