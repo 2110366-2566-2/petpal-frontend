@@ -37,10 +37,11 @@ function isCancelable(booking: Booking): boolean {
     return booking.statusString == "Paid";
 }
 function isRefundable(booking: Booking): boolean {
-    return booking.statusString == "Service Completed" || booking.statusString == "Completed";
+    // return booking.statusString == "Service Completed" || booking.statusString == "Completed";
+    return booking.statusString == "Completed" ;
 }
 function isFeedbackable(booking: Booking): boolean {
-    return booking.statusString == "Service Completed";
+    return booking.statusString == "Completed";
 }
 function isCompleteable(booking: Booking): boolean {
     return booking.statusString == "Completed";
@@ -302,9 +303,12 @@ export default function BookingHistory() {
 
 
                             {isFeedbackable(booking) && (
+                                 <button
+                                 >
                                     <div className="text-right ml-3 font-semibold text-[16px] text-[#858585]">
                                 Write Feedback
                             </div>
+                            </button>
                             )}
 
                             </div>
@@ -358,9 +362,12 @@ export default function BookingHistory() {
                                     </button>
                             )}
                             {isFeedbackable(booking) && (
+                                <button
+                                >
                                     <div className="text-right ml-3 font-semibold text-[16px] text-[#858585]">
                                 Write Feedback
                             </div>
+                            </button>
                             )}
                             </div>
 
