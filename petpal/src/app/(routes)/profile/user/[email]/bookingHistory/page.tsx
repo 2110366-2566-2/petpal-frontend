@@ -405,7 +405,7 @@ export default function BookingHistory() {
                             )}
                             {isFeedbackable(booking) && (
                                 <button
-                                onClick={() =>router.push(`/profile/user/_/bookingHistory/${booking.bookingID}/feedback/${booking.serviceID}`)}
+                                onClick={() =>router.push(`/profile/user/_/bookingHistory/${booking.bookingID}/feedback?service_id=${booking.serviceID}`)}
                                 >
                                     <div className="text-right ml-3 font-semibold text-[16px] text-[#858585]">
                                 Write Feedback
