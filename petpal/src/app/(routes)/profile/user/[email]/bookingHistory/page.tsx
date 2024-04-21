@@ -2,6 +2,7 @@
 import getQRpayment from "@/app/libs/service/getQRpayment";
 import Booking from "@app/(routes)/profile/_interface/Booking";
 import cancelBooking from "@app/libs/service/cancelBooking";
+import completeBooking  from "@app/libs/service/completeBooking";
 import {
     formatDate,
     formatTimeToHourMinute,
@@ -43,7 +44,8 @@ function isFeedbackable(booking: Booking): boolean {
     return booking.statusString == "Completed";
 }
 function isCompleteable(booking: Booking): boolean {
-    return booking.statusString == "Completed";
+    return false;
+    //return booking.statusString == "Completed";
 }
 // Payment Expired ,Pending Payment ,Cancelled ,Paid ,Service Completed ,Completed , Refunded
 function statusColor(status: string): string {
@@ -114,6 +116,20 @@ export default function BookingHistory() {
             console.error("Error fetching bookings:", error);
         }
     };
+    const handleComplete = async (id: string) => {
+        try     
+        {
+            toast.success("Booking has been completed successfully!");
+            completeBooking(id);
+            router.push('/bookingLoading');
+        }
+        catch (error) {
+            toast.error("Error completing booking");
+            console.error("Error fetching bookings:", error);
+        }
+    }
+
+
     const handleRefund = async (id: string) => {
         router.push("/help/refund?bookingid=" + id);
     };
@@ -286,7 +302,18 @@ export default function BookingHistory() {
                                         </div>
                                     </button>
                                 )}
-
+                                 {isCompleteable(booking) && (
+                                     <button
+                                     onClick={() =>
+                                        handleComplete(booking.bookingID)
+                                     }
+                                 >
+                                     <div className="font-bold text-[16px] ml-3 text-[#28a745]">
+                                         Compelete
+                                     </div>
+                                 </button>
+                                )
+                                }
                             </div>
                             
 
@@ -349,6 +376,18 @@ export default function BookingHistory() {
                                     </div>
                                 </button>
                                 )}
+                                {isCompleteable(booking) && (
+                                     <button
+                                     onClick={() =>
+                                        handleComplete(booking.bookingID)
+                                     }
+                                 >
+                                     <div className="font-bold text-[16px] ml-3 text-[#28a745]">
+                                         Compelete
+                                     </div>
+                                 </button>
+                                )
+                                }
                                     
                             </div>
 
@@ -373,6 +412,7 @@ export default function BookingHistory() {
                             </div>
                             </button>
                             )}
+                            
                             </div>
 
                            
