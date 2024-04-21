@@ -43,6 +43,7 @@ function isRefundable(booking: Booking): boolean {
 }
 function isFeedbackable(booking: Booking): boolean {
     return booking.statusString == "Service Completed" || booking.statusString == "Completed";
+    
 }
 function isCompleteable(booking: Booking): boolean {
     return booking.statusString == "Completed";
