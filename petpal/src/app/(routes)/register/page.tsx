@@ -96,7 +96,9 @@ export default function Register() {
                     email,
                     password,
                     serviceType,
-                    username
+                    username,
+                    phoneNumber,
+                    address
                 );
                 if (newSVCP) {
                     router.push("/login");

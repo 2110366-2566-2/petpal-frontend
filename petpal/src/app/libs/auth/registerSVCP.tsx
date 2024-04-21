@@ -4,7 +4,9 @@ export default async function registerSVCP(
     email: string,
     password: string,
     serviceType: string,
-    username: string
+    username: string,
+    phoneNumber : string,
+    address : string
 ) {
     const response = await fetch(API_URL + "/register-svcp", {
         method: "POST",
@@ -16,6 +18,8 @@ export default async function registerSVCP(
             SVCPPassword: password,
             SVCPServiceType: serviceType,
             SVCPUsername: username,
+            phoneNumber : phoneNumber,
+            address : address
         }),
     });
 
