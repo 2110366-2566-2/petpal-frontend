@@ -38,11 +38,11 @@ function isCancelable(booking: Booking): boolean {
     return booking.statusString == "Paid";
 }
 function isRefundable(booking: Booking): boolean {
-    // return booking.statusString == "Service Completed" || booking.statusString == "Completed";
+    return booking.statusString == "Service Completed" || booking.statusString == "Completed";
     return booking.statusString == "Completed" ;
 }
 function isFeedbackable(booking: Booking): boolean {
-    return booking.statusString == "Completed";
+    return booking.statusString == "Service Completed" || booking.statusString == "Completed";
 }
 function isCompleteable(booking: Booking): boolean {
     return booking.statusString == "Completed";
