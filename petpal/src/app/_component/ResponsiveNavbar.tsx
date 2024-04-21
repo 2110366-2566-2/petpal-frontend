@@ -32,7 +32,16 @@ export default function ResponsiveNavbar({ brandName, navItems }: NavBarProps) {
                 { name: "Chat",  link: "/chat" }
             ])
             console.log('navItems changed', realNavItems)
-        } 
+        }else if(accType === "svcp"){
+            console.log('navItems changing to svcp')
+            setRealNavItems([
+                { name: "Profile", link: "/profile" },
+                { name: "Chat", link: "/chat" },
+                { name: "Report", link: "/help" }
+            ])
+        }else if(accType !== "user"){
+            setRealNavItems([]);
+        }
     }, [currentEntity])
 
     const toggleMobileMenu = () => {
