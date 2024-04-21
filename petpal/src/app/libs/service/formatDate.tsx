@@ -1,5 +1,7 @@
 export function formatTimeToHourMinute(datetimeString: string): string {
+    const offset = new Date().getTimezoneOffset();
     const date = new Date(datetimeString);
+    date.setTime(date.getTime() + offset * 60000)
     const hours = date.getHours();
     const minutes = date.getMinutes();
     const formattedHours = hours.toString().padStart(2, "0");
@@ -8,7 +10,9 @@ export function formatTimeToHourMinute(datetimeString: string): string {
 }
 
 export function formatDate(datetimeString: string): string {
+    const offset = new Date().getTimezoneOffset();
     const date = new Date(datetimeString);
+    date.setTime(date.getTime() + offset * 60000)
     const options: Intl.DateTimeFormatOptions = {
         year: "numeric",
         month: "short",

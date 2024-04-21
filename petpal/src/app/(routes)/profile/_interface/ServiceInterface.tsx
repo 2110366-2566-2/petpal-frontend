@@ -39,8 +39,11 @@ export function adaptorServiceToServiceInterface(service: Service): ServiceInter
   if (service.timeslots![0] !== undefined) {
     selectedTimeSlot = service.timeslots![0] as Timeslot
   }
-  const StartDate: Date = new Date(selectedTimeSlot.startTime as string)
-  const EndDate: Date = new Date(selectedTimeSlot.endTime as string)
+  const offset = new Date().getTimezoneOffset();
+  let StartDate: Date = new Date(selectedTimeSlot.startTime as string)
+  StartDate.setTime(StartDate.getTime() + offset * 60000)
+  let EndDate: Date = new Date(selectedTimeSlot.endTime as string)
+  EndDate.setTime(EndDate.getTime() + offset * 60000)
   const Price: number = service.price as number
   const ServiceID = service.serviceID as string
 
