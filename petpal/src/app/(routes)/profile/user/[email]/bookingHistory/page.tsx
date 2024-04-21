@@ -177,7 +177,7 @@ export default function BookingHistory() {
         // setSelectedBookingID(null);
     };
     function gotoFeedback() {
-        router.push(`/profile/user/_/bookingHistory/${selectedBookingID}/feedback`);
+        
     }
 
     return (
@@ -333,7 +333,7 @@ export default function BookingHistory() {
 
                             {isFeedbackable(booking) && (
                                  <button
-                                 onClick={() =>gotoFeedback()}
+                                 onClick={() =>router.push(`/profile/user/_/bookingHistory/${booking.bookingID}/feedback/${booking.serviceID}`)}
                                  >
                                     <div className="text-right ml-3 font-semibold text-[16px] text-[#858585]">
                                 Write Feedback
@@ -405,7 +405,7 @@ export default function BookingHistory() {
                             )}
                             {isFeedbackable(booking) && (
                                 <button
-                                onClick={() =>gotoFeedback()}
+                                onClick={() =>router.push(`/profile/user/_/bookingHistory/${booking.bookingID}/feedback/${booking.serviceID}`)}
                                 >
                                     <div className="text-right ml-3 font-semibold text-[16px] text-[#858585]">
                                 Write Feedback
