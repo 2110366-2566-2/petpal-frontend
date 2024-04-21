@@ -1,20 +1,19 @@
 "use client";
-import getBookingHistory from "@app/libs/service/getBookingHistory";
-import React, { useState, useEffect, Suspense } from "react";
+import getQRpayment from "@/app/libs/service/getQRpayment";
 import Booking from "@app/(routes)/profile/_interface/Booking";
 import cancelBooking from "@app/libs/service/cancelBooking";
-import Paymentcard from "./_components/Paymentcard";
-import Link from "next/link";
-import getQRpayment from "@/app/libs/service/getQRpayment";
-import SkeletonList from "./_components/SkeletonList";
-import RescheduleForm from "./_components//Reschedule";
-import { Modal, Box, Typography } from "@mui/material";
 import {
-    formatTimeToHourMinute,
     formatDate,
+    formatTimeToHourMinute,
 } from "@app/libs/service/formatDate";
+import getBookingHistory from "@app/libs/service/getBookingHistory";
+import { Box, Modal } from "@mui/material";
 import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import RescheduleForm from "./_components//Reschedule";
+import Paymentcard from "./_components/Paymentcard";
+import SkeletonList from "./_components/SkeletonList";
 
 const modalBoxStyle = {
     position: "absolute" as "absolute",
@@ -37,10 +36,10 @@ function isCancelable(booking: Booking): boolean {
     return booking.statusString == "Paid";
 }
 function isRefundable(booking: Booking): boolean {
-    return booking.statusString == "Service Completed" || booking.statusString == "Completed";
+    return booking.statusString == "Service Completed";
 }
 function isFeedbackable(booking: Booking): boolean {
-    return booking.statusString == "Service Completed";
+    return booking.statusString == "Completed";
 }
 function isCompleteable(booking: Booking): boolean {
     return booking.statusString == "Completed";
