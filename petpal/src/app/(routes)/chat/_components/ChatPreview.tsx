@@ -79,10 +79,10 @@ export default function ChatPreview({ ChatHistoryUser, setUserId }: { ChatHistor
                     <p className="text-left mr-auto">{Name}</p>
                     {getLastSendTimeText(MessageHistory)}
                 </div>
-                <div className="m-auto flex felx-row space-x-[10px]">
+                {/* <div className="m-auto flex felx-row space-x-[10px]">
                     {getLastSendText(MessageHistory)}
                     {getNumReadNotification(MessageHistory, LastSee)}
-                </div>
+                </div> */}
             </div>
         </div>
     )
