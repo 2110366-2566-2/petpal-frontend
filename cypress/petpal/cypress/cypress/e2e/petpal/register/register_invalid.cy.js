@@ -99,6 +99,7 @@ const weburl = 'http://localhost:3000';
 describe('Register Page invalid test', () => {
 
     before(() => {
+        // assume has this email in the system
         cy.visit(weburl + '/register');
         fields.forEach((field, user_index) => {
             cy.contains(fields[user_index]).next(fieldsNext[user_index]).type(userData[1][user_index]);
@@ -122,10 +123,7 @@ describe('Register Page invalid test', () => {
             });
             // Select option in the "Register as" dropdown
             cy.get('button').contains('Register').click();
-
-            // if (index == 2)
-            //     cy.contains('span', 'Passwords do not match. Please try again.').should('be.visible');
-            // else cy.contains('span', 'Please fill all fields').should('be.visible');
+            // check redirect to login page  == valid acual output
             cy.url().should('eq', weburl + '/login');
 
         });
