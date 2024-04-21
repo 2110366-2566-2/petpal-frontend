@@ -21,16 +21,6 @@ export default function ResponsiveNavbar({ brandName, navItems }: NavBarProps) {
     
     const router = useRouter()
 
-    const reloadAndRedirect = () => {
-        // Reload the window
-        window.location.reload();
-    
-        // Listen for the window.onload event
-        window.onload = () => {
-            // Redirect to the specified route once the window is reloaded
-            router.replace("/");
-        };
-    };
     // change navItems if user is admin by checking if currentEntity can be casted to Admin
     useEffect(() => {
         if (accType === "admin") {
@@ -73,7 +63,7 @@ export default function ResponsiveNavbar({ brandName, navItems }: NavBarProps) {
             deleteCookie('token');
             setIsLogin(false);
             setCurrentEntity(null);
-            reloadAndRedirect();
+            window.location.href = '/';
         }
     };
     // everytime current user and islogin change reload it 
