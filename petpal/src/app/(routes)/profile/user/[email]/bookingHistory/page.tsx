@@ -1,6 +1,6 @@
 "use client";
 import getBookingHistory from "@app/libs/service/getBookingHistory";
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, Suspense, useContext } from "react";
 import Booking from "@app/(routes)/profile/_interface/Booking";
 import cancelBooking from "@app/libs/service/cancelBooking";
 import Paymentcard from "./_components/Paymentcard";
@@ -15,6 +15,7 @@ import {
 } from "@app/libs/service/formatDate";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+
 
 const modalBoxStyle = {
     position: "absolute" as "absolute",
@@ -161,6 +162,9 @@ export default function BookingHistory() {
         // setselectedTimeSlotId(null);
         // setSelectedBookingID(null);
     };
+    function gotoFeedback() {
+        router.push(`/profile/user/_/bookingHistory/${selectedBookingID}/feedback`);
+    }
 
     return (
         <main className="flex flex-col items-center pt-10">
@@ -304,6 +308,7 @@ export default function BookingHistory() {
 
                             {isFeedbackable(booking) && (
                                  <button
+                                 onClick={() =>gotoFeedback()}
                                  >
                                     <div className="text-right ml-3 font-semibold text-[16px] text-[#858585]">
                                 Write Feedback
@@ -363,6 +368,7 @@ export default function BookingHistory() {
                             )}
                             {isFeedbackable(booking) && (
                                 <button
+                                onClick={() =>gotoFeedback()}
                                 >
                                     <div className="text-right ml-3 font-semibold text-[16px] text-[#858585]">
                                 Write Feedback
