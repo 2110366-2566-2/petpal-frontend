@@ -15,11 +15,11 @@ export default function BookingLoading() {
     useEffect(() => {
         console.log(userId)
         switch (userId === undefined) {
-            case true: {
+           /* case true: {
               console.log("undefined")
               router.push('/login')
               break
-            }
+            }*/
             case false: {
                 router.push('/profile/user/' + userId + '/bookingHistory')
                 break
