@@ -1,6 +1,6 @@
 // To parse this data:
 //
-//   import { Convert, Issue } from "./file";
+//   import { Convert } from "./file";
 //
 //   const issue = Convert.toIssue(json);
 //
@@ -9,7 +9,7 @@
 
 export interface Issue {
     associatedBookingID?: string;
-    attachedImg?:         number[] | null;
+    attachedImg?:         string | null;
     details?:             string;
     isResolved?:          boolean;
     issueDate?:           string;
@@ -196,7 +196,7 @@ function r(name: string) {
 const typeMap: any = {
     "Issue": o([
         { json: "associatedBookingID", js: "associatedBookingID", typ: u(undefined, "") },
-        { json: "attachedImg", js: "attachedImg", typ: u(undefined, a(0), null) },
+        { json: "attachedImg", js: "attachedImg", typ: u(undefined, "", null) },
         { json: "details", js: "details", typ: u(undefined, "") },
         { json: "isResolved", js: "isResolved", typ: u(undefined, true) },
         { json: "issueDate", js: "issueDate", typ: u(undefined, "") },

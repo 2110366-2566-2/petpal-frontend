@@ -33,8 +33,11 @@ export default function Home() {
         window.onscroll = () => {
             const scrolledTo = window.scrollY + window.innerHeight
             const isReachBottom = document.body.scrollHeight - 200 <= scrolledTo
-            if (isReachBottom) {
+            if (isReachBottom && hasMore) {
                 getIssueList(currentPage + 1, perPage).then((data : Issue[]) => {
+                    console.log('currentPage', currentPage)
+                    console.log('perPage', perPage)
+                    console.log('issueList', data)
                     if (data.length > 0) {
                         setIssueList([...issueList, ...data])
                         setCurrentPage(currentPage + 1)
@@ -50,6 +53,7 @@ export default function Home() {
         setIssueList([])
         setCurrentPage(1)
         getIssueList(1, perPage).then((data : Issue[]) => {
+            console.log('issueList', data)
             setIssueList(data)
         })
     }, [isMyIssue, selectedIssueType, selectedIssueStatus])

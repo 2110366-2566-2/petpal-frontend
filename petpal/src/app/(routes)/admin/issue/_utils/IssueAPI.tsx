@@ -8,8 +8,10 @@ export async function getIssueList(page: number, per: number): Promise<Issue[]> 
             credentials: 'include',
         });
         const issueList = Convert.toIssueList(await response.text())
+        console.log('get comment list', issueList)
         return issueList
     } catch (error) {
+        console.log('error', error)
     }
 
     return []
