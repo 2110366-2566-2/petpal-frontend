@@ -19,7 +19,7 @@ export async function getIssueList(page: number, per: number): Promise<Issue[]> 
 
 export async function getIssueById(issueId: string): Promise<Issue> {
     try {
-        const response = await fetch(`http://petpal_backend:8080/issue/${issueId}`, {
+        const response = await fetch(`${API_URL}/issue/${issueId}`, {
             method: 'GET',
             credentials: 'include',
         });
