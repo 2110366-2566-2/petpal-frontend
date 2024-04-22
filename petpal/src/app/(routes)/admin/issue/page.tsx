@@ -25,7 +25,7 @@ export default function Home() {
     const issueStatus: string[] = ["in progress", "done"]
 
     const [currentPage, setCurrentPage] = useState<number>(1)
-    const [perPage, setPerPage] = useState<number>(10)
+    const [perPage, setPerPage] = useState<number>(50)
     const [hasMore, setHasMore] = useState<boolean>(true)
 
     // create infinite scroll
