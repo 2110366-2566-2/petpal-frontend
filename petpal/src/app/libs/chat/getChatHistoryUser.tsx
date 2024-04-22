@@ -1,10 +1,12 @@
+import { API_URL } from "@/app/_constants/env";
+
 export async function getChatHistoryUser() {
     try {
-        const response = await fetch('http://localhost:8080/user/chats', {
+        const response = await fetch(API_URL + '/user/chats', {
             method: 'GET',
             credentials: 'include',
         });
-        // const response = await fetch('http://localhost:8080/user/chats', {
+        // const response = await fetch(API_URL + '/user/chats', {
         //     method: 'GET',
         //     credentials: 'include',
         // });

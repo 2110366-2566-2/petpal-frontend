@@ -4,7 +4,7 @@ import { useState, useEffect, useContext } from "react";
 import HeaderChatHistory from "../_components/HeaderChatHistory";
 import HeaderChatComponent from "../_components/HeaderChatComponent";
 import ChatPreview from "../_components/ChatPreview";
-import ChatHistoryBody from "../_components/ChatHistoryBody";
+import { createMessageList } from "../_components/ChatHistoryBody";
 import ChatHistoryUserInterface from "../_interface/ChatHistoryUserInterface";
 import ChatPageinterface from "../_interface/ChatPageInterface";
 import MessageInterface from "../_interface/MessageInterface";
@@ -28,15 +28,9 @@ import { MessageResponse } from "@/app/_interface/chat/MessageResponse";
 import { adapterChatResponseToChatHistoryUserInterface } from "../_interface/ChatHistoryUserInterface";
 import { AuthContext } from "@/app/_contexts/AuthContext";
 import { getChatHistoryByRoomId } from "@/app/libs/chat/getChatHistoryByRoomId";
-
-// type Message = {
-//     content: string
-//     client_id: string
-//     username: string
-//     room_id: string
-//     timestamp: Date
-//     type: 'recv' | 'self'
-// }
+import { EntityType } from "@/app/_enum/currentEntity/EntityType";
+import { getChatHistoryAdmin } from "@/app/libs/chat/getChatHistoryAdmin";
+import { isCurrentEntityTypeAdmin } from "@/app/libs/currentEntiity/getCurrentEntityType";
 
 type Message = {
     content: string,
@@ -63,6 +57,7 @@ export default function ChatHistory({ params }: { params: { id: string } }) {
     const [allChatHistory, setAllChatHistory] = useState<ChatHistoryUserInterface[]>([])
     const [selectedChatHistory, setSelectedChatHistory] = useState<ChatHistoryUserInterface>()
     const [shownMessageHistory, SetShownMessageHistory] = useState<MessageInterface[]>([])
+    const [chatHistoryBody, setChatHistoryBody] = useState<JSX.Element[]>([])
 
     const [ShownChatHistoryUserList, SetShownChatHistoryUserList] = useState<ChatHistoryUserInterface[]>()
     const [connWithNameList, setConnWithNameList] = useState<ConnWithName[]>([])
@@ -79,24 +74,28 @@ export default function ChatHistory({ params }: { params: { id: string } }) {
         setLastestReceivedMessage(NewMessage)
     };
     useEffect(() => {
-        // if (currentEntity !== null) {
-        //     console.log("it me mario", currentEntity)
-        // }
+        console.log("currentEntity", currentEntity)
         getCurrentEntity().then((res) => {
             let newChatPageUser: ChatPageinterface = {
                 id: "",
                 name: "",
-                type: "user",
+                type: EntityType.USER,
                 chatHistoryList: []
             }
             if (isCurrentEntityTypeUser(res)) {
                 newChatPageUser.id = res.id as string
                 newChatPageUser.name = res.username as string
-                newChatPageUser.type = "user"
-            } else {
+                newChatPageUser.type = EntityType.USER
+            } else if (isCurrentEntityTypeSvcp(res)) {
                 newChatPageUser.id = res.SVCPID as string
                 newChatPageUser.name = res.SVCPUsername as string
-                newChatPageUser.type = "svcp"
+                newChatPageUser.type = EntityType.SERVICE_PROVIDER
+            } else if (isCurrentEntityTypeAdmin(res)) {
+                newChatPageUser.id = res.adminID as string
+                newChatPageUser.name = res.username as string
+                newChatPageUser.type = EntityType.ADMIN
+            } else {
+                console.log("error")
             }
             console.log("newChatPageUser", newChatPageUser)
             setChatPageUser(newChatPageUser)
@@ -104,44 +103,82 @@ export default function ChatHistory({ params }: { params: { id: string } }) {
     }, [currentEntity])
 
     useEffect(() => {
+        console.log("chat page user", chatPageUser)
         if (chatPageUser !== undefined) {
             console.log("chatPageUser 5434", chatPageUser)
             switch (chatPageUser.type) {
-                case "user": {
+                case EntityType.USER: {
                     getChatHistoryUser().then((reponse: ChatResponse[]) => {
                         console.log("ChatHistoryReponse User", reponse)
+                        let count = 1
                         if (reponse !== undefined) {
                             let newAllChatHistory: ChatHistoryUserInterface[] = []
+                            const total = reponse.length
                             reponse.map((message: ChatResponse) => {
+                                // newAllChatHistory.push(adapterChatResponseToChatHistoryUserInterface(chatPageUser, message,))
                                 adapterChatResponseToChatHistoryUserInterface(chatPageUser, message).then((result: ChatHistoryUserInterface) => {
                                     newAllChatHistory.push(result)
-                                    setAllChatHistory(newAllChatHistory)
+                                    count = count + 1
+                                    console.log(count, newAllChatHistory.length)
+                                    console.log(count, newAllChatHistory)
+                                    if (newAllChatHistory.length === total) {
+                                        setAllChatHistory(newAllChatHistory)
+                                    }
                                 }
                                 )
                             })
+                            // setAllChatHistory(newAllChatHistory)
                         }
-                        // console.log("newAllChatHistory", newAllChatHistory)
-                        // setAllChatHistory(newAllChatHistory)
                     })
                     break
-                } case "svcp": {
+                } case EntityType.SERVICE_PROVIDER: {
                     getChatHistorySvcp().then((reponse: ChatResponse[]) => {
-                        // console.log("ChatHistoryReponse SVCP", reponse)
-                        // const newAllChatHistory: ChatHistoryUserInterface[] = reponse.map((message: ChatResponse) => adapterChatResponseToChatHistoryUserInterface(chatPageUser, message))
-                        // console.log("newAllChatHistory", newAllChatHistory)
-                        // setAllChatHistory(newAllChatHistory)
-                        console.log("ChatHistoryReponse User", reponse)
-                        let newAllChatHistory: ChatHistoryUserInterface[] = []
-                        reponse.map((message: ChatResponse) => {
-                            adapterChatResponseToChatHistoryUserInterface(chatPageUser, message).then((result: ChatHistoryUserInterface) => {
-                                newAllChatHistory.push(result)
-                            }
-                            )
-                        })
-                        setAllChatHistory(newAllChatHistory)
+                        console.log("ChatHistoryReponse SVCP", reponse)
+                        let count = 0
+                        if (reponse !== undefined) {
+                            let newAllChatHistory: ChatHistoryUserInterface[] = []
+                            const total = reponse.length
+                            reponse.map((message: ChatResponse) => {
+                                adapterChatResponseToChatHistoryUserInterface(chatPageUser, message).then((result: ChatHistoryUserInterface) => {
+                                    newAllChatHistory.push(result)
+                                    console.log(count, newAllChatHistory.length)
+                                    console.log(count, newAllChatHistory)
+                                    if (newAllChatHistory.length === total) {
+                                        setAllChatHistory(newAllChatHistory)
+                                    }
+                                    count = count + 1
+                                }
+                                )
+                            })
+                            // setAllChatHistory(newAllChatHistory)
+                        }
                     })
                     break
-                } default: {
+                } case EntityType.ADMIN: {
+                    getChatHistoryAdmin().then((reponse: ChatResponse[]) => {
+                        console.log("ChatHistoryReponse Admin", reponse)
+                        let count = 0
+                        if (reponse !== undefined) {
+                            let newAllChatHistory: ChatHistoryUserInterface[] = []
+                            const total = reponse.length
+                            reponse.map((message: ChatResponse) => {
+                                adapterChatResponseToChatHistoryUserInterface(chatPageUser, message).then((result: ChatHistoryUserInterface) => {
+                                    newAllChatHistory.push(result)
+                                    console.log(count, newAllChatHistory.length)
+                                    console.log(count, newAllChatHistory)
+                                    if (newAllChatHistory.length === total) {
+                                        setAllChatHistory(newAllChatHistory)
+                                    }
+                                    count = count + 1
+                                }
+                                )
+                            })
+                            // setAllChatHistory(newAllChatHistory)
+                        }
+                    })
+                    break
+                }
+                default: {
                     console.log("error!!!")
                     break
                 }
@@ -149,10 +186,16 @@ export default function ChatHistory({ params }: { params: { id: string } }) {
         }
     }, [chatPageUser])
     useEffect(() => {
-        if (chatPageUser !== undefined && allChatHistory !== undefined) {
+        // const newa = allChatHistory
+        console.log("config", allChatHistory.length, allChatHistory)
+        if (chatPageUser !== undefined && allChatHistory !== undefined && allChatHistory.length !== 0) {
             let newConnWithNameList: ConnWithName[] = []
+            console.log("allChatHistory in conn 1", allChatHistory.length)
+            console.log("allChatHistory in conn", allChatHistory)
             let chat: ChatHistoryUserInterface
+            console.log("allChatHistory in conn 2", allChatHistory.length)
             for (chat of allChatHistory) {
+                console.log("chat", chat)
                 const ws = WebsocketJoinRoom(chat.RoomId, { Id: chatPageUser.id, Username: chatPageUser.name, Role: chatPageUser.type });
                 if (ws == null) {
                     console.log("Connection is not established. Skipping event handler setup.");
@@ -161,16 +204,6 @@ export default function ChatHistory({ params }: { params: { id: string } }) {
                 // When websocket is start
                 ws.onopen = () => {
                     console.log(`Connecting to Websocket with Romm:${chat.RoomId}`)
-                    // Load Chat History
-                    // let ChatHistory
-                    // for (ChatHistory of AllChatHistory) {
-                    // const UserRoom: UserRoomInterface = {
-                    //     Id: UserId,
-                    //     Username: `UserId:${UserId}`,
-                    //     Role: "user",
-                    // }
-                    // WebsocketJoinRoom(ChatHistory.RoomId, UserRoom, setConn)
-                    // }
                 }
                 ws.onmessage = (message) => {
                     const m: Message = JSON.parse(message.data);
@@ -220,26 +253,21 @@ export default function ChatHistory({ params }: { params: { id: string } }) {
 
     useEffect(() => {
         console.log("shownMessageHistoryChange", shownMessageHistory)
+        createMessageList(shownMessageHistory, targetUserId).then((Response) => {
+            setChatHistoryBody(Response)
+        }
+
+        )
     }, [shownMessageHistory])
 
     useEffect(() => {
         if (lastestReceivedMessage !== undefined) {
             const senderId: string = lastestReceivedMessage.SenderID
-            console.log("teadf", targetUserId, senderId)
             if (targetUserId === senderId) {
                 const NewShownMessageHistory: MessageInterface[] = [...shownMessageHistory, lastestReceivedMessage]
                 SetShownMessageHistory(NewShownMessageHistory)
             }
-            // var chatHistory: ChatHistoryUserInterface
-            // for (let i = 0; i < allChatHistory.length; i++) {
-            //     const chatHistory = allChatHistory[i]
-            //     if (chatHistory.Id === senderId) {
-            //         let allChatHistory = 
-            //         let newChatHistory = chatHistory
-            //     }
-            // }
         }
-        // allChatHistory:ChatHistoryUserInterface[]
     }, [lastestReceivedMessage])
 
     const sendMessage = () => {
@@ -320,10 +348,11 @@ export default function ChatHistory({ params }: { params: { id: string } }) {
                             <div className="border-solid border-b-2 border-[#D9D9D9a1]">
                                 <HeaderChatHistory Text={selectedChatHistory.Name} ImgSrc={selectedChatHistory.Picture}></HeaderChatHistory>
                             </div>
-                            <div className="h-[100px] bg-[#D9D9D9] flex-grow flex-col p-[10px] justify-items-end overflow-y-scroll">
-                                <ChatHistoryBody ShownMessageHistory={shownMessageHistory} OtherPersonUserId={targetUserId}></ChatHistoryBody>
+                            <div className="h-[100px] bg-[#D9D9D9] flex-grow flex-col p-[10px] justify-items-end overflow-y-scroll ">
+                                <div className="space-y-[5px] mt-auto flex flex-col">
+                                    {chatHistoryBody}
+                                </div>
                             </div>
-                            {/* <ChatHistoryBody ShownMessageHistory={ShownMessageHistory} OtherPersonUserId={UserId}></ChatHistoryBody> */}
                             <div className="pl-[15px] h-[75px] bg-white flex flex-row space-x-[15px] items-center">
                                 <img src={PlusIcon.src} alt="Maginifying" className="w-[24px] h-[24px] my-auto" />
                                 <input name="message" className="h-[50px] bg-[#D9D9D9CC] outline-none my-auto flex-grow p-[10px] rounded-[15px]" type="text" placeholder="Typing a message..." value={currentMessage}

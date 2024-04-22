@@ -53,6 +53,8 @@ export default function PetInformation(){
     const [type,setType] = useState("")
     const [vaccine,setVaccine] = useState("")
 
+    const [errorMessage , setErrorMessage] = useState('')
+
     const petInfo = [
       {Name:"Pet Name" , inputType:"box" , value:name },{Name:"Animal Type" , inputType:"box",value:type},
       {Name:"Breed" , inputType:"box" , value:breed},
@@ -95,10 +97,17 @@ export default function PetInformation(){
         type: type,
         vaccinations: vaccine,
       }
-      if(openedDetail !== undefined && openedDetail != 0){
-        await editPetInfo(openedDetail-1,pet)
+      if(name && !isNaN(age)){
+        setErrorMessage('')
+        if(openedDetail !== undefined && openedDetail != 0){
+          await editPetInfo(openedDetail-1,pet)
+        }else{
+          await addPet(pet)
+        }
       }else{
-        await addPet(pet)
+        if(!name && isNaN(age)) setErrorMessage('Please fill a name and age is not a number')
+        else if(!isNaN(age)) setErrorMessage('Please fill your name')
+        else setErrorMessage('Age is not a number')
       }
     }
 
@@ -131,7 +140,7 @@ export default function PetInformation(){
           setGender(input)
           break
         case "Age":
-          setAge(parseInt(input))
+          setAge(input)
           break
         case "Health Information":
           setHealth(input)
@@ -230,8 +239,14 @@ export default function PetInformation(){
               </div>
             )
           }
-          <div className='flex justify-end m-2'>
+          <div className='flex m-2'>
                 <button type = 'submit' className='bg-[#D9D9D9] w-[102px] rounded-[10px] text-[18px] text-center p-[5px]' onClick={(e)=>{handleAdd(e)}}>{petEditButtonName}</button>
+                {
+                (errorMessage != "") &&
+                <div className='ml-1'>
+                <span className='text-[#FF0000]'>{errorMessage}</span>
+                </div>
+            }
           </div>
         </motion.div> }
         </AnimatePresence>

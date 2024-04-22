@@ -4,6 +4,7 @@ import "./globals.css";
 import ResponsiveNavbar from "./_component/ResponsiveNavbar";
 import { AuthProvider } from "./_contexts/AuthContext";
 import { Toaster } from "react-hot-toast";
+import { useContext } from "react";
 
 
 const prompt = Prompt({
@@ -15,7 +16,8 @@ const navitems = [
   { name: "Listing", link: "/listing" },
   { name: "Booking", link: "/bookingLoading" },
   { name: "Profile", link: "/profile" },
-  { name: "Chat", link: "/chat" }
+  { name: "Chat", link: "/chat" },
+  { name: "Report", link: "/help" }
 ]
 
 export const metadata: Metadata = {
@@ -34,6 +36,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en">
       <body className={prompt.className}>

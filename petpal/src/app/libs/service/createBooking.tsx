@@ -1,9 +1,11 @@
+import { API_URL } from "@/app/_constants/env";
+
 export default async function createBooking(
     serviceID: string,
     timeslotID: string
 ) {
     const response = await fetch(
-        "http://localhost:8080/service/booking/create",
+        API_URL + "/service/booking/create",
         {
             method: "POST",
             credentials: "include",

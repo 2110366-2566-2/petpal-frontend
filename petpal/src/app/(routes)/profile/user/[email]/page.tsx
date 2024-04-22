@@ -28,6 +28,7 @@ import { ChatResponse } from '@/app/_interface/chat/ChatResponse'
 import { getCurrentEntityType } from '@/app/libs/currentEntiity/getCurrentEntityType'
 import { getCurrentEntitySvcp } from '@/app/libs/currentEntiity/getCurrentEntitySvcp'
 import { getCurrentEntity } from '@/app/libs/user/userBackend'
+import { chatButtonFunction } from '../../_utils/chatButtonFunction'
 
 export default function EmailUserProfile({ params }: { params: { email: string } }) {
     const router = useRouter()
@@ -50,6 +51,9 @@ export default function EmailUserProfile({ params }: { params: { email: string }
                     setMyUserId(response.SVCPID)
                     setMyType(EntityType.SERVICE_PROVIDER)
                     break
+                } case EntityType.ADMIN: {
+                    setMyUserId(response.adminID)
+                    setMyType(EntityType.ADMIN)
                 } default: {
                     console.log("error")
                     break
@@ -60,41 +64,19 @@ export default function EmailUserProfile({ params }: { params: { email: string }
 
     useEffect(() => {
         setIsShownButton(targetUserId === myUserId)
-        // if (myUserId !== undefined) {
-        //     const newChatOnClick = () => {
-        //         const roomId0: string = generateRoomId(myUserId, targetUserId)
-        //         const roomId1: string = generateRoomId(myUserId, targetUserId)
-        //         checkIfRoomExist(roomId0).then((response) => {
-        //             if (!response) {
-        //                 checkIfRoomExist(roomId1).then((response) => {
-        //                     if (!response) {
-        //                         const newChatResponse: ChatResponse = {
-        //                             dateCreated: "",
-        //                             messages: [],
-        //                             roomID: roomId0,
-        //                             user0ID: myUserId,
-        //                             user0Type: myType,
-        //                             user1ID: targetUserId,
-        //                             user1Type: "user"
-        //                         }
-        //                         craeteNewRoom(newChatResponse).then((response) => {
-        //                             console.log(response)
-        //                             router.push("/chat")
-        //                         })
-        //                     } else {
-        //                         console.log(2)
-        //                         router.push("/chat")
-        //                     }
-        //                 })
-        //             } else {
-        //                 console.log(3)
-        //                 router.push("/chat")
-        //             }
-        //         }
-        //         )
-        //     }
-        //     setChatOnClick(newChatOnClick)
-        // }
+        if (myUserId !== undefined) {
+            let thisUserId: string = myUserId
+            const newChatOnClick = () => {
+                let thisUserId: string = myUserId
+                chatButtonFunction(
+                    thisUserId,
+                    targetUserId,
+                    myType,
+                    EntityType.USER
+                )
+            }
+            setChatOnClick(newChatOnClick)
+        }
     }, [targetUserId, myUserId])
 
     useEffect(() => {

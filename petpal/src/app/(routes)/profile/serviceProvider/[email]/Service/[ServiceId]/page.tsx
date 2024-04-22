@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useParams, useRouter} from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import toast from 'react-hot-toast';
 import getSVCP from "@/app/libs/serviceProvider/getSVCP";
@@ -8,6 +8,10 @@ import { Service } from "@/app/_interface/service/service";
 import { Convert, Svcp } from "@/app/_interface/svcp/svcp";
 import ConfirmAppointmentButton from "@/app/(routes)/profile/_components/ConfirmAppointmentBtn";
 import createBooking from "@/app/libs/service/createBooking";
+import ButtonPropsInterface from "@/app/(routes)/profile/_interface/ButtonPropsInterface";
+import createButtonList from "@/app/(routes)/profile/_utils/createButtonList";
+import { chatButtonFunction } from "@/app/(routes)/profile/_utils/chatButtonFunction";
+import { EntityType } from "@/app/_enum/currentEntity/EntityType";
 
 import {
     formatTimeToHourMinute,
@@ -16,18 +20,27 @@ import {
 
 export default function BookAppointment() {
     const params = useParams();
-    console.log(params.email, params.ServiceId);
+    console.log(params.email, params.serviceId);
     const [selectedTimeslotId, setSelectedTimeslotId] = useState("");
     const [SVCPUsername, setSVCPUsername] = useState("Provider Name");
     const [service, setService] = useState<Service | null>(null);
     const router = useRouter();
-    
+    let ServiceProviderProfileButtonProps: ButtonPropsInterface = {
+        Name: "Profile",
+        Width: "w-[100px]",
+        BgColor: "bg-[#FF0000]",
+        FontColor: "text-[#FFF]",
+        Link: `../`,
+    }
+    const buttonPropsList: ButtonPropsInterface[] = [ServiceProviderProfileButtonProps]
+
+
     useEffect(() => {
         const fetchServices = async () => {
             try {
                 if (
                     typeof params.email === "string" &&
-                    typeof params.ServiceId === "string"
+                    typeof params.serviceId === "string"
                 ) {
                     const jsonResponse = await getSVCP(params.email);
                     const jsonString = JSON.stringify(jsonResponse);
@@ -38,7 +51,7 @@ export default function BookAppointment() {
                     }
                     console.log("Data fetched", data);
                     const specificService = data.services?.find(
-                        (s) => s.serviceID === params.ServiceId
+                        (s) => s.serviceID === params.serviceId
                     );
                     if (specificService) {
                         setService(specificService);
@@ -53,19 +66,19 @@ export default function BookAppointment() {
             }
         };
         fetchServices();
-    }, [params.email, params.ServiceId]);
+    }, [params.email, params.serviceId]);
 
     const handleCreateBooking = async () => {
         const ServiceId =
-            typeof params.ServiceId === "string"
-                ? params.ServiceId
-                : params.ServiceId?.[0];
-    
-        if (!params.ServiceId || !selectedTimeslotId) {
+            typeof params.serviceId === "string"
+                ? params.serviceId
+                : params.serviceId?.[0];
+
+        if (!params.serviceId || !selectedTimeslotId) {
             toast.error("Please select a timeslot.");
             return;
         }
-    
+
         try {
             const bookingResponse = await toast.promise(
                 createBooking(ServiceId, selectedTimeslotId),
@@ -122,14 +135,17 @@ export default function BookAppointment() {
                                 {service.serviceDescription}
                             </p>
                         </div>
+                        <div>
+                            {createButtonList(true, buttonPropsList)}
+                        </div>
                     </div>
                 </div>
                 <div className="flex flex-col md:flex-row p-5 ">
                     <div className="xl:hidden">
-                            <p className="font-medium text-[18px] md:max-w-[550px] md:mr-[20px]">
-                                {service.serviceDescription}
-                            </p>
-                        </div>
+                        <p className="font-medium text-[18px] md:max-w-[550px] md:mr-[20px]">
+                            {service.serviceDescription}
+                        </p>
+                    </div>
                     <div className="mt-[150px] md:mt-[0px]">
                         <select
                             value={selectedTimeslotId}
@@ -144,23 +160,20 @@ export default function BookAppointment() {
                                     key={timeslot.timeslotID}
                                     value={timeslot.timeslotID}
                                 >
-                                    {`${
-                                        timeslot.startTime
-                                            ? formatDate(timeslot.startTime)
-                                            : "Unknown date"
-                                    }: ${
-                                        timeslot.startTime
+                                    {`${timeslot.startTime
+                                        ? formatDate(timeslot.startTime)
+                                        : "Unknown date"
+                                        }: ${timeslot.startTime
                                             ? formatTimeToHourMinute(
-                                                  timeslot.startTime
-                                              )
+                                                timeslot.startTime
+                                            )
                                             : "Unknown start time"
-                                    } - ${
-                                        timeslot.endTime
+                                        } - ${timeslot.endTime
                                             ? formatTimeToHourMinute(
-                                                  timeslot.endTime
-                                              )
+                                                timeslot.endTime
+                                            )
                                             : "Unknown end time"
-                                    }`}
+                                        }`}
                                 </option>
                             ))}
                         </select>

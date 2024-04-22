@@ -1,8 +1,9 @@
 import PetInfoInterface from "@/app/(routes)/profile/_interface/PetInfoInterface"
+import { API_URL } from "@/app/_constants/env"
 
 export async function getPets() {
 
-    const response = await fetch(`http://localhost:8080/user/pets/me`,{
+    const response = await fetch(`${API_URL}/user/pets/me`,{
         method:'GET',
         credentials:'include'
     })
@@ -16,7 +17,7 @@ export async function getPets() {
  
 export async function addPet(pet:PetInfoInterface) {
     pet.age = Number(pet.age)
-    const response = await fetch("http://localhost:8080/user/pets/",{
+    const response = await fetch(API_URL + "/user/pets/",{
         method:'POST',
         credentials:'include',
         body: JSON.stringify(pet)
@@ -32,7 +33,7 @@ export async function editPetInfo(
     idx:Number,
     pet:PetInfoInterface
 ) {
-    const response = await fetch(`http://localhost:8080/user/pets/${idx}`,{
+    const response = await fetch(`${API_URL}/user/pets/${idx}`,{
         method:'PUT',
         credentials:'include',
         body: JSON.stringify(pet)
@@ -47,7 +48,7 @@ export async function editPetInfo(
 export async function deletePet(
     idx:Number
 ) {
-    const response = await fetch(`http://localhost:8080/user/pets/${idx}`,{
+    const response = await fetch(`${API_URL}/user/pets/${idx}`,{
         method:'DELETE',
         credentials:'include',
     })

@@ -54,7 +54,9 @@ export var ExampleMessage0And2_5: MessageInterface = {
 export function adapteerMessageResponseToMessageInterface(messageResponse: MessageResponse, chatResponse: ChatResponse): MessageInterface {
     const sender: string = (messageResponse.sender === 0) ? chatResponse.user0ID as string : chatResponse.user1ID as string
     const content = messageResponse.content as string
+    const offset = new Date().getTimezoneOffset();
     const timesend: Date = new Date(messageResponse.timestamp as string)
+    timesend.setTime(timesend.getTime() + offset * 60000)
     const result: MessageInterface = {
         SenderID: sender,
         Content: content,

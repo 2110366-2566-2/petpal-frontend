@@ -1,3 +1,5 @@
+import { API_URL } from "@/app/_constants/env";
+
 export default async function updateServiceAPI(
     serviceID:string,
     serviceName:string,
@@ -6,7 +8,7 @@ export default async function updateServiceAPI(
     price:number,
     timeslots:Array<Object>
 ) {
-    const url = `http://localhost:8080/service/${serviceID}`;
+    const url = `${API_URL}/service/${serviceID}`;
     const response = await fetch(url , {
         method:'PATCH',
         credentials:'include',

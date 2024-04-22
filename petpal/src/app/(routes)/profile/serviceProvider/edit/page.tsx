@@ -27,6 +27,10 @@ export default function EditProfile() {
   const [fileProImg , setFileProImg] = useState<File>()
   const [fileAddiImg , setFilAddiImg] = useState<File>()
 
+  const [errorMessage  ,setErrorMessage] = useState('')
+  const [errorMessageName  ,setErrorMessageName] = useState('')
+  const [errorMessageAddress  ,setErrorMessageAddress] = useState('')
+
   let thisSaveProfileButton: ButtonPropsInterface = saveEditButtonProps
   thisSaveProfileButton.Link = "/profile/serviceProvider"
 
@@ -67,12 +71,25 @@ export default function EditProfile() {
   const handleSubmit = async() => {
     // console.log(username,description,address,phoneNumber)
     if(fileProImg) await uploadImgApi(fileProImg)
-    await editSvcpProfile(
-      username,
-      description,
-      address,
-      phoneNumber,
-    )
+    if(username && address && !isNaN(Number(phoneNumber)) ){
+      setErrorMessage('')
+      await editSvcpProfile(
+        username,
+        description,
+        address,
+        phoneNumber,
+      )
+      router.push(thisSaveProfileButton.Link)
+    }
+    if(isNaN(Number(phoneNumber))){
+      setErrorMessage('Please fill phone number with 10 length of number')
+    }
+    if(!username){
+      setErrorMessageName('Please fill your username')
+    }
+    if(!address){
+      setErrorMessageAddress('Please fill your address')
+    }
   }
 
   const handleAddImg = async (e:React.ChangeEvent<HTMLInputElement>) =>{
@@ -98,7 +115,7 @@ export default function EditProfile() {
           </div>
           <div className='hidden md:grid grid-cols-1 gap-[16px]'>
             <SmallButtonComponent ButtonProps={editProfileButtonProps} Working={false}></SmallButtonComponent>
-            <SmallButtonComponent ButtonProps={thisSaveProfileButton} onClick={async() =>{handleSubmit();router.push(thisSaveProfileButton.Link)}}></SmallButtonComponent>
+            <SmallButtonComponent ButtonProps={thisSaveProfileButton} onClick={async() =>{handleSubmit()}}></SmallButtonComponent>
             {/* <button className='bg-gray' onClick={async()=>{handleSubmit()}}>save</button> */}
           </div>
         </div>
@@ -111,6 +128,12 @@ export default function EditProfile() {
             value={username}
             onChange={(e)=>{setUsername(e.target.value)}}
             placeholder='username' />
+            {
+                (errorMessageName != "") &&
+                <div className='ml-1'>
+                <span className='text-[#FF0000]'>{errorMessageName}</span>
+                </div>
+            }
           </div>
           <div className="my-2 ">
             <span className='text-black font-bold text-[32px]'>Description</span>
@@ -136,6 +159,12 @@ export default function EditProfile() {
             value={address}
             onChange={(e) => {setAddress(e.target.value)}}
             placeholder='123 Wangmai Pathumwan Bangkok' />
+            {
+                (errorMessageAddress != "") &&
+                <div className='ml-1'>
+                <span className='text-[#FF0000]'>{errorMessageAddress}</span>
+                </div>
+            }
           </div>
           <div className="my-2 ">
             <span className='text-black font-bold text-[32px]'>Phone Number</span>
@@ -144,13 +173,19 @@ export default function EditProfile() {
             border-[#D9D9D9] border-[3px]'
             value={phoneNumber}
             onChange={(e)=>setPhoneNumber(e.target.value)}
-            placeholder='099-xxx-xxxx' />
+            placeholder='099xxxxxxx' />
+            {
+                (errorMessage != "") &&
+                <div className='ml-1'>
+                <span className='text-[#FF0000]'>{errorMessage}</span>
+                </div>
+            }
           </div>
           <div><FetchBankInformation/></div>
         </div>
         <div className='w-[100%] grid grid-cols-1 gap-[16px] md:hidden '>
           <SmallButtonComponent ButtonProps={editProfileButtonProps} Working={false}></SmallButtonComponent>
-          <SmallButtonComponent ButtonProps={thisSaveProfileButton} onClick={async() =>{handleSubmit();router.push(thisSaveProfileButton.Link)}}></SmallButtonComponent>
+          <SmallButtonComponent ButtonProps={thisSaveProfileButton} onClick={async() =>{handleSubmit()}}></SmallButtonComponent>
         </div>
       </div>
 

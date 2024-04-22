@@ -1,8 +1,10 @@
+import { API_URL } from "@/app/_constants/env";
+
 export default async function rescheduleBooking(
     bookingID: string | null,
     timeslotID: string | null,
 ) {
-    const response = await fetch("http://localhost:8080/service/booking/reschedule/user", {
+    const response = await fetch(API_URL + "/service/booking/reschedule/user", {
         method: "PATCH",
         credentials:'include',
         body: JSON.stringify({

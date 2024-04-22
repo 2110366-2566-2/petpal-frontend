@@ -8,6 +8,7 @@ import RatingComponent from "@app/(routes)/profile/_components/RatingComponent"
 import ServiceListComponent from "@app/(routes)/profile/_components/ServiceListComponent"
 import AdditionalImageComponent from "@app/(routes)/profile/_components/AdditionalImageComponent"
 import createButtonList from "@app/(routes)/profile/_utils/createButtonList"
+import { chatButtonFunction } from '../../_utils/chatButtonFunction';
 
 import ServiceInterface from "@app/(routes)/profile/_interface/ServiceInterface"
 import ServiceProviderInterface, { adaptorSvcpToServiceProviderInterface } from "@app/(routes)/profile/_interface/ServiceProviderInterface"
@@ -16,29 +17,61 @@ import ButtonPropsInterface from "@app/(routes)/profile/_interface/ButtonPropsIn
 import { exampleProvider } from "@app/(routes)/profile/_interface/ServiceProviderInterface"
 import { editProfileButtonProps, chagnePasswordButtonProps, createServiceButton } from "@app/(routes)/profile/_interface/ButtonPropsInterface"
 
-import { getCurrentEntitySvcp } from '@/app/libs/currentEntiity/getCurrentEntitySvcp';
+import { getCurrentEntity } from '@/app/libs/user/userBackend';
+import { getCurrentEntityType } from '@/app/libs/currentEntiity/getCurrentEntityType';
 import getSVCP from '@/app/libs/serviceProvider/getSVCP';
 import { Svcp } from '@/app/_interface/svcp/svcp';
+import { EntityType } from '@/app/_enum/currentEntity/EntityType';
 
 
 export default function EmailServiceProviderProfile({ params }: { params: { email: string } }) {
     const [mySvcpId, setMySvcpId] = useState<string>()
+    const [myType, setMyType] = useState<EntityType>()
     // const targetUserId: string = params.email
     const [targetSvcpId, setTargetSvcpId] = useState<string>(params.email)
     const [targetSvcp, setTargetSvcp] = useState<ServiceProviderInterface>(exampleProvider)
     const [isShownButton, setIsShownButton] = useState<boolean>(false)
     const [targetSvcpServiceList, setTargetSvcpServiceList] = useState<ServiceInterface[]>([])
-    // var [CurrentUser, SetCurrentUser] = useState<number>(0)
+    const [chatOnClick, setChatOnClick] = useState<() => void>()
     // var [ProfileUserId, SetProfileUserId] = useState<number>(params.id)
     // let serviceProvider: ServiceProviderInterface = exampleProvider
     useEffect(() => {
-        getCurrentEntitySvcp().then((Response) => {
-            setMySvcpId(Response.SVCPID)
+        getCurrentEntity().then((Response) => {
+            const entityType: EntityType = getCurrentEntityType(Response)
+            let myId: string = ""
+            if (entityType === EntityType.USER) {
+                myId = Response.id
+            }
+            else if (entityType === EntityType.SERVICE_PROVIDER) {
+                myId = Response.SVCPID
+            }
+            else if (entityType === EntityType.ADMIN) {
+                myId = Response.adminID
+            } else if (entityType === EntityType.NOT_LOGIN) {
+                console.log("not login")
+            } else {
+                console.log("type error")
+            }
+            setMySvcpId(myId)
+            setMyType(entityType)
         })
     }, [])
 
     useEffect(() => {
         setIsShownButton(targetSvcpId === mySvcpId)
+        if (mySvcpId !== undefined) {
+            let thisUserId: string = mySvcpId
+            const newChatOnClick = () => {
+                let thisUserId: string = mySvcpId
+                chatButtonFunction(
+                    mySvcpId,
+                    targetSvcpId,
+                    myType,
+                    EntityType.SERVICE_PROVIDER
+                )
+            }
+            setChatOnClick(newChatOnClick)
+        }
     }, [targetSvcpId, mySvcpId])
 
     useEffect(() => {
@@ -77,7 +110,7 @@ export default function EmailServiceProviderProfile({ params }: { params: { emai
                     <RatingComponent Rating={targetSvcp.Rating} />
                     <p className='text-[18px]'>{targetSvcp.Description}</p>
                     <div className='hidden md:block'>
-                        {createButtonList(isShownButton, buttonPropsList = buttonPropsList)}
+                        {createButtonList(isShownButton, buttonPropsList, chatOnClick)}
                     </div>
                 </div>
                 <div className='max-w-[300px] md:max-w-[600px] m-[auto] md:mt-[0px] pt-[20px] md:pt-[0px] md:float-right space-y-[30px] md:ml-[10px]'>
@@ -93,7 +126,7 @@ export default function EmailServiceProviderProfile({ params }: { params: { emai
                         </ul>
                     </div>
                     <div className='md:hidden block'>
-                        {createButtonList(isShownButton, buttonPropsList = buttonPropsList)}
+                        {createButtonList(isShownButton, buttonPropsList, chatOnClick)}
                     </div>
                 </div>
             </div>

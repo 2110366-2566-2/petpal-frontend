@@ -69,28 +69,28 @@ export default function ServiceListing({
       const router = useRouter()
       const [userId, setUserId] = useState<string>()
       useEffect(() => {
-          getCurrentEntityUser().then((Response) => {
-              setUserId(Response.id)
-          })
-      }, [])
-      useEffect(() => {
-          console.log(userId)
-          switch (userId === undefined) {
-              case true: {
-                console.log("undefined")
-                router.push('/login')
-                break
-              }
-              case false: {
-                  router.push('/listing')
+          async function fetchUser(){
+            const loginUser = await getCurrentEntityUser()
+            setUserId(loginUser.id);
+            switch (loginUser.id === undefined) {
+                case true: {
+                  console.log("undefined")
+                  router.push('/login')
                   break
-              }
-              default: {
-                  console.log("error")
-                  break
-              }
+                }
+                case false: {
+                    router.push('/listing')
+                    break
+                }
+                default: {
+                    console.log("error")
+                    break
+                }
+            }
           }
-      }, [userId])
+          fetchUser()
+      }, [])
+      
       const [page, setPage] = React.useState(0);
       const [rowsPerPage, setRowsPerPage] = React.useState(10);
       const [rows, setRows] = useState<any[]>([]); 
@@ -113,7 +113,7 @@ export default function ServiceListing({
           }
         }
     
-        fetchData(); 
+        fetchData();
       }, [searchParams]); 
       
       const handleChangePage = (event: unknown, newPage: number) => {
@@ -160,32 +160,32 @@ export default function ServiceListing({
                                 ? row 
                                 : row.serviceType.includes(cat);
                             })
-                            .sort((b: { price: any; rating: any; serviceName: number; }, a: { price: any; rating: any; serviceName: number; }) => {
-                                if (sortBy === 'priceMax') {
-                                    return (a.price || 0) - (b.price || 0);
-                                } else if (sortBy === 'priceMin') {
-                                    return (b.price || 0) - (a.price || 0);
-                                } else if (sortBy === 'ratingMax') {
-                                    return (a.rating || 0) - (b.rating || 0);
-                                } else if (sortBy === 'ratingMin') {
-                                    return (b.rating || 0) - (a.rating || 0);
-                                } else if (sortBy === 'serviceName') {
-                                    if (a.serviceName < b.serviceName) return 1;
-                                    if (a.serviceName > b.serviceName) return -1;
-                                    return 0;
-                                }
-                                return 0; // Default case
-                            })
+                            .sort((b: { price: number; rating: number; serviceName: string; }, a: { price: number; rating: number; serviceName: string; }) => {
+                              if (sortBy === 'priceMax') {
+                                  return (a.price || 0) - (b.price || 0);
+                              } else if (sortBy === 'priceMin') {
+                                  return (b.price || 0) - (a.price || 0);
+                              } else if (sortBy === 'ratingMax') {
+                                  return (a.rating || 0) - (b.rating || 0);
+                              } else if (sortBy === 'ratingMin') {
+                                  return (b.rating || 0) - (a.rating || 0);
+                              } else if (sortBy === 'serviceName') {
+                                  if (a.serviceName < b.serviceName) return 1;
+                                  if (a.serviceName > b.serviceName) return -1;
+                                  return 0;
+                              }
+                              return 0; // Default case
+                          })                          
                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            .map((row: { [x: string]: any; serviceName: React.Key | null | undefined; }) => {
+                            .map((row: { [x: string]: any; serviceID: React.Key | null | undefined; }) => {
                             return (
-                                <TableRow hover role="checkbox" tabIndex={-1} key={row.serviceName}
+                                <TableRow hover role="checkbox" tabIndex={-1} key={row.serviceID}
                                   className="hover:cursor-pointer">
                                 {columns.map((column) => {
                                     const value = row[column.id];
                                     return (
                                     <TableCell key={column.id} align={column.align}>
-                                      <Link key={row.serviceName}
+                                      <Link key={row.serviceID}
                                           href={`/profile/serviceProvider/${row.svcpID}/service/${row.serviceID}`}
                                           className="w-full h-full">
                                         {column.format && typeof value === 'number'

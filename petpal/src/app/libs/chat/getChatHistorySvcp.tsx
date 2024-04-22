@@ -1,6 +1,8 @@
+import { API_URL } from "@/app/_constants/env";
+
 export async function getChatHistorySvcp() {
     try {
-        const response = await fetch('http://localhost:8080/serviceproviders/chats', {
+        const response = await fetch(API_URL + '/serviceproviders/chats', {
             method: 'GET',
             credentials: 'include',
         });

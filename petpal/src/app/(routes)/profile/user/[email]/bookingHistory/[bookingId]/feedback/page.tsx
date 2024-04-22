@@ -4,20 +4,38 @@ import { useState } from 'react';
 import React from 'react'; 
 import ReactStars from 'react-stars'
 import { postFeedbackApi } from '@/app/libs/service/feedback';
+import { useRouter,useSearchParams  } from "next/navigation";
+import toast from "react-hot-toast";
 export default function UserFeedbackPage(){
 
     const [content,setContent] = useState("")
     const [rating,setRating] = useState(0.0)
-
+    const searchParams = useSearchParams()
+    const serviceid = searchParams.get('service_id')
+    const router = useRouter();
     //mock serviceID
-    const [serviceid ,setServiceId] = useState("65f172b72d00a205a6f54672")
+    // const [serviceid ,setServiceId] = useState("65f172b72d00a205a6f54672")
 
     const handleRating = (rating:any) =>{
         setRating(rating)
     }
 
-    const postFeedback = async(content:string , rating:number , id:string) =>{
-        return (await postFeedbackApi(id,content,rating))
+    const postFeedback = async(content:string , rating:number , id:string | null) =>{
+        if(id == null){
+            toast.error("Service ID is null")
+            router.push("/")
+            return
+        }
+        try{
+            await postFeedbackApi(id,content,rating)
+            toast.success("Feedback Submitted")
+            
+        // return (await postFeedbackApi(id,content,rating))
+            router.push("/")
+        }
+        catch(e){
+            toast.error("Failed to submit feedback")
+        }
     }
 
     return(

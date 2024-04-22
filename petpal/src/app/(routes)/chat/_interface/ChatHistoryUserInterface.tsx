@@ -13,6 +13,7 @@ import { getUserById } from "@/app/libs/user/getUserById";
 import { User } from "@/app/_interface/user/user";
 import getSVCP from "@/app/libs/serviceProvider/getSVCP";
 import { Svcp } from "@/app/_interface/svcp/svcp";
+import adminPic from "../../../../../public/admin.png"
 
 export default interface ChatHistoryUserInterface {
     Id: string;
@@ -96,7 +97,20 @@ export function adapterChatResponseToChatHistoryUserInterface(currentUser: ChatP
                     }
                     return result
                 })
-            } default: {
+            } case "admin": {
+                console.log("get admin")
+                const result: ChatHistoryUserInterface = {
+                    Id: Id,
+                    Name: "ADMIN",
+                    RoomId: RoomId,
+                    MessageHistory: MessageHistory,
+                    Picture: adminPic.src,
+                    LastSee: LastSee,
+                }
+                return result
+
+            }
+            default: {
                 console.log("wrong Type", userType)
                 return getUserById(Id).then((respone: User) => {
                     const name = respone.username as string

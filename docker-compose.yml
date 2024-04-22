@@ -1,0 +1,12 @@
+services:
+  petpal_frontend:
+    image: petpal_frontend
+    build:
+      context: ./petpal
+      dockerfile: Dockerfile
+    container_name: petpal_frontend
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+volumes:
+  mongo_local_temp:

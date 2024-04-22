@@ -1,6 +1,8 @@
+import { API_URL } from "@/app/_constants/env";
+
 export default async function getSVCP(id: string) {
     const response = await fetch(
-        `http://localhost:8080/serviceproviders/${id}`,
+        `${API_URL}/serviceproviders/${id}`,
         {
             method: "GET",
         }
