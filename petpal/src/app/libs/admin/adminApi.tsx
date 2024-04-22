@@ -1,6 +1,6 @@
 export async function getIssueById(issueId:string) {
     try{
-        const response = await fetch(`http://localhost:8080/issue/${issueId}`,{
+        const response = await fetch(`http://petpal_backend:8080/issue/${issueId}`,{
             method:'GET',
             credentials:'include'
         })
@@ -13,7 +13,7 @@ export async function getIssueById(issueId:string) {
 }
 export async function getBookingById(bookingId:string){
     try{
-        const response = await fetch(`http://localhost:8080/service/booking/detail/admin`,{
+        const response = await fetch(`http://petpal_backend:8080/service/booking/detail/admin`,{
             method:'POST',
             credentials:'include',
             body:JSON.stringify({
@@ -29,7 +29,7 @@ export async function getBookingById(bookingId:string){
 }
 export async function refundBooking(bookingId : string){
     try{
-        const response = await fetch(`http://localhost:8080/service/booking/payment/refund`,{
+        const response = await fetch(`http://petpal_backend:8080/service/booking/payment/refund`,{
             method:'POST',
             credentials:'include',
             body:JSON.stringify({
