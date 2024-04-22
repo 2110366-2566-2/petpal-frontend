@@ -1,5 +1,5 @@
 import { API_URL } from "@/app/_constants/env";
-import { Issue, Convert } from "@app/(routes)/admin/issue/_interface/Issue"
+import { Convert, Issue } from "@app/(routes)/admin/issue/_interface/Issue";
 
 export async function getIssueList(page: number, per: number): Promise<Issue[]> {
     try {
@@ -19,7 +19,7 @@ export async function getIssueList(page: number, per: number): Promise<Issue[]> 
 
 export async function getIssueById(issueId: string): Promise<Issue> {
     try {
-        const response = await fetch(`http://localhost:8080/issue/${issueId}`, {
+        const response = await fetch(`${API_URL}/issue/${issueId}`, {
             method: 'GET',
             credentials: 'include',
         });
